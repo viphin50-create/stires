@@ -863,20 +863,29 @@ function renderProductCards(products) {
 
 /**
  * Главная функция фильтрации и рендеринга
+ * ЛОГИКА ИЗМЕНЕНА: Если есть поисковый запрос, фильтрация по категории игнорируется.
  */
 function filterAndRender() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     
     const filteredData = allProductsData.filter(product => {
-        // 1. Фильтр по категории
-        const categoryMatch = product.категория === currentCategory;
-
-        // 2. Фильтр по поиску (имя ИЛИ группа)
+        
+        // 1. Фильтр по поиску (имя ИЛИ группа)
         const titleMatch = product.имя.toLowerCase().includes(searchTerm);
         const groupMatch = product.группа.toLowerCase().includes(searchTerm);
-        const searchMatch = !searchTerm || titleMatch || groupMatch; // Если поиска нет, совпадение = true
-
-        return categoryMatch && searchMatch;
+        const searchMatch = titleMatch || groupMatch;
+        
+        // --- НОВАЯ ЛОГИКА ---
+        if (searchTerm.length > 0) {
+            // Если есть поисковый запрос, отображаем только те, что совпадают по имени/группе,
+            // игнорируя текущую категорию.
+            return searchMatch;
+        } else {
+            // Если поискового запроса нет, возвращаемся к фильтрации по текущей категории.
+            const categoryMatch = product.категория === currentCategory;
+            return categoryMatch;
+        }
+        // --- КОНЕЦ НОВОЙ ЛОГИКИ ---
     });
     
     // Передаем отфильтрованные данные на отрисовку
@@ -956,9 +965,12 @@ function handleNavClick(e) {
     // 3. Если это категория каталога, фильтруем
     if (targetSection === 'catalog') {
         const newCategory = target.dataset.category;
+        
+        // Очищаем строку поиска, чтобы избежать конфликта фильтров
+        searchInput.value = ''; 
+
         if (newCategory !== currentCategory) {
             currentCategory = newCategory;
-            searchInput.value = ''; // Сбрасываем поиск при смене категории
         }
         filterAndRender();
     }
