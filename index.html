@@ -140,4 +140,41 @@
             <input type="file" id="fileInput" accept="image/png, image/jpeg">
         </div>
 
-        <div
+        <div id="errorMsg" class="error"></div>
+
+        <div id="preview">
+            <p style="color: #aaa; padding: 20px;">Изображение не загружено</p>
+        </div>
+
+        <div class="text-input">
+            <label for="textInput">Текст для стикера (опционально):</label>
+            <input type="text" id="textInput" placeholder="Например: «Круто!»">
+        </div>
+
+        <button id="generateBtn">Сгенерировать стикер</button>
+        <button id="downloadBtn" disabled>Скачать стикер</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const preview = document.getElementById('preview');
+        const textInput = document.getElementById('textInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        let originalImage = null;
+
+        // Обработчик выбора файла
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            errorMsg.textContent = '';
+
+            if (!file) {
+                preview.innerHTML = '<p style="color: #aaa; padding: 20px;">Изображение не загружено</p>';
+                return;
+            }
+
+            // Проверка размера файла (максимум 5 МБ)
+            if (file.size >
