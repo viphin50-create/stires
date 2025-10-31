@@ -460,9 +460,6 @@
         }
         window.addEventListener('resize', resizeCanvas);
         
-        // Удален немедленный вызов resizeCanvas(), чтобы избежать ReferenceError
-
-        
         function animateBackground() {
             // Очистка с небольшим градиентом для эффекта "свечения"
             ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
