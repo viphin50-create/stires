@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -18,6 +18,14 @@
             --stars-text-dark: #333333; /* Темный текст для контраста */
             --stars-text-light-subtle: #6B7280; /* Серый текст */
             --stars-shadow-light: rgba(0, 0, 0, 0.15);
+            
+            /* Новые цвета для анимации NEW */
+            --stars-new-badge-color-1: #8A2BE2; /* Насыщенный фиолетовый */
+            --stars-new-badge-color-2: #FFD1DC; /* Розовый */
+
+            /* Новые цвета для анимации LIMITED */
+            --stars-limited-badge-color-1: #FFABAB; /* Теплый персиковый (текущий цвет) */
+            --stars-limited-badge-color-2: #FFD1DC; /* Пастельный розовый (второй цвет для градиента) */
         }
 
         /* Загрузка шрифтов */
@@ -70,7 +78,7 @@
         }
         
         /* ========================================================== */
-        /* Навигация: Улучшенное мобильное центрирование и прокрутка */
+        /* Навигация */
         /* ========================================================== */
         .nav-item {
             transition: all 0.3s ease-in-out;
@@ -78,33 +86,27 @@
             background-color: transparent;
             color: var(--stars-text-dark);
             text-align: center;
-            flex-shrink: 0; /* Не сжимать элементы */
+            flex-shrink: 0; 
         }
         
         .nav-container {
-            max-width: 95%; /* Шире для прокрутки */
+            max-width: 95%; 
             width: 100%;
             padding: 0.25rem; 
             border-radius: 9999px;
             box-shadow: 0 2px 10px var(--stars-shadow-light);
-            white-space: nowrap; /* Запретить перенос элементов */
-            overflow-x: scroll; /* Включить горизонтальную прокрутку */
-            display: flex; /* Важно для nowrap */
+            white-space: nowrap; 
+            overflow-x: scroll; 
+            display: flex; 
             align-items: center;
-            gap: 0.5rem; /* Добавляем небольшие промежутки */
+            gap: 0.5rem; 
         }
 
-        /* Скрыть скроллбар для эстетики */
-        .nav-container::-webkit-scrollbar {
-            display: none;
-        }
-        .nav-container {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
+        /* Скрыть скроллбар */
+        .nav-container::-webkit-scrollbar { display: none; }
+        .nav-container { -ms-overflow-style: none; scrollbar-width: none; }
 
         .nav-item.is-active {
-            /* Фирменный градиент */
             background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
             background-size: 200% auto;
             color: white;
@@ -113,26 +115,19 @@
         }
 
         /* ========================================================== */
-        /* 3D FLIP Card */
+        /* 3D FLIP Card (Упрощено) */
         /* ========================================================== */
         .product-card-container {
-            /* perspective: 1000px; */ /* Убрано */
             box-shadow: 0 3px 10px var(--stars-shadow-light); 
             border-radius: 1rem;
             overflow: visible; 
-            /* cursor: pointer; */ /* Убрано */
-            /* aspect-ratio: 1 / 1; */ /* Убрано */
-            height: 100%; /* Добавлено */
-            transition: all 0.3s ease-in-out; /* Плавное появление/скрытие */
+            height: 100%; 
+            transition: all 0.3s ease-in-out; 
         }
         
         .product-card {
             width: 100%; height: 100%; position: relative;
-            /* transform-style: preserve-3d; */ /* Убрано */
-            /* transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); */ /* Убрано */
             border-radius: 1rem;
-            
-            /* Новые стили для единой карточки */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -141,21 +136,13 @@
             background-color: white;
         }
 
-        /* .product-card.is-flipped { ... } */ /* Удален весь блок */
-
-        /* .card-face { ... } */ /* Удален весь блок */
-
-        /* .photocard-reveal { ... } */ /* Удален весь блок */
-        
-        /* Мобильная адаптация контента внутри карточки */
         .card-content .product-image-mock {
-            width: 100%; /* Изменено с 80% */
-            padding-bottom: 100%; /* Изменено с 80% (для квадрата) */
+            width: 100%; 
+            padding-bottom: 100%; 
             height: 0;
             position: relative;
             background-color: #f7f7f7;
             border-radius: 0.5rem;
-            /* mb-2 убран из JS */
         }
         .card-content .product-image-mock span {
             position: absolute;
@@ -163,9 +150,6 @@
             transform: translate(-50%, -50%);
             font-size: 1.5rem; 
         }
-
-        /* Медиа-запросы для десктопа/планшета */
-        /* @media (min-width: 640px) { ... } */ /* Удален весь блок */
         
         /* ========================================================== */
         /* Стили для Секции "О Нас" (без изменений) */
@@ -181,7 +165,6 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
         }
 
-        /* Стиль неактивной кнопки-вкладки */
         .city-button {
             background-color: #E5E7EB; 
             color: var(--stars-text-dark);
@@ -190,7 +173,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        /* Стиль активной кнопки-вкладки */
         .city-button.active-tab {
             background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-accent-gradient-start));
             background-size: 200% auto;
@@ -199,44 +181,19 @@
             transform: scale(1.02); 
         }
         
-        /* Стили для плавного переключения контента вкладок */
-        .tab-content {
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-            position: absolute;
-            top: 0;
-            width: 100%;
-        }
-
-        .tab-content.is-active {
-            opacity: 1;
-            position: relative; 
-            z-index: 10;
-        }
-
-        /* Общая анимация для смены разделов */
         .fade-out-section {
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-            overflow: hidden;
+            opacity: 0; visibility: hidden; height: 0; overflow: hidden;
             transition: opacity 0.3s ease, visibility 0s 0.3s, height 0s 0.3s;
         }
         .fade-in-section {
-            opacity: 1;
-            visibility: visible;
-            height: auto;
+            opacity: 1; visibility: visible; height: auto;
             transition: opacity 0.3s ease, visibility 0s 0s, height 0s 0s;
         }
         
-        /* Стили для скрытия карточки при поиске */
-        .product-card-container.hidden {
-            display: none !important;
-        }
+        .product-card-container.hidden { display: none !important; }
         
-        /* НОВЫЙ СТИЛЬ для ЦЕНЫ */
         .product-price-gradient {
-            font-weight: 900; /* 900 (black) из Poppins */
+            font-weight: 900; 
             font-family: 'Poppins', sans-serif;
             background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end));
             -webkit-background-clip: text;
@@ -245,20 +202,98 @@
             text-fill-color: transparent;
         }
         
-        /* НОВЫЙ СТИЛЬ для ИНДИКАТОРОВ НАЛИЧИЯ */
+        /* ========================================================== */
+        /* АНИМАЦИЯ: В Наличии (Green Dot Pulse) */
+        /* ========================================================== */
+        @keyframes pulse-subtle {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
         .status-dot {
-            width: 0.65rem; /* 10px */
+            width: 0.65rem; 
             height: 0.65rem;
             border-radius: 9999px;
             border: 2px solid white;
             box-shadow: 0 0 3px rgba(0,0,0,0.2);
+            transition: all 0.3s;
         }
+        
         .status-dot-green {
             background-color: #34D399; /* green-400 */
+            /* Применяем анимацию пульсации */
+            animation: pulse-subtle 2s infinite ease-in-out;
         }
         .status-dot-red {
             background-color: #F87171; /* red-400 */
         }
+        
+        /* ========================================================== */
+        /* Стили для БЕЙДЖЕЙ (New/Limited) */
+        /* ========================================================== */
+        
+        /* АНИМАЦИЯ: Бейдж New (Shimmer Effect) */
+        @keyframes shimmer-new {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        /* --- Бейджи: Позиционирование --- */
+        .product-badge-container {
+            position: absolute;
+            /* ОТРИЦАТЕЛЬНОЕ СМЕЩЕНИЕ, чтобы выйти за пределы border-radius */
+            top: -0.5rem; 
+            left: -0.5rem; 
+            z-index: 30; /* Высокий z-index, чтобы быть поверх всего */
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem; 
+        }
+        /* --- КОНЕЦ Бейджи: Позиционирование --- */
+        
+        .product-badge {
+            font-size: 0.65rem; 
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            line-height: 1;
+            transition: all 0.3s;
+        }
+
+        .badge-new {
+            /* НОВЫЙ ГРАДИЕНТ И АНИМАЦИЯ */
+            background: linear-gradient(90deg, 
+                var(--stars-new-badge-color-1) 0%, 
+                var(--stars-new-badge-color-2) 50%, 
+                var(--stars-new-badge-color-1) 100%
+            );
+            background-size: 200% 200%;
+            color: white;
+            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.5); /* Фиолетовая тень */
+            
+            /* Применяем анимацию переливания */
+            animation: shimmer-new 2s ease-in-out infinite alternate; 
+        }
+        
+        /* ОБНОВЛЕНО: теперь badge-limited имеет градиент и ту же анимацию shimmer-new */
+        .badge-limited {
+            background: linear-gradient(90deg, 
+                var(--stars-limited-badge-color-1) 0%, 
+                var(--stars-limited-badge-color-2) 50%, 
+                var(--stars-limited-badge-color-1) 100%
+            );
+            background-size: 200% 200%;
+            color: var(--stars-text-dark); /* Сохраняем темный текст */
+            box-shadow: 0 2px 10px rgba(255, 171, 171, 0.5); /* Персиковая тень */
+            
+            /* Применяем анимацию переливания */
+            animation: shimmer-new 2s ease-in-out infinite alternate; 
+        }
+        /* ========================================================== */
+
 
         /* ========================================================== */
         /* MODAL (Full Image View) */
@@ -271,7 +306,7 @@
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.9);
             z-index: 1000;
-            display: none; /* Скрыто по умолчанию */
+            display: none; 
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(8px);
@@ -296,7 +331,7 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            font-size: 2.5rem; /* Немного крупнее для тач-скринов */
+            font-size: 2.5rem; 
             color: white;
             cursor: pointer;
             background: rgba(0, 0, 0, 0.5);
@@ -304,7 +339,7 @@
             padding: 0 0.7rem 0.2rem 0.7rem;
             line-height: 1;
             transition: background 0.2s;
-            z-index: 1001; /* Поверх изображения */
+            z-index: 1001; 
         }
         
         #modalCloseBtn:hover {
@@ -333,54 +368,38 @@
         </header>
 
         
-<!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) -->
-<nav class="flex justify-center mb-8 sm:mb-12">
-            <!-- ID "nav-container" добавлен для JS -->
-            <div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
+<!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) --><nav class="flex justify-center mb-8 sm:mb-12">
+            <!-- ID "nav-container" добавлен для JS --><div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
                 
-                <!-- Секция "О нас" (остается статичной) -->
-                <a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
+                <!-- Секция "О нас" (остается статичной) --><a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
                 
-                <!-- Сюда JS добавит динамические категории -->
-                
-            </div>
+                <!-- Сюда JS добавит динамические категории --></div>
         </nav>
 
         
-<!-- ========================================================== -->
-<!-- 1. СЕКЦИЯ КАТАЛОГА (Активна по умолчанию) -->
-<!-- ========================================================== -->
-<section id="catalog-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-in-section">
+<!-- ========================================================== --><!-- 1. СЕКЦИЯ КАТАЛОГА (Активна по умолчанию) --><!-- ========================================================== --><section id="catalog-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-in-section">
             
-            <!-- СТРОКА ПОИСКА -->
-            <div class="mb-6 px-2 max-w-lg mx-auto">
+            <!-- СТРОКА ПОИСКА --><div class="mb-6 px-2 max-w-lg mx-auto">
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Поиск по названию или группе..." 
                            class="w-full p-3 pl-12 border-2 border-indigo-200 rounded-full shadow-inner focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition duration-300"
                            style="outline: none;">
-                    <!-- Иконка поиска (Звезда) -->
-                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Иконка поиска (Звезда) --><svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21l-1.64-7.03z"/>
                     </svg>
                 </div>
             </div>
             
-            <!-- Разделительная линия -->
-            <div class="text-center mb-6 pb-2" style="border-bottom: 2px solid var(--stars-accent-gradient-start);"></div>
+            <!-- Разделительная линия --><div class="text-center mb-6 pb-2" style="border-bottom: 2px solid var(--stars-accent-gradient-start);"></div>
 
             
-<!-- СЕТКА ТОВАРОВ (Будет заполнена динамически) -->
-<!-- ВСЕ СТАТИЧНЫЕ КАРТОЧКИ УДАЛЕНЫ -->
-<div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
+<!-- СЕТКА ТОВАРОВ (Будет заполнена динамически) --><div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
                 
-                <!-- Заглушка, которая появится при загрузке -->
-                <p id="grid-loader" class="col-span-full text-center text-gray-500 py-10">
+                <!-- Заглушка, которая появится при загрузке --><p id="grid-loader" class="col-span-full text-center text-gray-500 py-10">
                     Загрузка товаров...
                 </p>
                 
-                <!-- Сюда JS вставит карточки товаров -->
-
-            </div>
+                <!-- Сюда JS вставит карточки товаров --></div>
             
             
 <div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
@@ -391,13 +410,9 @@
 
 
         
-<!-- ========================================================== -->
-<!-- 2. СЕКЦИЯ "О НАС" (Скрыта по умолчанию) -->
-<!-- ========================================================== -->
-<section id="about-us-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-out-section">
+<!-- ========================================================== --><!-- 2. СЕКЦИЯ "О НАС" (Скрыта по умолчанию) --><!-- ========================================================== --><section id="about-us-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-out-section">
             
-<!-- Контент "О Нас" остался без изменений -->
-<div class="content-container max-w-4xl mx-auto p-4 sm:p-8 rounded-xl shadow-lg mt-8 mb-8">
+<!-- Контент "О Нас" остался без изменений --><div class="content-container max-w-4xl mx-auto p-4 sm:p-8 rounded-xl shadow-lg mt-8 mb-8">
                 
                 <h1 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-text-dark);">
                     Stars Store: Наша История и Магазины
@@ -454,10 +469,9 @@
                             </div>
 
                             
-<div class="md:w-3/5 space-y-3 text-gray-700">
+<div class="md:w-3/5 space-y-3>" text-gray-700>
                                 
-                                <!-- ИСПРАВЛЕННЫЙ АДРЕС: Объединен в одну строку -->
-<p>
+                                <!-- ИСПРАВЛЕННЫЙ АДРЕС: Объединен в одну строку --><p>
     <strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> 
     метро Площадь Восстания/Лиговский проспект. Лиговский проспект 50 литера З
 </p>
@@ -589,18 +603,12 @@
 
     </div>
 
-    <!-- ========================================================== -->
-    <!-- MODAL (Полное изображение) -->
-    <!-- ========================================================== -->
-    <div id="fullImageModal" onclick="closeFullImage()">
+    <!-- ========================================================== --><!-- MODAL (Полное изображение) --><!-- ========================================================== --><div id="fullImageModal" onclick="closeFullImage()">
         <button id="modalCloseBtn" onclick="closeFullImage(event)">&times;</button>
         <img id="modalImage" src="" alt="Полное изображение товара" />
     </div>
 
-    <!-- ========================================================== -->
-    <!-- НОВЫЙ ДИНАМИЧЕСКИЙ JAVASCRIPT -->
-    <!-- ========================================================== -->
-    <script>
+    <!-- ========================================================== --><!-- НОВЫЙ ДИНАМИЧЕСКИЙ JAVASCRIPT --><!-- ========================================================== --><script>
         
 // ==========================================================
 // ЗАГРУЗКА И ПАРСИНГ Google Sheet
@@ -627,6 +635,8 @@ function csvToJSON(csvText) {
         const line = lines[i];
         if (!line) continue; // Пропускаем пустые строки
 
+        // Используем более точный метод разделения, который учитывает кавычки, 
+        // но для простоты оставим split(',') и будем очищать значения.
         const currentline = line.split(',');
 
         // Проверяем, что количество полей совпадает с количеством заголовков
@@ -635,9 +645,7 @@ function csvToJSON(csvText) {
             continue;
         }
 
-        // --- ИСПРАВЛЕНИЕ: Инициализируем 'obj' для каждой строки ---
         const obj = {};
-        // -----------------------------------------------------------
 
         headers.forEach((header, index) => {
             let value = currentline[index];
@@ -660,6 +668,7 @@ function csvToJSON(csvText) {
             }
             // Для остальных оставляем как есть, но убираем лишние пробелы
             else {
+                // Если колонка называется 'теги', сохраняем ее как есть для дальнейшей обработки
                 obj[cleanHeader] = value ? value.trim() : '';
             }
         });
@@ -765,7 +774,10 @@ function renderNavigation(products) {
  * (Обновлено для более компактного вида)
  */
 function createStatusCircle(status, label) {
-    const dotClass = status === 'о' ? 'status-dot-green' : 'status-dot-red';
+    // Обработка случая, когда 'статус' может быть undefined/null/empty
+    const normalizedStatus = status ? status.toLowerCase() : '';
+    // Зеленая точка пульсирует, если статус 'О' (В наличии). Иначе - красная.
+    const dotClass = normalizedStatus === 'о' ? 'status-dot-green' : 'status-dot-red';
     return `
         <div class="flex items-center space-x-1">
             <div class="status-dot ${dotClass}"></div>
@@ -785,11 +797,45 @@ function renderProductCards(products) {
         return;
     }
 
+    // --- ЛОГИКА ДЛЯ БЕЙДЖЕЙ (NEW/LIMITED) ---
+    const allowedCodes = ['new', 'lim']; 
+    // --- КОНЕЦ ЛОГИКИ ДЛЯ БЕЙДЖЕЙ ---
+
     products.forEach(product => {
         // Стили цены и наличия
-        // Используем более компактные стили в функции createStatusCircle
         const spbStatus = createStatusCircle(product.спб, 'СПБ');
         const mskStatus = createStatusCircle(product.мск, 'МСК');
+        
+        
+        // 1. Извлекаем и очищаем теги. Используем 'теги' или 'статус' как запасной вариант.
+        const rawTags = product.теги || product.статус || ''; 
+        
+        // 2. Преобразуем строку в массив, очищаем и ФИЛЬТРУЕМ.
+        // Если rawTags пустая, теги будут пустым массивом.
+        // ЕСЛИ ЕСТЬ "ДРУГОЕ" СЛОВО, оно будет удалено фильтром.
+        const tags = rawTags.toLowerCase()
+                            .split(',')
+                            .map(t => t.trim())
+                            .filter(t => allowedCodes.includes(t)); // <-- Оставляем только 'new' или 'lim'
+        
+        let badgeHTML = '';
+        
+        // 3. Рендеринг бейджей на основе отфильтрованных кодов
+        if (tags.includes('new')) {
+            // Используется CSS класс .badge-new с анимацией shimmer-new
+            badgeHTML += `<span class="product-badge badge-new">New</span>`;
+        }
+        if (tags.includes('lim')) {
+            badgeHTML += `<span class="product-badge badge-limited">Limited</span>`;
+        }
+        
+        // 4. Контейнер отображается, только если есть хотя бы один бейдж.
+        // Если в столбце было "sale", массив tags будет пустым, и контейнер не отобразится.
+        const badgesContainer = badgeHTML.length > 0 
+            ? `<div class="product-badge-container">${badgeHTML}</div>` 
+            : '';
+        // --- КОНЕЦ ЛОГИКИ ДЛЯ БЕЙДЖЕЙ ---
+
         
         // --- Логика для вставки изображения или плейсхолдера ---
         const photoUrl = product.фото; // 'фото' - в нижнем регистре
@@ -803,21 +849,16 @@ function renderProductCards(products) {
         const cursorClass = hasPhoto ? 'cursor-zoom-in hover:scale-[1.01] transition-transform' : '';
 
         // Условный рендеринг:
-        // 1. Если photoUrl есть: показываем <img> и fallback (скрытый) на случай 404.
-        // 2. Если photoUrl нет: показываем плейсхолдер <span>.
         const imageBlockInner = photoUrl
-            ? `<!-- Настоящее изображение -->
-               <img src="${photoUrl}" 
+            ? `<!-- Настоящее изображение --><img src="${photoUrl}" 
                     alt="${productName}" 
                     class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300" 
                     loading="lazy"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-               <!-- Плейсхолдер (запасной вариант при ошибке 404) -->
-               <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-400 font-black font-stars-display" style="display: none;">
+               <!-- Плейсхолдер (запасной вариант при ошибке 404) --><div class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-400 font-black font-stars-display" style="display: none;">
                     ${groupInitials}
                </div>`
-            : `<!-- Плейсхолдер (если фото нет в таблице) -->
-               <span class="text-gray-400 font-black font-stars-display">
+            : `<!-- Плейсхолдер (если фото нет в таблице) --><span class="text-gray-400 font-black font-stars-display">
                     ${groupInitials}
                </span>`;
         // --- Конец логики ---
@@ -826,30 +867,24 @@ function renderProductCards(products) {
         <div class="product-card-container" data-title="${product.имя}" data-group="${product.группа}">
             <div class="product-card">
                 
-                <!-- Верхняя часть (Фото + Текст) -->
-                <div>
-                    <!-- Фото -->
-                    <div class="card-content w-full flex flex-col items-center">
-                        <div ${clickHandler} class="product-image-mock mb-2 flex items-center justify-center border border-gray-200 overflow-hidden ${cursorClass}">
+                ${badgesContainer} <!-- <-- Контейнер с бейджами --><!-- Верхняя часть (Фото + Текст) --><div>
+                    <!-- Фото --><div class="card-content w-full flex flex-col items-center">
+                        <!-- Добавлено "relative" в CSS для product-image-mock, чтобы позиционировать бейджи --><div ${clickHandler} class="product-image-mock mb-2 flex items-center justify-center border border-gray-200 overflow-hidden ${cursorClass}">
                             ${imageBlockInner}
                         </div>
                     </div>
-                    <!-- Текст -->
-                    <div class="text-content w-full px-1">
+                    <!-- Текст --><div class="text-content w-full px-1">
                         <h3 class="font-semibold text-center mt-2 text-sm leading-tight">${product.имя}</h3>
                         <p class="text-xs text-gray-500 text-center mb-2">${product.группа}</p>
                     </div>
                 </div>
                 
-                <!-- Нижняя часть (Цена + Наличие) - Compacted -->
-                <div class="w-full mt-2 flex items-end justify-between px-1">
-                    <!-- Статус (слева) -->
-                    <div class="flex space-x-3 pt-1">
+                <!-- Нижняя часть (Цена + Наличие) - Compacted --><div class="w-full mt-2 flex items-end justify-between px-1">
+                    <!-- Статус (слева) --><div class="flex space-x-3 pt-1">
                         ${spbStatus}
                         ${mskStatus}
                     </div>
-                    <!-- Цена (справа) -->
-                    <p class="product-price-gradient text-right text-lg sm:text-xl leading-none">
+                    <!-- Цена (справа) --><p class="product-price-gradient text-right text-lg sm:text-xl leading-none">
                         ${product.цена.toLocaleString('ru-RU')} ₽
                     </p>
                 </div>
@@ -859,37 +894,6 @@ function renderProductCards(products) {
         `;
         productGrid.insertAdjacentHTML('beforeend', cardHTML);
     });
-}
-
-/**
- * Главная функция фильтрации и рендеринга
- * ЛОГИКА ИЗМЕНЕНА: Если есть поисковый запрос, фильтрация по категории игнорируется.
- */
-function filterAndRender() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    
-    const filteredData = allProductsData.filter(product => {
-        
-        // 1. Фильтр по поиску (имя ИЛИ группа)
-        const titleMatch = product.имя.toLowerCase().includes(searchTerm);
-        const groupMatch = product.группа.toLowerCase().includes(searchTerm);
-        const searchMatch = titleMatch || groupMatch;
-        
-        // --- НОВАЯ ЛОГИКА ---
-        if (searchTerm.length > 0) {
-            // Если есть поисковый запрос, отображаем только те, что совпадают по имени/группе,
-            // игнорируя текущую категорию.
-            return searchMatch;
-        } else {
-            // Если поискового запроса нет, возвращаемся к фильтрации по текущей категории.
-            const categoryMatch = product.категория === currentCategory;
-            return categoryMatch;
-        }
-        // --- КОНЕЦ НОВОЙ ЛОГИКИ ---
-    });
-    
-    // Передаем отфильтрованные данные на отрисовку
-    renderProductCards(filteredData);
 }
 
 // ==========================================================
@@ -997,91 +1001,113 @@ function switchMainSection(target) {
 
         aboutSection.classList.remove('fade-in-section');
         aboutSection.classList.add('fade-out-section');
-
-         setTimeout(() => {
+        
+        setTimeout(() => {
             catalogSection.classList.remove('fade-out-section');
             catalogSection.classList.add('fade-in-section');
             window.scrollTo(0, 0); 
-        }, 300);
+        }, 300); 
     }
 }
 
 /**
- * Настраивает вкладки (СПБ/МСК) в секции "О нас"
+ * Обрабатывает ввод в строке поиска и запускает фильтрацию
  */
-function setupStoreTabs() {
+function handleSearchInput() {
+    currentSearchTerm = searchInput.value.toLowerCase().trim();
+    filterAndRender();
+}
+
+// ==========================================================
+// ГЛАВНЫЙ ФИЛЬТР
+// ==========================================================
+
+/**
+ * Фильтрует данные по текущей категории и поисковому запросу, затем рендерит.
+ */
+function filterAndRender() {
+    let filteredProducts = allProductsData;
+
+    // 1. Фильтрация по категории
+    filteredProducts = filteredProducts.filter(p => p.категория === currentCategory);
+
+    // 2. Фильтрация по поиску (если есть запрос)
+    if (currentSearchTerm.length > 0) {
+        filteredProducts = filteredProducts.filter(p => 
+            p.имя.toLowerCase().includes(currentSearchTerm) ||
+            p.группа.toLowerCase().includes(currentSearchTerm)
+        );
+    }
+
+    // 3. Рендеринг отфильтрованных результатов
+    renderProductCards(filteredProducts);
+
+    // 4. Скроллинг к началу каталога
+    if (currentSearchTerm.length > 0 || currentCategory) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// ==========================================================
+// ЛОГИКА ДЛЯ СЕКЦИИ "О НАС"
+// ==========================================================
+
+function setupAboutUsTabs() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
-    const contentWrapper = document.getElementById('store-content-wrapper');
-
-    function switchStoreTab(targetId) {
-        tabButtons.forEach(button => {
-            button.classList.toggle('active-tab', button.dataset.target === targetId);
-        });
-
-        tabContents.forEach(content => {
-            const contentId = content.id.replace('-content', '');
-            if (contentId === targetId) {
-                content.classList.remove('absolute', 'hidden'); 
-                const activeContentHeight = content.offsetHeight;
-                contentWrapper.style.minHeight = `${activeContentHeight}px`;
-                setTimeout(() => content.classList.add('is-active'), 10); 
-            } else {
-                content.classList.remove('is-active');
-                setTimeout(() => content.classList.add('absolute', 'hidden'), 400); 
-            }
-        });
-    }
 
     tabButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchStoreTab(e.currentTarget.dataset.target);
+            const targetCity = e.currentTarget.dataset.target;
+
+            // Обновляем активную кнопку
+            tabButtons.forEach(btn => btn.classList.remove('active-tab'));
+            e.currentTarget.classList.add('active-tab');
+
+            // Переключаем контент
+            tabContents.forEach(content => {
+                if (content.id === `${targetCity}-content`) {
+                    content.classList.remove('hidden');
+                    content.classList.add('is-active');
+                } else {
+                    content.classList.add('hidden');
+                    content.classList.remove('is-active');
+                }
+            });
         });
     });
-
-    // Инициализация
-    const initialContent = document.getElementById('spb-content');
-    if (initialContent) {
-         setTimeout(() => {
-            initialContent.classList.remove('hidden', 'absolute'); 
-            contentWrapper.style.minHeight = `${initialContent.offsetHeight}px`;
-        }, 50);
-    }
 }
 
 
 // ==========================================================
-// ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
+// ИНИЦИАЛИЗАЦИЯ
 // ==========================================================
-document.addEventListener('DOMContentLoaded', async () => {
-    
-    // 1. Настраиваем поиск
-    searchInput.addEventListener('input', filterAndRender);
 
-    // 2. Настраиваем вкладки "О нас"
-    setupStoreTabs();
+async function initializeApp() {
+    // 1. Показываем заглушку
+    productGrid.innerHTML = document.getElementById('grid-loader').outerHTML;
     
-    // 3. Привязываем "О нас" к главной навигации
-    navAbout.addEventListener('click', handleNavClick);
-
-    // 4. Загружаем данные из "Google Sheet"
+    // 2. Загружаем и сохраняем данные
     allProductsData = await fetchDataFromGoogleSheet();
     
-    // 5. Рендерим навигацию на основе данных
-    renderNavigation(allProductsData);
+    // 3. Рендерим навигацию
+    if (allProductsData.length > 0) {
+        renderNavigation(allProductsData);
+    }
+
+    // 4. Применяем фильтр по умолчанию и рендерим
+    filterAndRender(); 
     
-    // 6. Рендерим карточки для категории по умолчанию
-    filterAndRender();
+    // 5. Настраиваем слушатели
+    document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', handleNavClick));
+    searchInput.addEventListener('input', handleSearchInput);
+    setupAboutUsTabs(); // Настройка вкладок в секции "О нас"
+}
 
-    // 7. Настраиваем закрытие модального окна по Esc
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
-            closeFullImage();
-        }
-    });
-});
 
+// Запуск приложения после загрузки DOM
+window.onload = initializeApp;
+        
     </script>
 </body>
 </html>
