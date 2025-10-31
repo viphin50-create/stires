@@ -1,4 +1,3 @@
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -24,8 +23,8 @@
             --stars-new-badge-color-2: #FFD1DC; /* Розовый */
 
             /* Новые цвета для анимации LIMITED */
-            --stars-limited-badge-color-1: #FFABAB; /* Теплый персиковый (текущий цвет) */
-            --stars-limited-badge-color-2: #FFD1DC; /* Пастельный розовый (второй цвет для градиента) */
+            --stars-limited-badge-color-1: #FFABAB; 
+            --stars-limited-badge-color-2: #FFD1DC; 
         }
 
         /* Загрузка шрифтов */
@@ -77,6 +76,69 @@
             100% { background-position: 0% 0%; }
         }
         
+        /* ========================================================== */
+        /* НОВАЯ АНИМАЦИЯ ЛОГОТИПА В ШАПКЕ (Мягкая пульсация) */
+        /* ========================================================== */
+        @keyframes logo-pulse {
+            0% { 
+                transform: scale(1); 
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); 
+            }
+            50% { 
+                transform: scale(1.01); 
+                /* Легкое свечение с использованием фирменного цвета */
+                filter: drop-shadow(0 6px 12px rgba(160, 210, 255, 0.5)); 
+            } 
+            100% { 
+                transform: scale(1); 
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); 
+            }
+        }
+        
+        .animated-logo {
+            transition: all 0.5s ease-in-out;
+            /* Медленная и мягкая анимация */
+            animation: logo-pulse 8s infinite ease-in-out alternate; 
+        }
+        
+        /* ========================================================== */
+        /* СТИЛИ И АНИМАЦИИ ДЛЯ SPLASH SCREEN */
+        /* ========================================================== */
+        
+        #splash-screen {
+            background-color: var(--stars-bg-default); 
+            /* Обеспечиваем, чтобы фон не был виден, пока его не перекроет #splash-screen */
+            z-index: 200; 
+            transition: opacity 0.7s ease-in-out, visibility 0s 0.7s; 
+        }
+        
+        /* Анимация "Звездного Взрыва" для логотипа в центре */
+        @keyframes star-burst {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.5); 
+                filter: drop-shadow(0 0 5px rgba(160, 210, 255, 0));
+            }
+            70% { 
+                opacity: 1; 
+                transform: scale(1.15); /* Чуть больше, чем 1.1 */
+                /* Интенсивное свечение для эффекта "перелива" */
+                filter: drop-shadow(0 0 40px rgba(160, 210, 255, 1)); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); 
+            }
+        }
+        
+        .splash-logo-animate {
+            /* 1 секунда для "взрыва", 0.3с задержка */
+            animation: star-burst 1s ease-out 0.3s forwards; 
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), 
+                        width 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
         /* ========================================================== */
         /* Навигация */
         /* ========================================================== */
@@ -151,6 +213,7 @@
             font-size: 1.5rem; 
         }
         
+        /* ... (Остальные стили не изменились) ... */
         /* ========================================================== */
         /* Стили для Секции "О Нас" (без изменений) */
         /* ========================================================== */
@@ -264,7 +327,6 @@
         }
 
         .badge-new {
-            /* НОВЫЙ ГРАДИЕНТ И АНИМАЦИЯ */
             background: linear-gradient(90deg, 
                 var(--stars-new-badge-color-1) 0%, 
                 var(--stars-new-badge-color-2) 50%, 
@@ -272,13 +334,11 @@
             );
             background-size: 200% 200%;
             color: white;
-            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.5); /* Фиолетовая тень */
+            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.5); 
             
-            /* Применяем анимацию переливания */
             animation: shimmer-new 2s ease-in-out infinite alternate; 
         }
         
-        /* ОБНОВЛЕНО: теперь badge-limited имеет градиент и ту же анимацию shimmer-new */
         .badge-limited {
             background: linear-gradient(90deg, 
                 var(--stars-limited-badge-color-1) 0%, 
@@ -286,10 +346,9 @@
                 var(--stars-limited-badge-color-1) 100%
             );
             background-size: 200% 200%;
-            color: var(--stars-text-dark); /* Сохраняем темный текст */
-            box-shadow: 0 2px 10px rgba(255, 171, 171, 0.5); /* Персиковая тень */
+            color: var(--stars-text-dark); 
+            box-shadow: 0 2px 10px rgba(255, 171, 171, 0.5); 
             
-            /* Применяем анимацию переливания */
             animation: shimmer-new 2s ease-in-out infinite alternate; 
         }
         /* ========================================================== */
@@ -353,293 +412,351 @@
     
 <div class="animated-background"></div>
 
+<!-- ========================================================== -->
+<!-- НОВЫЙ СТАРТОВЫЙ ЭКРАН (SPLASH SCREEN) -->
+<!-- ========================================================== -->
+<!-- Изначально перекрывает весь экран с высоким z-index -->
+<div id="splash-screen" class="fixed inset-0 flex items-center justify-center transition-opacity duration-700 ease-in-out" 
+     style="background-color: var(--stars-bg-default); z-index: 200;">
     
-<div class="relative z-10 p-2 sm:p-4 md:p-8">
+    <!-- Контейнер для центрирования и позиционирования логотипа -->
+    <div id="splash-logo-container" class="relative">
+        <!-- Логотип, который будет анимирован -->
+        <img id="splash-logo-image" 
+             src="https://static.insales-cdn.com/files/1/4286/27119806/original/лого_stars_store_dlya_saita.png" 
+             alt="Starsstore K-Pop Logo" 
+             class="h-auto filter drop-shadow-lg"
+             style="width: 80vw; max-width: 320px; transform: scale(0.5); opacity: 0;">
+    </div>
+</div>
+<!-- КОНЕЦ СПЛАШ-ЭКРАНА -->
+
+<!-- ========================================================== -->
+<!-- ОСНОВНОЕ СОДЕРЖИМОЕ (Изначально скрыто) -->
+<!-- ========================================================== -->
+<div id="main-content" class="relative z-10 opacity-0 transition-opacity duration-700 ease-in-out pointer-events-none p-2 sm:p-4 md:p-8">
         
         
-<header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
+    <header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
+        
+        <!-- Этот логотип будет виден после скрытия splash-screen -->
+        <img id="header-logo"
+             src="https://static.insales-cdn.com/files/1/4286/27119806/original/лого_stars_store_dlya_saita.png" 
+             alt="Starsstore K-Pop Logo" 
+             class="mx-auto w-64 sm:w-80 h-auto mb-2 filter drop-shadow-md animated-logo">
+        <p class="text-sm sm:text-xl mt-0.5" style="color: var(--stars-text-light-subtle); font-weight: 500;">
+            CONNECTING HEARTS THROUGH K-POP
+        </p>
+    </header>
+
+    
+    <!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) -->
+    <nav class="flex justify-center mb-8 sm:mb-12">
+        <!-- ID "nav-container" добавлен для JS -->
+        <div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
             
-<img src="https://static.insales-cdn.com/files/1/4286/27119806/original/лого_stars_store_dlya_saita.png" 
-                 alt="Starsstore K-Pop Logo" 
-                 class="mx-auto w-64 sm:w-80 h-auto mb-2 filter drop-shadow-md">
-            <p class="text-sm sm:text-xl mt-0.5" style="color: var(--stars-text-light-subtle); font-weight: 500;">
-                CONNECTING HEARTS THROUGH K-POP
+            <!-- Секция "О нас" (остается статичной) -->
+            <a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
+            
+            <!-- Сюда JS добавит динамические категории -->
+        </div>
+    </nav>
+
+    
+    <!-- ========================================================== -->
+    <!-- 1. СЕКЦИЯ КАТАЛОГА (Активна по умолчанию) -->
+    <!-- ========================================================== -->
+    <section id="catalog-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-in-section">
+        
+        <!-- СТРОКА ПОИСКА -->
+        <div class="mb-6 px-2 max-w-lg mx-auto">
+            <div class="relative">
+                <input type="text" id="searchInput" placeholder="Поиск по названию или группе..." 
+                       class="w-full p-3 pl-12 border-2 border-indigo-200 rounded-full shadow-inner focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition duration-300"
+                       style="outline: none;">
+                <!-- Иконка поиска (Звезда) -->
+                <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21l-1.64-7.03z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Разделительная линия -->
+        <div class="text-center mb-6 pb-2" style="border-bottom: 2px solid var(--stars-accent-gradient-start);"></div>
+
+        
+        <!-- СЕТКА ТОВАРОВ (Будет заполнена динамически) -->
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
+            
+            <!-- Заглушка, которая появится при загрузке -->
+            <p id="grid-loader" class="col-span-full text-center text-gray-500 py-10">
+                Загрузка товаров...
             </p>
-        </header>
-
+            
+            <!-- Сюда JS вставит карточки товаров -->
+        </div>
         
-<!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) --><nav class="flex justify-center mb-8 sm:mb-12">
-            <!-- ID "nav-container" добавлен для JS --><div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
-                
-                <!-- Секция "О нас" (остается статичной) --><a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
-                
-                <!-- Сюда JS добавит динамические категории --></div>
-        </nav>
-
         
-<!-- ========================================================== --><!-- 1. СЕКЦИЯ КАТАЛОГА (Активна по умолчанию) --><!-- ========================================================== --><section id="catalog-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-in-section">
+        <div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
+            <p>Все товары загружены</p>
+        </div>
+        
+    </section>
+
+
+    
+    <!-- ========================================================== -->
+    <!-- 2. СЕКЦИЯ "О НАС" (Скрыта по умолчанию) -->
+    <!-- ========================================================== -->
+    <section id="about-us-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-out-section">
+        
+        <!-- Контент "О Нас" остался без изменений -->
+        <div class="content-container max-w-4xl mx-auto p-4 sm:p-8 rounded-xl shadow-lg mt-8 mb-8">
             
-            <!-- СТРОКА ПОИСКА --><div class="mb-6 px-2 max-w-lg mx-auto">
-                <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Поиск по названию или группе..." 
-                           class="w-full p-3 pl-12 border-2 border-indigo-200 rounded-full shadow-inner focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition duration-300"
-                           style="outline: none;">
-                    <!-- Иконка поиска (Звезда) --><svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21l-1.64-7.03z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Разделительная линия --><div class="text-center mb-6 pb-2" style="border-bottom: 2px solid var(--stars-accent-gradient-start);"></div>
+            <h1 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-text-dark);">
+                Stars Store: Наша История и Магазины
+            </h1>
 
             
-<!-- СЕТКА ТОВАРОВ (Будет заполнена динамически) --><div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
-                
-                <!-- Заглушка, которая появится при загрузке --><p id="grid-loader" class="col-span-full text-center text-gray-500 py-10">
-                    Загрузка товаров...
+            <section class="mb-12 p-6 rounded-xl border border-gray-200 store-card">
+                <h2 class="text-2xl font-stars-display font-semibold mb-4 border-b pb-2" style="border-color: var(--stars-accent-gradient-start);">
+                    О Проекте
+                </h2>
+                <p class="text-gray-700 leading-relaxed">
+                    Добро пожаловать в Stars Store! Открытый в 2017 году, мы гордимся тем, что являемся одним из ведущих магазинов K-POP альбомов и мерча в России. Как большие фанаты Кореи, мы стремимся делиться своей любовью к K-POP культуре с другими поклонниками.
                 </p>
-                
-                <!-- Сюда JS вставит карточки товаров --></div>
+                <p class="text-gray-700 leading-relaxed mt-4">
+                    У нас вы найдете только оригинальные товары из Южной Кореи, так как мы работаем с надежными поставщиками. В нашем ассортименте есть альбомы, постеры, фотокарты и другие товары ваших любимых групп. Мы уделяем особое внимание качеству и хорошей упаковке заказов, чтобы ваши покупки всегда доходили в идеальном состоянии.
+                </p>
+                <p class="text-gray-700 leading-relaxed mt-4 font-semibold">
+                    Наши магазины расположены в Санкт-Петербурге и Москве, но мы с радостью доставляем заказы по всей России, Казахстану и Беларуси. К каждой покупке мы добавляем подарки, а также предлагаем бонусную систему для наших постоянных клиентов :)
+                </p>
+            </section>
+
             
+            <h2 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-primary-gradient-start);">
+                Наши Офлайн Магазины
+            </h1>
             
-<div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
-                <p>Все товары загружены</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8 border-b border-gray-300 pb-4">
+                <button data-target="spb" class="city-button tab-btn text-center px-6 py-2 rounded-full font-bold shadow-md active-tab">
+                    Санкт-Петербург
+                </button>
+                <button data-target="msk" class="city-button tab-btn text-center px-6 py-2 rounded-full font-bold shadow-md">
+                    Москва
+                </button>
             </div>
-            
-        </section>
 
 
-        
-<!-- ========================================================== --><!-- 2. СЕКЦИЯ "О НАС" (Скрыта по умолчанию) --><!-- ========================================================== --><section id="about-us-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-out-section">
             
-<!-- Контент "О Нас" остался без изменений --><div class="content-container max-w-4xl mx-auto p-4 sm:p-8 rounded-xl shadow-lg mt-8 mb-8">
-                
-                <h1 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-text-dark);">
-                    Stars Store: Наша История и Магазины
-                </h1>
+            <div id="store-content-wrapper" class="relative min-h-[400px]">
 
                 
-<section class="mb-12 p-6 rounded-xl border border-gray-200 store-card">
-                    <h2 class="text-2xl font-stars-display font-semibold mb-4 border-b pb-2" style="border-color: var(--stars-accent-gradient-start);">
-                        О Проекте
-                    </h2>
-                    <p class="text-gray-700 leading-relaxed">
-                        Добро пожаловать в Stars Store! Открытый в 2017 году, мы гордимся тем, что являемся одним из ведущих магазинов K-POP альбомов и мерча в России. Как большие фанаты Кореи, мы стремимся делиться своей любовью к K-POP культуре с другими поклонниками.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed mt-4">
-                        У нас вы найдете только оригинальные товары из Южной Кореи, так как мы работаем с надежными поставщиками. В нашем ассортименте есть альбомы, постеры, фотокарты и другие товары ваших любимых групп. Мы уделяем особое внимание качеству и хорошей упаковке заказов, чтобы ваши покупки всегда доходили в идеальном состоянии.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed mt-4 font-semibold">
-                        Наши магазины расположены в Санкт-Петербурге и Москве, но мы с радостью доставляем заказы по всей России, Казахстану и Беларуси. К каждой покупке мы добавляем подарки, а также предлагаем бонусную систему для наших постоянных клиентов :)
-                    </p>
+                <section id="spb-content" class="store-card p-6 rounded-2xl tab-content is-active">
+                    <h3 class="text-2xl font-stars-display font-bold mb-4 border-b pb-2" style="color: var(--stars-text-dark);">
+                        г. Санкт-Петербург
+                    </h3>
+                    
+                    
+                    <div class="md:flex md:space-x-8 items-start">
+                        
+                        
+                        <div class="flex-shrink-0 flex justify-center mb-6 md:mb-0 md:w-2/5">
+                            <img src="https://static.insales-cdn.com/files/1/1675/35178123/original/IMG_3513-1717738399328.JPG" 
+                                alt="Фотография магазина Starsstore в Санкт-Петербурге" 
+                                class="w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white/50 ring-2 ring-indigo-200/50">
+                        </div>
+
+                        
+                        <div class="md:w-3/5 space-y-3>" text-gray-700>
+                            
+                            <!-- ИСПРАВЛЕННЫЙ АДРЕС: Объединен в одну строку -->
+                            <p>
+                                <strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> 
+                                метро Площадь Восстания/Лиговский проспект. Лиговский проспект 50 литера З
+                            </p>
+                            
+                            <p><strong><span style="color: var(--stars-primary-gradient-start);">Режим работы магазина:</span></strong> Каждый день с 12:00 до 20:00</p>
+                            <p class="mb-4"><strong><span style="color: var(--stars-primary-gradient-start);">Как найти:</span></strong> Желтое здание, второй вход после кафе</p>
+                            
+                            
+                            <div class="pt-4 mt-4 border-t border-gray-200">
+                                <h4 class="text-lg font-semibold mb-3 text-gray-900">
+                                    Служба Поддержки
+                                </h4>
+                                
+                                
+                                <div class="space-y-2 text-sm">
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Телефон:</span>
+                                        <a href="tel:+79812113684" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">+7 981 211 36 84</a>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Email:</span>
+                                        <a href="mailto:help@starsstore.ru" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">help@starsstore.ru</a>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">ВКонтакте:</span>
+                                        <a href="https://vk.com/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">vk.com/starsstore_ru</a>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Telegram:</span>
+                                        <a href="https://t.me/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">t.me/starsstore_ru</a>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mt-4 p-3 rounded-lg text-center" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
+                                    <p class="text-sm font-semibold text-gray-700">
+                                        Ежедневно: 12:00 – 20:00 (МСК)
+                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        Время работы службы поддержки
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 
-<h2 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-primary-gradient-start);">
-                    Наши Офлайн Магазины
-                </h1>
-                
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8 border-b border-gray-300 pb-4">
-                    <button data-target="spb" class="city-button tab-btn text-center px-6 py-2 rounded-full font-bold shadow-md active-tab">
-                        Санкт-Петербург
-                    </button>
-                    <button data-target="msk" class="city-button tab-btn text-center px-6 py-2 rounded-full font-bold shadow-md">
-                        Москва
-                    </button>
-                </div>
-
-
-                
-<div id="store-content-wrapper" class="relative min-h-[400px]">
-
+                <section id="msk-content" class="store-card p-6 rounded-2xl tab-content hidden">
+                    <h3 class="text-2xl font-stars-display font-bold mb-4 border-b pb-2" style="color: var(--stars-text-dark);">
+                        г. Москва
+                    </h3>
                     
-<section id="spb-content" class="store-card p-6 rounded-2xl tab-content is-active">
-                        <h3 class="text-2xl font-stars-display font-bold mb-4 border-b pb-2" style="color: var(--stars-text-dark);">
-                            г. Санкт-Петербург
-                        </h3>
+                    
+                    <div class="md:flex md:space-x-8 items-start">
                         
                         
-<div class="md:flex md:space-x-8 items-start">
+                        <div class="flex-shrink-0 flex justify-center mb-6 md:mb-0 md:w-2/5">
+                            <img src="https://static.insales-cdn.com/files/1/1676/35178124/original/IMG_9100_1717738470149-1717738478568.jpg" 
+                                alt="Фотография магазина Starsstore в Москве" 
+                                class="w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white/50 ring-2 ring-indigo-200/50">
+                        </div>
+                    
+                        
+                        <div class="md:w-3/5 space-y-3 text-gray-700">
                             
+                            <p><strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> метро Курская, улица Казакова 7.</p>
+                            <p><strong><span style="color: var(--stars-primary-gradient-start);">Режим работы магазина:</span></strong> Каждый день с 12:00 до 20:00</p>
+                            <p class="mb-4"><strong><span style="color: var(--stars-primary-gradient-start);">Как найти:</span></strong> вход с главной улицы</p>
                             
-<div class="flex-shrink-0 flex justify-center mb-6 md:mb-0 md:w-2/5">
-                                <img src="https://static.insales-cdn.com/files/1/1675/35178123/original/IMG_3513-1717738399328.JPG" 
-                                    alt="Фотография магазина Starsstore в Санкт-Петербурге" 
-                                    class="w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white/50 ring-2 ring-indigo-200/50">
-                            </div>
-
-                            
-<div class="md:w-3/5 space-y-3>" text-gray-700>
                                 
-                                <!-- ИСПРАВЛЕННЫЙ АДРЕС: Объединен в одну строку --><p>
-    <strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> 
-    метро Площадь Восстания/Лиговский проспект. Лиговский проспект 50 литера З
-</p>
-                                
-                                <p><strong><span style="color: var(--stars-primary-gradient-start);">Режим работы магазина:</span></strong> Каждый день с 12:00 до 20:00</p>
-                                <p class="mb-4"><strong><span style="color: var(--stars-primary-gradient-start);">Как найти:</span></strong> Желтое здание, второй вход после кафе</p>
+                            <div class="pt-4 mt-4 border-t border-gray-200">
+                                <h4 class="text-lg font-semibold mb-3 text-gray-900">
+                                    Служба Поддержки
+                                </h4>
                                 
                                 
-<div class="pt-4 mt-4 border-t border-gray-200">
-                                    <h4 class="text-lg font-semibold mb-3 text-gray-900">
-                                        Служба Поддержки
-                                    </h4>
+                                <div class="space-y-2 text-sm">
                                     
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Телефон:</span>
+                                        <a href="tel:+79812113684" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">+7 981 211 36 84</a>
+                                    </div>
                                     
-<div class="space-y-2 text-sm">
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Телефон:</span>
-                                            <a href="tel:+79812113684" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">+7 981 211 36 84</a>
-                                        </div>
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Email:</span>
-                                            <a href="mailto:help@starsstore.ru" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">help@starsstore.ru</a>
-                                        </div>
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">ВКонтакте:</span>
-                                            <a href="https://vk.com/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">vk.com/starsstore_ru</a>
-                                        </div>
-
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Telegram:</span>
-                                            <a href="https://t.me/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">t.me/starsstore_ru</a>
-                                        </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Email:</span>
+                                        <a href="mailto:help@starsstore.ru" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">help@starsstore.ru</a>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">ВКонтакте:</span>
+                                        <a href="https://vk.com/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">vk.com/starsstore_ru</a>
                                     </div>
 
-                                    
-<div class="mt-4 p-3 rounded-lg text-center" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
-                                        <p class="text-sm font-semibold text-gray-700">
-                                            Ежедневно: 12:00 – 20:00 (МСК)
-                                        </p>
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            Время работы службы поддержки
-                                        </p>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-gray-600 w-20 flex-shrink-0">Telegram:</span>
+                                        <a href="https://t.me/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">t.me/starsstore_ru</a>
                                     </div>
+                                </div>
+
+                                
+                                <div class="mt-4 p-3 rounded-lg text-center" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
+                                    <p class="text-sm font-semibold text-gray-700">
+                                        Ежедневно: 12:00 – 20:00 (МСК)
+                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        Время работы службы поддержки
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
+                </section>
 
-                    
-<section id="msk-content" class="store-card p-6 rounded-2xl tab-content hidden">
-                        <h3 class="text-2xl font-stars-display font-bold mb-4 border-b pb-2" style="color: var(--stars-text-dark);">
-                            г. Москва
-                        </h3>
-                        
-                        
-<div class="md:flex md:space-x-8 items-start">
-                            
-                            
-<div class="flex-shrink-0 flex justify-center mb-6 md:mb-0 md:w-2/5">
-                                <img src="https://static.insales-cdn.com/files/1/1676/35178124/original/IMG_9100_1717738470149-1717738478568.jpg" 
-                                    alt="Фотография магазина Starsstore в Москве" 
-                                    class="w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white/50 ring-2 ring-indigo-200/50">
-                            </div>
-                        
-                            
-<div class="md:w-3/5 space-y-3 text-gray-700">
-                                
-<p><strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> метро Курская, улица Казакова 7.</p>
-                                <p><strong><span style="color: var(--stars-primary-gradient-start);">Режим работы магазина:</span></strong> Каждый день с 12:00 до 20:00</p>
-                                <p class="mb-4"><strong><span style="color: var(--stars-primary-gradient-start);">Как найти:</span></strong> вход с главной улицы</p>
-                                
-                                 
-<div class="pt-4 mt-4 border-t border-gray-200">
-                                    <h4 class="text-lg font-semibold mb-3 text-gray-900">
-                                        Служба Поддержки
-                                    </h4>
-                                    
-                                    
-<div class="space-y-2 text-sm">
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Телефон:</span>
-                                            <a href="tel:+79812113684" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">+7 981 211 36 84</a>
-                                        </div>
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Email:</span>
-                                            <a href="mailto:help@starsstore.ru" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">help@starsstore.ru</a>
-                                        </div>
-                                        
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">ВКонтакте:</span>
-                                            <a href="https://vk.com/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">vk.com/starsstore_ru</a>
-                                        </div>
-
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-gray-600 w-20 flex-shrink-0">Telegram:</span>
-                                            <a href="https://t.me/starsstore_ru" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-400 flex-grow">t.me/starsstore_ru</a>
-                                        </div>
-                                    </div>
-
-                                    
-<div class="mt-4 p-3 rounded-lg text-center" style="background-color: #F3F4F6; border: 1px solid #E5E7EB;">
-                                        <p class="text-sm font-semibold text-gray-700">
-                                            Ежедневно: 12:00 – 20:00 (МСК)
-                                        </p>
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            Время работы службы поддержки
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                </div> 
-                
-            </div>
-        </section>
+            </div> 
+            
+        </div>
+    </section>
 
 
-        
-<footer class="mt-12 text-center text-gray-500 pb-4">
-            <p class="text-xs">&copy; 2025 Starsstore K-Pop. Все права защищены.</p>
-        </footer>
+    
+    <footer class="mt-12 text-center text-gray-500 pb-4">
+        <p class="text-xs">&copy; 2025 Starsstore K-Pop. Все права защищены.</p>
+    </footer>
 
-    </div>
+</div>
+<!-- КОНЕЦ ОСНОВНОГО СОДЕРЖИМОГО -->
 
-    <!-- ========================================================== --><!-- MODAL (Полное изображение) --><!-- ========================================================== --><div id="fullImageModal" onclick="closeFullImage()">
-        <button id="modalCloseBtn" onclick="closeFullImage(event)">&times;</button>
-        <img id="modalImage" src="" alt="Полное изображение товара" />
-    </div>
+<!-- ========================================================== -->
+<!-- MODAL (Полное изображение) -->
+<!-- ========================================================== -->
+<div id="fullImageModal" onclick="closeFullImage()">
+    <button id="modalCloseBtn" onclick="closeFullImage(event)">&times;</button>
+    <img id="modalImage" src="" alt="Полное изображение товара" />
+</div>
 
-    <!-- ========================================================== --><!-- НОВЫЙ ДИНАМИЧЕСКИЙ JAVASCRIPT --><!-- ========================================================== --><script>
-        
+<!-- ========================================================== -->
+<!-- НОВЫЙ ДИНАМИЧЕСКИЙ JAVASCRIPT -->
+<!-- ========================================================== -->
+<script>
+    
+// ==========================================================
+// ГЛОБАЛЬНЫЕ КОНСТАНТЫ И ПЕРЕМЕННЫЕ
+// ==========================================================
+let allProductsData = [];
+let currentCategory = "Альбомы"; 
+let currentSearchTerm = "";
+
+// DOM Элементы
+const splashScreen = document.getElementById('splash-screen');
+const splashLogoImage = document.getElementById('splash-logo-image');
+const mainContent = document.getElementById('main-content');
+const headerLogo = document.getElementById('header-logo');
+
+const catalogSection = document.getElementById('catalog-section');
+const aboutSection = document.getElementById('about-us-section');
+const navContainer = document.getElementById('nav-container');
+const navAbout = document.getElementById('nav-about');
+const productGrid = document.getElementById('product-grid');
+const searchInput = document.getElementById('searchInput');
+
+const modal = document.getElementById('fullImageModal');
+const modalImage = document.getElementById('modalImage');
+
+
 // ==========================================================
 // ЗАГРУЗКА И ПАРСИНГ Google Sheet
 // ==========================================================
 
-/**
- * Преобразует CSV-текст в массив объектов JSON.
- * @param {string} csvText - Текст, полученный из CSV-файла.
- * @returns {Array<Object>} - Массив объектов.
- */
 function csvToJSON(csvText) {
-    // Разделяем текст на строки, убираем \r
     const lines = csvText.replace(/\r/g, '').split('\n');
-    
-    // Получаем заголовки из первой строки
     const headers = lines[0].split(',');
-
-    // Убираем BOM (Byte OMark, если он есть, из первого заголовка
     headers[0] = headers[0].replace(/^\uFEFF/, '');
 
-    // Преобразуем остальные строки в объекты
     const result = [];
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        if (!line) continue; // Пропускаем пустые строки
+        if (!line) continue; 
 
-        // Используем более точный метод разделения, который учитывает кавычки, 
-        // но для простоты оставим split(',') и будем очищать значения.
         const currentline = line.split(',');
 
-        // Проверяем, что количество полей совпадает с количеством заголовков
         if (currentline.length < headers.length) {
             console.warn("Skipping malformed row:", line);
             continue;
@@ -650,25 +767,19 @@ function csvToJSON(csvText) {
         headers.forEach((header, index) => {
             let value = currentline[index];
             
-            // Очищаем значение от кавычек, если они есть
             if (value) {
                 value = value.trim().replace(/^"(.*)"$/, '$1');
             }
 
-            // Убираем лишние пробелы из заголовка и приводим к нижнему регистру
             const cleanHeader = header.trim().toLowerCase();
 
-            // Преобразуем 'цена' в число, убирая пробелы
             if (cleanHeader === 'цена') {
                 obj[cleanHeader] = parseFloat(value.replace(/\s/g, '')) || 0;
             } 
-            // Преобразуем 'id' в число
             else if (cleanHeader === 'id') {
                 obj[cleanHeader] = parseInt(value, 10) || 0;
             }
-            // Для остальных оставляем как есть, но убираем лишние пробелы
             else {
-                // Если колонка называется 'теги', сохраняем ее как есть для дальнейшей обработки
                 obj[cleanHeader] = value ? value.trim() : '';
             }
         });
@@ -678,16 +789,12 @@ function csvToJSON(csvText) {
 }
 
 
-/**
- * Загружает данные из Google Sheet по URL.
- */
 async function fetchDataFromGoogleSheet() {
     const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSVxkL2s0nV1Owl0KANepCfAqI6xYU4JEVkJ8W-q_sZY9uRsB-zmJ73RPB8lMFMwdy1kMtL_Lwvw8oV/pub?gid=0&single=true&output=csv';
     
     console.log("Fetching data from Google Sheet...");
     
     try {
-        // Добавляем кэш-бастер, чтобы всегда получать свежие данные
         const response = await fetch(`${sheetURL}&_=${new Date().getTime()}`);
         
         if (!response.ok) {
@@ -707,55 +814,26 @@ async function fetchDataFromGoogleSheet() {
         
     } catch (error) {
         console.error("Failed to fetch or parse Google Sheet:", error);
-        // Возвращаем пустой массив, чтобы приложение не сломалось
         productGrid.innerHTML = `<p class="col-span-full text-center text-red-500 py-10">Ошибка загрузки данных из Google Sheet. Пожалуйста, проверьте консоль.</p>`;
         return []; 
     }
 }
 
 // ==========================================================
-// ОБЩЕЕ СОСТОЯНИЕ ПРИЛОЖЕНИЯ
-// ==========================================================
-let allProductsData = [];
-let currentCategory = "Альбомы"; // Категория по умолчанию
-let currentSearchTerm = "";
-
-// ==========================================================
-// DOM ЭЛЕМЕНТЫ
-// ==========================================================
-const catalogSection = document.getElementById('catalog-section');
-const aboutSection = document.getElementById('about-us-section');
-const navContainer = document.getElementById('nav-container');
-const navAbout = document.getElementById('nav-about');
-const productGrid = document.getElementById('product-grid');
-const searchInput = document.getElementById('searchInput');
-
-// Новые DOM элементы для модального окна
-const modal = document.getElementById('fullImageModal');
-const modalImage = document.getElementById('modalImage');
-
-// ==========================================================
 // ФУНКЦИИ РЕНДЕРИНГА (ОТРИСОВКИ)
 // ==========================================================
 
-/**
- * Создает и отображает ссылки навигации на основе категорий
- */
 function renderNavigation(products) {
-    // 1. Находим уникальные категории
-    const categories = [...new Set(products.map(p => p.категория))];
+    const categories = [...new Set(products.map(p => p.категория))].filter(c => c); // Фильтр для пустых
     
-    // 2. Устанавливаем категорию по умолчанию, если текущая не найдена
     if (!categories.includes(currentCategory)) {
         currentCategory = categories[0] || "Альбомы";
     }
 
-    // 3. Очищаем старые категории (все, кроме "О нас")
     while (navAbout.nextElementSibling) {
         navAbout.nextElementSibling.remove();
     }
 
-    // 4. Создаем и добавляем новые ссылки
     categories.forEach(category => {
         const isActive = category === currentCategory;
         const a = document.createElement('a');
@@ -764,19 +842,13 @@ function renderNavigation(products) {
         a.dataset.category = category;
         a.className = `text-xs px-3 py-2 rounded-full nav-item ${isActive ? 'is-active' : ''}`;
         a.textContent = category;
-        a.addEventListener('click', handleNavClick); // Привязываем обработчик
+        a.addEventListener('click', handleNavClick); 
         navContainer.appendChild(a);
     });
 }
 
-/**
- * Создает HTML-строку для индикатора наличия
- * (Обновлено для более компактного вида)
- */
 function createStatusCircle(status, label) {
-    // Обработка случая, когда 'статус' может быть undefined/null/empty
     const normalizedStatus = status ? status.toLowerCase() : '';
-    // Зеленая точка пульсирует, если статус 'О' (В наличии). Иначе - красная.
     const dotClass = normalizedStatus === 'о' ? 'status-dot-green' : 'status-dot-red';
     return `
         <div class="flex items-center space-x-1">
@@ -786,105 +858,89 @@ function createStatusCircle(status, label) {
     `;
 }
 
-/**
- * Отрисовывает карточки товаров в сетке
- */
 function renderProductCards(products) {
-    productGrid.innerHTML = ''; // Очищаем сетку
+    productGrid.innerHTML = ''; 
 
     if (products.length === 0) {
         productGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Товары не найдены. Попробуйте изменить фильтр.</p>`;
         return;
     }
 
-    // --- ЛОГИКА ДЛЯ БЕЙДЖЕЙ (NEW/LIMITED) ---
     const allowedCodes = ['new', 'lim']; 
-    // --- КОНЕЦ ЛОГИКИ ДЛЯ БЕЙДЖЕЙ ---
 
     products.forEach(product => {
-        // Стили цены и наличия
         const spbStatus = createStatusCircle(product.спб, 'СПБ');
         const mskStatus = createStatusCircle(product.мск, 'МСК');
         
         
-        // 1. Извлекаем и очищаем теги. Используем 'теги' или 'статус' как запасной вариант.
         const rawTags = product.теги || product.статус || ''; 
         
-        // 2. Преобразуем строку в массив, очищаем и ФИЛЬТРУЕМ.
-        // Если rawTags пустая, теги будут пустым массивом.
-        // ЕСЛИ ЕСТЬ "ДРУГОЕ" СЛОВО, оно будет удалено фильтром.
         const tags = rawTags.toLowerCase()
                             .split(',')
                             .map(t => t.trim())
-                            .filter(t => allowedCodes.includes(t)); // <-- Оставляем только 'new' или 'lim'
+                            .filter(t => allowedCodes.includes(t)); 
         
         let badgeHTML = '';
         
-        // 3. Рендеринг бейджей на основе отфильтрованных кодов
         if (tags.includes('new')) {
-            // Используется CSS класс .badge-new с анимацией shimmer-new
             badgeHTML += `<span class="product-badge badge-new">New</span>`;
         }
         if (tags.includes('lim')) {
             badgeHTML += `<span class="product-badge badge-limited">Limited</span>`;
         }
         
-        // 4. Контейнер отображается, только если есть хотя бы один бейдж.
-        // Если в столбце было "sale", массив tags будет пустым, и контейнер не отобразится.
         const badgesContainer = badgeHTML.length > 0 
             ? `<div class="product-badge-container">${badgeHTML}</div>` 
             : '';
-        // --- КОНЕЦ ЛОГИКИ ДЛЯ БЕЙДЖЕЙ ---
 
         
-        // --- Логика для вставки изображения или плейсхолдера ---
-        const photoUrl = product.фото; // 'фото' - в нижнем регистре
+        const photoUrl = product.фото; 
         const groupInitials = product.группа.substring(0, 3).toUpperCase();
         const productName = product.имя;
 
-        // Определяем, есть ли фото и добавляем обработчик клика и курсор
         const hasPhoto = !!photoUrl;
-        // Передаем событие e и URL
         const clickHandler = hasPhoto ? `onclick="openFullImage(event, '${photoUrl}')"` : '';
         const cursorClass = hasPhoto ? 'cursor-zoom-in hover:scale-[1.01] transition-transform' : '';
 
-        // Условный рендеринг:
         const imageBlockInner = photoUrl
-            ? `<!-- Настоящее изображение --><img src="${photoUrl}" 
+            ? `<!-- Настоящее изображение -->
+               <img src="${photoUrl}" 
                     alt="${productName}" 
                     class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300" 
                     loading="lazy"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-               <!-- Плейсхолдер (запасной вариант при ошибке 404) --><div class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-400 font-black font-stars-display" style="display: none;">
+               <!-- Плейсхолдер (запасной вариант при ошибке 404) -->
+               <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-400 font-black font-stars-display" style="display: none;">
                     ${groupInitials}
                </div>`
-            : `<!-- Плейсхолдер (если фото нет в таблице) --><span class="text-gray-400 font-black font-stars-display">
+            : `<!-- Плейсхолдер (если фото нет в таблице) -->
+               <span class="text-gray-400 font-black font-stars-display">
                     ${groupInitials}
                </span>`;
-        // --- Конец логики ---
 
         const cardHTML = `
         <div class="product-card-container" data-title="${product.имя}" data-group="${product.группа}">
             <div class="product-card">
                 
-                ${badgesContainer} <!-- <-- Контейнер с бейджами --><!-- Верхняя часть (Фото + Текст) --><div>
-                    <!-- Фото --><div class="card-content w-full flex flex-col items-center">
-                        <!-- Добавлено "relative" в CSS для product-image-mock, чтобы позиционировать бейджи --><div ${clickHandler} class="product-image-mock mb-2 flex items-center justify-center border border-gray-200 overflow-hidden ${cursorClass}">
+                ${badgesContainer} 
+                <div>
+                    <div class="card-content w-full flex flex-col items-center">
+                        <div ${clickHandler} class="product-image-mock mb-2 flex items-center justify-center border border-gray-200 overflow-hidden ${cursorClass}">
                             ${imageBlockInner}
                         </div>
                     </div>
-                    <!-- Текст --><div class="text-content w-full px-1">
+                    <div class="text-content w-full px-1">
                         <h3 class="font-semibold text-center mt-2 text-sm leading-tight">${product.имя}</h3>
                         <p class="text-xs text-gray-500 text-center mb-2">${product.группа}</p>
                     </div>
                 </div>
                 
-                <!-- Нижняя часть (Цена + Наличие) - Compacted --><div class="w-full mt-2 flex items-end justify-between px-1">
-                    <!-- Статус (слева) --><div class="flex space-x-3 pt-1">
+                <div class="w-full mt-2 flex items-end justify-between px-1">
+                    <div class="flex space-x-3 pt-1">
                         ${spbStatus}
                         ${mskStatus}
                     </div>
-                    <!-- Цена (справа) --><p class="product-price-gradient text-right text-lg sm:text-xl leading-none">
+                    <p class="product-price-gradient text-right text-lg sm:text-xl leading-none">
                         ${product.цена.toLocaleString('ru-RU')} ₽
                     </p>
                 </div>
@@ -900,49 +956,29 @@ function renderProductCards(products) {
 // ОБРАБОТЧИКИ СОБЫТИЙ
 // ==========================================================
 
-/**
- * Открывает модальное окно с полным изображением.
- * @param {Event} e - Событие клика.
- * @param {string} url - URL изображения.
- */
 function openFullImage(e, url) {
-    // Останавливаем всплытие, чтобы клик по карточке не вызывал другие события
     e.stopPropagation(); 
     if (!url) return;
     
     modalImage.src = url;
-    // Используем класс для плавного появления
     modal.classList.add('is-visible'); 
-    modal.style.display = 'flex'; // Сбрасываем display: none для начала анимации
-    
-    // Блокируем скролл на странице
+    modal.style.display = 'flex'; 
     document.body.style.overflow = 'hidden';
 }
 
-/**
- * Закрывает модальное окно.
- * @param {Event} e - Событие клика (опционально).
- */
 function closeFullImage(e) {
-    // Если клик был по кнопке закрытия (x) или по самому изображению,
-    // предотвращаем закрытие, если клик был по изображению, и предотвращаем
-    // всплытие, если клик был по кнопке закрытия.
     if (e) {
         if (e.target.id === 'modalImage') {
-            return; // Не закрываем, если кликнули на саму картинку
+            return; 
         }
         if (e.target.id === 'modalCloseBtn') {
-            e.stopPropagation(); // Предотвращаем срабатывание клика на фон
+            e.stopPropagation(); 
         }
     }
 
-    // Используем класс для плавного исчезновения
     modal.classList.remove('is-visible'); 
-    
-    // Разблокируем скролл на странице
     document.body.style.overflow = ''; 
 
-    // Дополнительно скрываем через display: none после анимации для чистоты DOM
     setTimeout(() => {
         if (!modal.classList.contains('is-visible')) {
             modal.style.display = 'none';
@@ -951,26 +987,18 @@ function closeFullImage(e) {
 }
 
 
-/**
- * Обрабатывает клик по навигации (Категории и "О нас")
- */
 function handleNavClick(e) {
     e.preventDefault(); 
     const target = e.currentTarget;
     const targetSection = target.dataset.targetSection;
 
-    // 1. Переключаем главный раздел (Каталог / О нас)
     switchMainSection(targetSection);
     
-    // 2. Обновляем активную кнопку
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('is-active'));
     target.classList.add('is-active');
 
-    // 3. Если это категория каталога, фильтруем
     if (targetSection === 'catalog') {
         const newCategory = target.dataset.category;
-        
-        // Очищаем строку поиска, чтобы избежать конфликта фильтров
         searchInput.value = ''; 
 
         if (newCategory !== currentCategory) {
@@ -980,12 +1008,9 @@ function handleNavClick(e) {
     }
 }
 
-/**
- * Переключает видимость между секциями "Каталог" и "О нас"
- */
 function switchMainSection(target) {
     if (target === 'about') {
-        if (aboutSection.classList.contains('fade-in-section')) return; // Уже на месте
+        if (aboutSection.classList.contains('fade-in-section')) return;
         
         catalogSection.classList.remove('fade-in-section');
         catalogSection.classList.add('fade-out-section');
@@ -997,7 +1022,7 @@ function switchMainSection(target) {
         }, 300); 
 
     } else if (target === 'catalog') {
-        if (catalogSection.classList.contains('fade-in-section')) return; // Уже на месте
+        if (catalogSection.classList.contains('fade-in-section')) return;
 
         aboutSection.classList.remove('fade-in-section');
         aboutSection.classList.add('fade-out-section');
@@ -1010,9 +1035,6 @@ function switchMainSection(target) {
     }
 }
 
-/**
- * Обрабатывает ввод в строке поиска и запускает фильтрацию
- */
 function handleSearchInput() {
     currentSearchTerm = searchInput.value.toLowerCase().trim();
     filterAndRender();
@@ -1022,16 +1044,11 @@ function handleSearchInput() {
 // ГЛАВНЫЙ ФИЛЬТР
 // ==========================================================
 
-/**
- * Фильтрует данные по текущей категории и поисковому запросу, затем рендерит.
- */
 function filterAndRender() {
     let filteredProducts = allProductsData;
 
-    // 1. Фильтрация по категории
     filteredProducts = filteredProducts.filter(p => p.категория === currentCategory);
 
-    // 2. Фильтрация по поиску (если есть запрос)
     if (currentSearchTerm.length > 0) {
         filteredProducts = filteredProducts.filter(p => 
             p.имя.toLowerCase().includes(currentSearchTerm) ||
@@ -1039,13 +1056,7 @@ function filterAndRender() {
         );
     }
 
-    // 3. Рендеринг отфильтрованных результатов
     renderProductCards(filteredProducts);
-
-    // 4. Скроллинг к началу каталога
-    if (currentSearchTerm.length > 0 || currentCategory) {
-        catalogSection.scrollIntoView({ behavior: 'smooth' });
-    }
 }
 
 // ==========================================================
@@ -1060,11 +1071,9 @@ function setupAboutUsTabs() {
         button.addEventListener('click', (e) => {
             const targetCity = e.currentTarget.dataset.target;
 
-            // Обновляем активную кнопку
             tabButtons.forEach(btn => btn.classList.remove('active-tab'));
             e.currentTarget.classList.add('active-tab');
 
-            // Переключаем контент
             tabContents.forEach(content => {
                 if (content.id === `${targetCity}-content`) {
                     content.classList.remove('hidden');
@@ -1080,34 +1089,74 @@ function setupAboutUsTabs() {
 
 
 // ==========================================================
-// ИНИЦИАЛИЗАЦИЯ
+// ИНИЦИАЛИЗАЦИЯ И АНИМАЦИЯ SPLASH SCREEN
 // ==========================================================
 
 async function initializeApp() {
-    // 1. Показываем заглушку
+    
+    // 1. Показываем заглушку (для случая, если загрузка данных очень долгая)
     productGrid.innerHTML = document.getElementById('grid-loader').outerHTML;
     
-    // 2. Загружаем и сохраняем данные
+    // 2. Инициируем анимацию появления логотипа в центре
+    // Запускаем "звездный взрыв"
+    splashLogoImage.classList.add('splash-logo-animate');
+    
+    // 3. Загружаем и парсим данные (асинхронная операция)
     allProductsData = await fetchDataFromGoogleSheet();
     
-    // 3. Рендерим навигацию
+    // 4. После загрузки данных:
     if (allProductsData.length > 0) {
         renderNavigation(allProductsData);
     }
-
-    // 4. Применяем фильтр по умолчанию и рендерим
     filterAndRender(); 
+
+    // --- АНИМАЦИОННАЯ ПОСЛЕДОВАТЕЛЬНОСТЬ (ПЛАВНЫЙ ПЕРЕХОД) ---
+
+    // Ждем окончания анимации "звездного взрыва" (1.3с)
+    await new Promise(resolve => setTimeout(resolve, 1300)); 
+
+    // 5. Вычисляем конечную позицию логотипа в шапке (headerLogo)
+    const targetRect = headerLogo.getBoundingClientRect();
+    const splashRect = splashLogoImage.getBoundingClientRect();
     
-    // 5. Настраиваем слушатели
+    // Вычисляем смещение
+    const dx = targetRect.left + (targetRect.width / 2) - (splashRect.left + (splashRect.width / 2));
+    const dy = targetRect.top + (targetRect.height / 2) - (splashRect.top + (splashRect.height / 2));
+    
+    // Вычисляем коэффициент масштабирования (отношение финальной ширины к ширине на splash-screen)
+    // w-64/w-80 (320px) на десктопе
+    // headerLogo.offsetWidth - финальный размер
+    const scaleX = targetRect.width / splashRect.width;
+    const scaleY = targetRect.height / splashRect.height;
+    const scaleFinal = Math.min(scaleX, scaleY) * 0.95; // Немного меньше, чтобы был мягкий переход
+
+    // 6. Запускаем анимацию движения (1 секунда, "отскок" ease)
+    splashLogoImage.style.transform = `translate(${dx}px, ${dy}px) scale(${scaleFinal})`;
+    
+    // 7. Скрываем splash-screen и показываем основной контент
+    // После завершения анимации движения (1.0с)
+    await new Promise(resolve => setTimeout(resolve, 1000)); 
+
+    // Плавно скрываем Splash Screen
+    splashScreen.style.opacity = '0';
+    
+    // Плавно показываем Main Content
+    mainContent.style.opacity = '1';
+    mainContent.classList.remove('pointer-events-none'); // Включаем взаимодействие
+    
+    // Удаляем splash-screen из DOM после завершения его fade-out
+    await new Promise(resolve => setTimeout(resolve, 700)); // Ждем окончания fade-out
+    splashScreen.remove();
+
+    // 8. Настраиваем слушатели (после того, как DOM готов и виден)
     document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', handleNavClick));
     searchInput.addEventListener('input', handleSearchInput);
-    setupAboutUsTabs(); // Настройка вкладок в секции "О нас"
+    setupAboutUsTabs();
 }
-
 
 // Запуск приложения после загрузки DOM
 window.onload = initializeApp;
         
-    </script>
+</script>
 </body>
 </html>
