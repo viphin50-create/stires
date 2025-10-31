@@ -33,14 +33,18 @@
             overflow-x: hidden;
             background-color: var(--stars-bg-light);
             color: var(--stars-text-dark);
+            /* Важно: минимальная высота, чтобы скроллинг вообще появился */
+            min-height: 150vh; 
         }
         
         .font-stars-display {
             font-family: 'Poppins', sans-serif;
         }
 
+        /* --- ИСПРАВЛЕНИЕ МЕРЦАНИЯ --- */
+        /* Используем position: fixed, чтобы фон не двигался при прокрутке */
         .ethereal-bg {
-            position: fixed;
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
@@ -49,6 +53,7 @@
             pointer-events: none;
             overflow: hidden;
         }
+        /* --------------------------- */
 
         /* ========================================================== */
         /* Навигация: Улучшенное мобильное центрирование */
@@ -58,15 +63,14 @@
             font-weight: 600;
             background-color: transparent;
             color: var(--stars-text-dark);
-            flex-grow: 1; /* Обеспечивает равномерное распределение */
+            flex-grow: 1; 
             text-align: center;
         }
         
         .nav-container {
-            /* Убеждаемся, что на мобильных оно не слишком широкое */
             max-width: 400px; 
             width: 100%;
-            padding: 0.25rem; /* Уменьшаем отступ для мобильных */
+            padding: 0.25rem; 
             border-radius: 9999px;
             box-shadow: 0 2px 10px var(--stars-shadow-light);
         }
@@ -84,11 +88,11 @@
         /* ========================================================== */
         .product-card-container {
             perspective: 1000px; 
-            box-shadow: 0 3px 10px var(--stars-shadow-light); /* Немного уменьшили тень для мобильных */
+            box-shadow: 0 3px 10px var(--stars-shadow-light); 
             border-radius: 1rem;
             overflow: visible; 
             cursor: pointer; 
-            aspect-ratio: 1 / 1; /* Жесткий квадратный размер */
+            aspect-ratio: 1 / 1; 
         }
         
         .product-card {
@@ -108,7 +112,7 @@
             border-radius: 1rem;
             display: flex; flex-direction: column; align-items: center;
             justify-content: center;
-            padding: 0.75rem; /* Уменьшаем padding на карточке для мобильных */
+            padding: 0.75rem; 
             box-sizing: border-box;
             background-color: white;
         }
@@ -123,9 +127,8 @@
         
         /* Мобильная адаптация контента внутри карточки */
         .card-content .product-image-mock {
-            /* Делаем его более отзывчивым по ширине */
             width: 80%; 
-            padding-bottom: 80%; /* Создаем квадрат внутри, чтобы изображение не зависело от h-XX */
+            padding-bottom: 80%; 
             height: 0;
             position: relative;
             background-color: #f7f7f7;
@@ -135,11 +138,11 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.5rem; /* Уменьшаем шрифт на мобильных */
+            font-size: 1.5rem; 
         }
 
-        .card-content h3 { font-size: 0.875rem; } /* text-sm */
-        .card-content .price { font-size: 1rem; font-weight: 700; } /* text-base */
+        .card-content h3 { font-size: 0.875rem; } 
+        .card-content .price { font-size: 1rem; font-weight: 700; } 
         
         /* Медиа-запросы для десктопа/планшета */
         @media (min-width: 640px) {
@@ -148,10 +151,10 @@
                 padding-bottom: 70%; 
             }
             .card-content .product-image-mock span {
-                font-size: 2.5rem; /* Увеличиваем обратно на sm+ */
+                font-size: 2.5rem; 
             }
-            .card-content h3 { font-size: 1.125rem; } /* text-lg */
-            .card-content .price { font-size: 1.25rem; } /* text-xl */
+            .card-content h3 { font-size: 1.125rem; } 
+            .card-content .price { font-size: 1.25rem; } 
         }
         
     </style>
@@ -162,6 +165,7 @@
     <canvas id="bgCanvas" class="ethereal-bg"></canvas>
 
     <!-- Основной контент -->
+    <!-- z-10 тут крайне важен, чтобы контент был над FIXED фоном -->
     <div class="relative z-10 p-2 sm:p-4 md:p-8">
         
         <!-- Заголовок / Логотип -->
@@ -315,6 +319,28 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Добавляем дополнительные мок-элементы, чтобы страница была длиннее и можно было скроллить -->
+            <div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
+                <p>... еще 16 товаров на этой странице ...</p>
+            </div>
+            
+            <!-- Секция ниже основной сетки, чтобы обеспечить прокрутку -->
+             <div id="extra-scroll-content" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2 mt-4">
+                <!-- Пустые мок-карточки для длины -->
+                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
+                    <span class="text-xs text-gray-300">Плейсхолдер</span>
+                </div>
+                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
+                    <span class="text-xs text-gray-300">Плейсхолдер</span>
+                </div>
+                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
+                    <span class="text-xs text-gray-300">Плейсхолдер</span>
+                </div>
+                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
+                    <span class="text-xs text-gray-300">Плейсхолдер</span>
+                </div>
+            </div>
 
             <!-- Призыв к действию -->
             <div class="text-center mt-12 p-4 sm:p-6 rounded-xl border border-dashed mx-2 sm:mx-0" style="background: rgba(var(--stars-primary-gradient-start-rgb), 0.08); border-color: var(--stars-primary-gradient-end);">
@@ -356,7 +382,6 @@
             getColor('--stars-accent-gradient-end-rgb')
         ];
 
-        // Класс Particle должен быть определен до того, как его вызовет initParticles
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
@@ -371,6 +396,7 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
                 
+                // Перезапуск частиц
                 if (this.x < -this.radius * 2 || this.x > width + this.radius * 2 || this.y < -this.radius * 2 || this.y > height + this.radius * 2) {
                     this.x = (this.speedX > 0) ? -this.radius : width + this.radius;
                     this.y = Math.random() * height;
@@ -406,6 +432,7 @@
         window.addEventListener('resize', resizeCanvas);
         
         function animateBackground() {
+            // Мягкое стирание предыдущего кадра, чтобы создать эффект "жидкости"
             ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
             ctx.fillRect(0, 0, width, height);
 
@@ -530,7 +557,7 @@
         window.onload = function () {
             resizeCanvas();
             animateBackground();
-            console.log("Starsstore Mobile Layout FIX: Grid and navigation adjusted for optimal mobile viewing.");
+            console.log("Starsstore Mobile Layout FIX: Scroll flicker fixed by using position: fixed on the background canvas.");
         }
     </script>
 </body>
