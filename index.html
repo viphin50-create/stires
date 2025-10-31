@@ -453,12 +453,20 @@
         // 1. Hover (3D Tilt and Glint) - ТОЛЬКО для десктопов (не touch)
         if (!isTouchDevice) {
             productCardsContainers.forEach(container => {
+                // Получаем элементы ОДИН РАЗ
+                const card = container.querySelector('.product-card');
                 const cardFront = container.querySelector('.card-front');
-                const layers = container.querySelectorAll('.card-layer');
                 const glint = container.querySelector('.card-glint');
+                const layers = container.querySelectorAll('.card-layer');
+
+                // Проверка на случай, если структура карточки неполная
+                if (!card || !cardFront) {
+                    console.warn('Skipping card setup due to missing critical elements (card or cardFront)');
+                    return;
+                }
 
                 container.addEventListener('mousemove', (e) => {
-                    const card = container.querySelector('.product-card');
+                    // Используем уже полученную переменную card
                     if (card.classList.contains('is-flipped')) {
                         return;
                     }
@@ -493,7 +501,7 @@
                 });
 
                 container.addEventListener('mouseleave', () => {
-                    const card = container.querySelector('.product-card');
+                    // Используем уже полученную переменную card
                     if (card.classList.contains('is-flipped')) {
                         return;
                     }
@@ -520,11 +528,19 @@
                 const card = container.querySelector('.product-card');
                 const cardFront = container.querySelector('.card-front');
                 const glint = container.querySelector('.card-glint');
+                
+                // CRITICAL FIX: Добавляем проверку, чтобы избежать ошибки "Cannot read properties of null (reading 'classList')"
+                if (!card) {
+                    console.error("Product card element not found in container for click handler.");
+                    return;
+                }
 
                 card.classList.toggle('is-flipped');
                 
                 // Сброс всех 3D-наклонов 
-                cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+                if (cardFront) {
+                    cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+                }
                 container.querySelectorAll('.card-layer').forEach(layer => {
                     layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
                 });
