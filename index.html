@@ -5,121 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starsstore | Каталог K-Pop</title>
     
-
-<script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        /* Фирменные цвета (Светлая тема) */
-        :root {
-            --stars-bg-default: #F8F9FA; /* Очень светлый фон */
-            --stars-primary-gradient-start: #C3A0FF; /* Мягкий фиолетовый */
-            --stars-primary-gradient-end: #A0D2FF;   /* Мягкий голубой */
-            --stars-accent-gradient-start: #FFD1DC;   /* Пастельный розовый */
-            --stars-accent-gradient-end: #FFABAB;     /* Теплый персиковый */
-            --stars-text-dark: #333333; /* Темный текст для контраста */
-            --stars-text-light-subtle: #6B7280; /* Серый текст */
-            --stars-shadow-light: rgba(0, 0, 0, 0.15);
-        }
-
-        /* Загрузка шрифтов */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@700;900&display=swap');
-        
-        /* ========================================================== */
-        /* 1. Глобальный Фон (Теперь всегда динамический) */
-        /* ========================================================== */
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            /* Устанавливаем фон body в none, чтобы animated-background был виден */
-            background: none; 
-            background-attachment: fixed;
-            color: var(--stars-text-dark);
-            min-height: 100vh; 
-        }
-        
-        .font-stars-display {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* ========================================================== */
-        /* 2. Анимированный Фон (Теперь ГЛОБАЛЬНО для Всех Устройств) */
-        /* ========================================================== */
-        .animated-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Помещаем под контент */
-            /* Увеличение цветов и изменение градиента для эффекта объемных облаков */
-            background: linear-gradient(-45deg, 
-                #E0E7FF 0%,          /* Светло-голубой */
-                var(--stars-accent-gradient-start) 25%, /* Розовый */
-                var(--stars-bg-default) 50%,        /* Белый */
-                var(--stars-primary-gradient-end) 75%, /* Голубой */
-                #F8F9FA 100%         /* Белый снова */
-            ); 
-            background-size: 600% 600%; /* Увеличен размер для большего пространства движения */
-            animation: gradientShift 35s ease infinite alternate; /* Немного замедлили, добавили alternate */
-        }
-        
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 0%; 
-            }
-            25% {
-                background-position: 70% 30%; /* Движение по диагонали вверх-вправо */
-            }
-            50% {
-                background-position: 30% 100%; /* Движение вниз-влево */
-            }
-            75% {
-                background-position: 100% 70%; /* Движение вправо-вниз */
-            }
-            100% {
-                background-position: 0% 0%; 
-            }
-        }
-        
-        /* --------------------------- */
-
-        /* ========================================================== */
-        /* Навигация: Улучшенное мобильное центрирование */
-        /* ========================================================== */
-        .nav-item {
-            transition: all 0.3s ease-in-out;
-            font-weight: 600;
-            background-color: transparent;
-            color: var(--stars-text-dark);
-            flex-grow: 1; 
-            text-align: center;
-        }
-        
-        .nav-container {
-            max-width: 400px; 
-            width: 100%;
-            padding: 0.25rem; 
-            border-radius: 9999px;
-            box-shadow: 0 2px 10px var(--stars-shadow-light);
-        }
-
-        .nav-item.is-active {
-            /* Фирменный градиент */
-            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
-            background-size: 200% auto;
-            color: white;
-            box-shadow: 0 4px 15px rgba(160, 210, 255, 0.6);
-            transform: scale(1);
-        }
-
-        /* ========================================================== */
-        /* 3D FLIP Card */<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starsstore | Каталог K-Pop</title>
-    
 <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
@@ -192,7 +77,6 @@
             font-weight: 600;
             background-color: transparent;
             color: var(--stars-text-dark);
-            /* Убрано flex-grow: 1; чтобы ссылки не растягивались */
             text-align: center;
             flex-shrink: 0; /* Не сжимать элементы */
         }
@@ -229,56 +113,49 @@
         }
 
         /* ========================================================== */
-        /* 3D FLIP Card (без изменений) */
+        /* 3D FLIP Card */
         /* ========================================================== */
         .product-card-container {
-            perspective: 1000px; 
+            /* perspective: 1000px; */ /* Убрано */
             box-shadow: 0 3px 10px var(--stars-shadow-light); 
             border-radius: 1rem;
             overflow: visible; 
-            cursor: pointer; 
-            aspect-ratio: 1 / 1; 
-            transition: transform 0.3s ease-in-out; /* Для плавного скрытия/показа при поиске */
+            /* cursor: pointer; */ /* Убрано */
+            /* aspect-ratio: 1 / 1; */ /* Убрано */
+            height: 100%; /* Добавлено */
+            transition: all 0.3s ease-in-out; /* Плавное появление/скрытие */
         }
         
         .product-card {
             width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d; 
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
+            /* transform-style: preserve-3d; */ /* Убрано */
+            /* transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); */ /* Убрано */
             border-radius: 1rem;
-        }
-
-        .product-card.is-flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-face {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backface-visibility: hidden; 
-            border-radius: 1rem;
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center;
-            padding: 0.75rem; 
+            
+            /* Новые стили для единой карточки */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0.75rem;
             box-sizing: border-box;
             background-color: white;
         }
 
-        .photocard-reveal {
-            transform: rotateY(180deg); 
-            background: rgba(255, 255, 255, 0.98); 
-            border: 3px solid var(--stars-accent-gradient-start);
-            color: var(--stars-primary-gradient-start);
-            box-shadow: 0 0 15px rgba(255, 171, 171, 0.6);
-        }
+        /* .product-card.is-flipped { ... } */ /* Удален весь блок */
+
+        /* .card-face { ... } */ /* Удален весь блок */
+
+        /* .photocard-reveal { ... } */ /* Удален весь блок */
         
         /* Мобильная адаптация контента внутри карточки */
         .card-content .product-image-mock {
-            width: 80%; 
-            padding-bottom: 80%; 
+            width: 100%; /* Изменено с 80% */
+            padding-bottom: 100%; /* Изменено с 80% (для квадрата) */
             height: 0;
             position: relative;
             background-color: #f7f7f7;
             border-radius: 0.5rem;
+            /* mb-2 убран из JS */
         }
         .card-content .product-image-mock span {
             position: absolute;
@@ -288,15 +165,7 @@
         }
 
         /* Медиа-запросы для десктопа/планшета */
-        @media (min-width: 640px) {
-            .card-content .product-image-mock {
-                width: 70%;
-                padding-bottom: 70%; 
-            }
-            .card-content .product-image-mock span {
-                font-size: 2.5rem; 
-            }
-        }
+        /* @media (min-width: 640px) { ... } */ /* Удален весь блок */
         
         /* ========================================================== */
         /* Стили для Секции "О Нас" (без изменений) */
@@ -364,6 +233,83 @@
         .product-card-container.hidden {
             display: none !important;
         }
+        
+        /* НОВЫЙ СТИЛЬ для ЦЕНЫ */
+        .product-price-gradient {
+            font-weight: 900; /* 900 (black) из Poppins */
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        /* НОВЫЙ СТИЛЬ для ИНДИКАТОРОВ НАЛИЧИЯ */
+        .status-dot {
+            width: 0.65rem; /* 10px */
+            height: 0.65rem;
+            border-radius: 9999px;
+            border: 2px solid white;
+            box-shadow: 0 0 3px rgba(0,0,0,0.2);
+        }
+        .status-dot-green {
+            background-color: #34D399; /* green-400 */
+        }
+        .status-dot-red {
+            background-color: #F87171; /* red-400 */
+        }
+
+        /* ========================================================== */
+        /* MODAL (Full Image View) */
+        /* ========================================================== */
+        #fullImageModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none; /* Скрыто по умолчанию */
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        #fullImageModal.is-visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        #modalImage {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 1rem;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+        }
+        
+        #modalCloseBtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2.5rem; /* Немного крупнее для тач-скринов */
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 0 0.7rem 0.2rem 0.7rem;
+            line-height: 1;
+            transition: background 0.2s;
+            z-index: 1001; /* Поверх изображения */
+        }
+        
+        #modalCloseBtn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
 
     </style>
 </head>
@@ -387,22 +333,16 @@
         </header>
 
         
-<!-- НАВИГАЦИЯ КАТЕГОРИЙ -->
+<!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) -->
 <nav class="flex justify-center mb-8 sm:mb-12">
-            <div class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
+            <!-- ID "nav-container" добавлен для JS -->
+            <div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
                 
-                <!-- Секция "О нас" (переключает главный раздел) -->
+                <!-- Секция "О нас" (остается статичной) -->
                 <a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
                 
-                <!-- Основные категории (фильтры каталога) -->
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item is-active" id="nav-catalog-albums">Альбомы</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">Фотокарты</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">Журналы</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">Сертификаты</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">Лайтстики</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">Мерч Stars store</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">The monsters Labubu</a>
-                <a href="#" data-target-section="catalog" class="text-xs px-3 py-2 rounded-full nav-item">✨SEASON'S GREETINGS✨</a>
+                <!-- Сюда JS добавит динамические категории -->
+                
             </div>
         </nav>
 
@@ -412,7 +352,7 @@
 <!-- ========================================================== -->
 <section id="catalog-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-in-section">
             
-            <!-- СТРОКА ПОИСКА (Перенесена вверх) -->
+            <!-- СТРОКА ПОИСКА -->
             <div class="mb-6 px-2 max-w-lg mx-auto">
                 <div class="relative">
                     <input type="text" id="searchInput" placeholder="Поиск по названию или группе..." 
@@ -425,210 +365,27 @@
                 </div>
             </div>
             
-            <!-- Добавим тонкую разделительную линию под поиском -->
+            <!-- Разделительная линия -->
             <div class="text-center mb-6 pb-2" style="border-bottom: 2px solid var(--stars-accent-gradient-start);"></div>
 
             
+<!-- СЕТКА ТОВАРОВ (Будет заполнена динамически) -->
+<!-- ВСЕ СТАТИЧНЫЕ КАРТОЧКИ УДАЛЕНЫ -->
 <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
+                
+                <!-- Заглушка, которая появится при загрузке -->
+                <p id="grid-loader" class="col-span-full text-center text-gray-500 py-10">
+                    Загрузка товаров...
+                </p>
+                
+                <!-- Сюда JS вставит карточки товаров -->
 
-                
-<!-- КАРТОЧКА 1: BTS -->
-<div class="product-card-container relative" data-title="Map of the Soul: 7" data-group="BTS">
-                    <div class="product-card" id="card-1">
-                        
-                        
-<div class="card-face card-front">
-                            
-                            
-<div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">BTS</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">Map of the Soul: 7</h3>
-                                <p class="text-xs text-gray-500">Версия 4</p>
-                                <p class="font-bold mt-1 price">2990 ₽</p>
-                            </div>
-                        </div>
-                        
-                        
-<div class="card-face photocard-reveal">
-                            
-<svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Внутри Редкий Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 2: BLACKPINK -->
-<div class="product-card-container relative" data-title="THE ALBUM" data-group="BLACKPINK">
-                    <div class="product-card" id="card-2">
-                        <div class="card-face card-front">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">BP</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">THE ALBUM</h3>
-                                <p class="text-xs text-gray-500">Pink Ver.</p>
-                                <p class="font-bold mt-1 price">2500 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">LISA</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Рандомная Карта!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-
-                
-<!-- КАРТОЧКА 3: EXO -->
-<div class="product-card-container relative" data-title="Don't Fight The Feeling" data-group="EXO">
-                    <div class="product-card" id="card-3">
-                        <div class="card-face card-front">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">EXO</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">Don't Fight The Feeling</h3>
-                                <p class="text-xs text-gray-500">Logic Ver.</p>
-                                <p class="font-bold mt-1 price">2850 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">KAI</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Официальный Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 4: NCT -->
-<div class="product-card-container relative" data-title="NCT 2020: Resonance Pt. 1" data-group="NCT">
-                    <div class="product-card" id="card-4">
-                        <div class="card-face card-front">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">NCT</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">NCT 2020: Resonance Pt. 1</h3>
-                                <p class="text-xs text-gray-500">Past Ver.</p>
-                                <p class="font-bold mt-1 price">3100 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">MARK</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 5: SEVENTEEN (Плейсхолдер) -->
-<div class="product-card-container relative" data-title="FML" data-group="Seventeen">
-                    <div class="product-card">
-                        <div class="card-face card-front bg-gray-50">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-300 font-black font-stars-display">SVT</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">FML</h3>
-                                <p class="text-xs text-gray-500">Carat Ver.</p>
-                                <p class="font-bold mt-1 price">2300 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal bg-gray-100">
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display text-pink-500">HOSHI</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Seventeen</span>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 6: ITZY (Плейсхолдер) -->
-<div class="product-card-container relative" data-title="Cheshire" data-group="ITZY">
-                    <div class="product-card">
-                        <div class="card-face card-front bg-gray-50">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-300 font-black font-stars-display">ITZY</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">Cheshire</h3>
-                                <p class="text-xs text-gray-500">Limited Ed.</p>
-                                <p class="font-bold mt-1 price">2750 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal bg-gray-100">
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display text-pink-500">YEJI</span>
-                            <span class="text-xs mt-0.5 text-gray-600">ITZY</span>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 7: STRAY KIDS (Плейсхолдер) -->
-<div class="product-card-container relative" data-title="MAXIDENT" data-group="Stray Kids">
-                    <div class="product-card">
-                        <div class="card-face card-front bg-gray-50">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-300 font-black font-stars-display">SKZ</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">MAXIDENT</h3>
-                                <p class="text-xs text-gray-500">Go Ver.</p>
-                                <p class="font-bold mt-1 price">3050 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal bg-gray-100">
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display text-pink-500">FELIX</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Stray Kids</span>
-                        </div>
-                    </div>
-                </div>
-                
-                
-<!-- КАРТОЧКА 8: LE SSERAFIM (Плейсхолдер) -->
-<div class="product-card-container relative" data-title="UNFORGIVEN" data-group="LE SSERAFIM">
-                    <div class="product-card">
-                        <div class="card-face card-front bg-gray-50">
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-300 font-black font-stars-display">LSF</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">UNFORGIVEN</h3>
-                                <p class="text-xs text-gray-500">Vol. 3</p>
-                                <p class="font-bold mt-1 price">2450 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal bg-gray-100">
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display text-pink-500">KAZUHA</span>
-                            <span class="text-xs mt-0.5 text-gray-600">LE SSERAFIM</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             
 <div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
-                <p>... еще 12 товаров на этой странице ...</p>
+                <p>Все товары загружены</p>
             </div>
-            
-            <!-- УДАЛЕНО: div#extra-scroll-content, так как все карточки теперь в product-grid -->
             
         </section>
 
@@ -639,6 +396,7 @@
 <!-- ========================================================== -->
 <section id="about-us-section" class="max-w-4xl mx-auto p-0 rounded-2xl fade-out-section">
             
+<!-- Контент "О Нас" остался без изменений -->
 <div class="content-container max-w-4xl mx-auto p-4 sm:p-8 rounded-xl shadow-lg mt-8 mb-8">
                 
                 <h1 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-text-dark);">
@@ -664,7 +422,7 @@
                 
 <h2 class="text-3xl font-stars-display font-bold text-center mb-8" style="color: var(--stars-primary-gradient-start);">
                     Наши Офлайн Магазины
-                </h2>
+                </h1>
                 
                 <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8 border-b border-gray-300 pb-4">
                     <button data-target="spb" class="city-button tab-btn text-center px-6 py-2 rounded-full font-bold shadow-md active-tab">
@@ -827,217 +585,484 @@
 
     </div>
 
+    <!-- ========================================================== -->
+    <!-- MODAL (Полное изображение) -->
+    <!-- ========================================================== -->
+    <div id="fullImageModal" onclick="closeFullImage()">
+        <button id="modalCloseBtn" onclick="closeFullImage(event)">&times;</button>
+        <img id="modalImage" src="" alt="Полное изображение товара" />
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- НОВЫЙ ДИНАМИЧЕСКИЙ JAVASCRIPT -->
+    <!-- ========================================================== -->
     <script>
-        // ==========================================================
-        // SINGLE PAGE APPLICATION LOGIC
-        // ==========================================================
-        const catalogSection = document.getElementById('catalog-section');
-        const aboutSection = document.getElementById('about-us-section');
-        const navItems = document.querySelectorAll('.nav-item');
-        const navAbout = document.getElementById('nav-about');
         
-        // Функция для переключения основных разделов
-        function switchMainSection(target) {
-            if (target === 'about') {
-                catalogSection.classList.remove('fade-in-section');
-                catalogSection.classList.add('fade-out-section');
-                
-                // Даем время на анимацию скрытия, прежде чем показать новый контент
-                setTimeout(() => {
-                    aboutSection.classList.remove('fade-out-section');
-                    aboutSection.classList.add('fade-in-section');
-                    // Скролл вверх
-                    window.scrollTo(0, 0); 
-                }, 300); 
+// ==========================================================
+// ЗАГРУЗКА И ПАРСИНГ Google Sheet
+// ==========================================================
 
-                // Обновление активного элемента навигации: только "О нас" активна
-                navItems.forEach(i => i.classList.remove('is-active'));
-                navAbout.classList.add('is-active');
+/**
+ * Преобразует CSV-текст в массив объектов JSON.
+ * @param {string} csvText - Текст, полученный из CSV-файла.
+ * @returns {Array<Object>} - Массив объектов.
+ */
+function csvToJSON(csvText) {
+    // Разделяем текст на строки, убираем \r
+    const lines = csvText.replace(/\r/g, '').split('\n');
+    
+    // Получаем заголовки из первой строки
+    const headers = lines[0].split(',');
 
-            } else if (target === 'catalog') {
-                // Если мы уже в каталоге, просто обновим активный фильтр, но не будем переключать разделы
-                if (catalogSection.classList.contains('fade-in-section')) {
-                     // Дополнительная логика: если переключаем фильтр внутри каталога, сбрасываем поиск
-                     const searchInput = document.getElementById('searchInput');
-                     if (searchInput) {
-                        searchInput.value = '';
-                        filterProducts(); // Сбросить фильтр поиска
-                     }
-                    return;
-                }
+    // Убираем BOM (Byte Order Mark), если он есть, из первого заголовка
+    headers[0] = headers[0].replace(/^\uFEFF/, '');
 
-                aboutSection.classList.remove('fade-in-section');
-                aboutSection.classList.add('fade-out-section');
+    // Преобразуем остальные строки в объекты
+    const result = [];
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue; // Пропускаем пустые строки
 
-                 // Даем время на анимацию скрытия, прежде чем показать новый контент
-                 setTimeout(() => {
-                    catalogSection.classList.remove('fade-out-section');
-                    catalogSection.classList.add('fade-in-section');
-                    // Скролл вверх
-                    window.scrollTo(0, 0); 
-                }, 300);
+        const obj = {};
+        const currentline = line.split(',');
 
-                // Активный элемент обновится в обработчике клика ниже
-            }
+        // Проверяем, что количество полей совпадает с количеством заголовков
+        if (currentline.length < headers.length) {
+            console.warn("Skipping malformed row:", line);
+            continue;
         }
 
-
-        // ==========================================================
-        // 3D FLIP Card
-        // ==========================================================
-        const productCardsContainers = document.querySelectorAll('.product-card-container');
-
-        productCardsContainers.forEach(container => {
-            container.addEventListener('click', (e) => {
-                if (!catalogSection.classList.contains('fade-in-section')) {
-                    // Если мы не в разделе каталога, игнорируем клик
-                    return;
-                }
-
-                if (e.target.closest('.product-card-container') !== container || e.target.tagName === 'A') {
-                    return; 
-                }
-
-                const card = container.querySelector('.product-card');
-                
-                if (card) {
-                    card.classList.toggle('is-flipped');
-                }
-            });
-        });
-
-        // ==========================================================
-        // Navigation Click Handler (Main Sections & Filters)
-        // ==========================================================
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                
-                const targetSection = e.currentTarget.getAttribute('data-target-section');
-                
-                // 1. Обрабатываем переключение разделов (О нас / Каталог)
-                switchMainSection(targetSection);
-                
-                // 2. Обновляем активное состояние для всех ссылок
-                navItems.forEach(i => i.classList.remove('is-active'));
-                e.currentTarget.classList.add('is-active');
-
-                if (targetSection === 'catalog') {
-                    // Здесь в реальном приложении была бы логика фильтрации товаров
-                    console.log(`Filtering catalog by: ${e.currentTarget.textContent.trim()}`);
-                    
-                    // Обновляем заголовок секции, чтобы показать активный фильтр
-                    // Так как мы убрали h2, эту логику можно убрать или изменить, чтобы обновлять текст-заглушку, если бы она была.
-                    /*
-                    const h2 = document.querySelector('#catalog-section h2');
-                    if (h2) {
-                        h2.textContent = `Каталог (${e.currentTarget.textContent.trim()})`;
-                    }
-                    */
-                }
-            });
-        });
-
-
-        // ==========================================================
-        // DYNAMIC SEARCH FILTER LOGIC
-        // ==========================================================
-        const searchInput = document.getElementById('searchInput');
-        // Собираем все карточки, которые подлежат поиску
-        const allProducts = document.querySelectorAll('.product-card-container');
-
-        function filterProducts() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-
-            allProducts.forEach(product => {
-                const title = product.getAttribute('data-title').toLowerCase();
-                const group = product.getAttribute('data-group').toLowerCase();
-                
-                // Гибкий и чувствительный поиск: проверяем, содержится ли введенный фрагмент
-                // в названии ИЛИ в группе
-                const isMatch = title.includes(searchTerm) || group.includes(searchTerm);
-
-                if (isMatch) {
-                    product.classList.remove('hidden');
-                } else {
-                    product.classList.add('hidden');
-                }
-            });
-        }
-
-        // Прикрепляем слушатель события 'input' для живой фильтрации
-        if (searchInput) {
-            searchInput.addEventListener('input', filterProducts);
-        }
-
-        // ==========================================================
-        // STORE TABS LOGIC (внутри секции "О нас")
-        // ==========================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const contentWrapper = document.getElementById('store-content-wrapper');
-
-            // Функция для обработки переключения вкладок
-            function switchStoreTab(targetId) {
-                
-                // 1. Обновляем стили кнопок
-                tabButtons.forEach(button => {
-                    if (button.getAttribute('data-target') === targetId) {
-                        button.classList.add('active-tab');
-                    } else {
-                        button.classList.remove('active-tab');
-                    }
-                });
-
-                // 2. Скрываем/показываем контент с анимацией
-                tabContents.forEach(content => {
-                    const contentId = content.id.replace('-content', '');
-                    
-                    if (contentId === targetId) {
-                        // Показываем целевой контент
-                        content.classList.remove('absolute', 'hidden'); 
-                        
-                        // Устанавливаем высоту wrapper
-                        const activeContentHeight = content.offsetHeight;
-                        contentWrapper.style.minHeight = `${activeContentHeight}px`;
-
-                        // Включаем анимацию opacity
-                        setTimeout(() => {
-                             content.classList.add('is-active');
-                        }, 10); 
-                       
-                    } else {
-                        // Скрываем остальные (сначала opacity, потом position/display)
-                        content.classList.remove('is-active');
-                        
-                         setTimeout(() => {
-                            content.classList.add('absolute', 'hidden');
-                        }, 400); 
-                    }
-                });
+        headers.forEach((header, index) => {
+            let value = currentline[index];
+            
+            // Очищаем значение от кавычек, если они есть
+            if (value) {
+                value = value.trim().replace(/^"(.*)"$/, '$1');
             }
 
-            // Назначаем обработчики событий кнопкам
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('data-target');
-                    switchStoreTab(targetId);
-                });
-            });
+            // Убираем лишние пробелы из заголовка и приводим к нижнему регистру
+            const cleanHeader = header.trim().toLowerCase();
 
-            // Инициализация при загрузке страницы:
-            // Убеждаемся, что только SPB активна и устанавливаем начальную высоту
-            const initialContent = document.getElementById('spb-content');
-            if (initialContent) {
-                 setTimeout(() => {
-                    // Убеждаемся, что контент отображен, прежде чем брать высоту
-                    initialContent.classList.remove('hidden', 'absolute'); 
-                    contentWrapper.style.minHeight = `${initialContent.offsetHeight}px`;
-                }, 50);
+            // Преобразуем 'цена' в число, убирая пробелы
+            if (cleanHeader === 'цена') {
+                obj[cleanHeader] = parseFloat(value.replace(/\s/g, '')) || 0;
+            } 
+            // Преобразуем 'id' в число
+            else if (cleanHeader === 'id') {
+                obj[cleanHeader] = parseInt(value, 10) || 0;
+            }
+            // Для остальных оставляем как есть, но убираем лишние пробелы
+            else {
+                obj[cleanHeader] = value ? value.trim() : '';
             }
         });
+        result.push(obj);
+    }
+    return result;
+}
+
+
+/**
+ * Загружает данные из Google Sheet по URL.
+ */
+async function fetchDataFromGoogleSheet() {
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSVxkL2s0nV1Owl0KANepCfAqI6xYU4JEVkJ8W-q_sZY9uRsB-zmJ73RPB8lMFMwdy1kMtL_Lwvw8oV/pub?gid=0&single=true&output=csv';
+    
+    console.log("Fetching data from Google Sheet...");
+    
+    try {
+        // Добавляем кэш-бастер, чтобы всегда получать свежие данные
+        const response = await fetch(`${sheetURL}&_=${new Date().getTime()}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const csvText = await response.text();
+        
+        if (!csvText) {
+             throw new Error("CSV text is empty!");
+        }
+
+        const jsonData = csvToJSON(csvText);
+        
+        console.log("Data fetched and parsed!", jsonData);
+        return jsonData;
+        
+    } catch (error) {
+        console.error("Failed to fetch or parse Google Sheet:", error);
+        // Возвращаем пустой массив, чтобы приложение не сломалось
+        productGrid.innerHTML = `<p class="col-span-full text-center text-red-500 py-10">Ошибка загрузки данных из Google Sheet. Пожалуйста, проверьте консоль.</p>`;
+        return []; 
+    }
+}
+
+// ==========================================================
+// ОБЩЕЕ СОСТОЯНИЕ ПРИЛОЖЕНИЯ
+// ==========================================================
+let allProductsData = [];
+let currentCategory = "Альбомы"; // Категория по умолчанию
+let currentSearchTerm = "";
+
+// ==========================================================
+// DOM ЭЛЕМЕНТЫ
+// ==========================================================
+const catalogSection = document.getElementById('catalog-section');
+const aboutSection = document.getElementById('about-us-section');
+const navContainer = document.getElementById('nav-container');
+const navAbout = document.getElementById('nav-about');
+const productGrid = document.getElementById('product-grid');
+const searchInput = document.getElementById('searchInput');
+
+// Новые DOM элементы для модального окна
+const modal = document.getElementById('fullImageModal');
+const modalImage = document.getElementById('modalImage');
+
+// ==========================================================
+// ФУНКЦИИ РЕНДЕРИНГА (ОТРИСОВКИ)
+// ==========================================================
+
+/**
+ * Создает и отображает ссылки навигации на основе категорий
+ */
+function renderNavigation(products) {
+    // 1. Находим уникальные категории
+    const categories = [...new Set(products.map(p => p.категория))];
+    
+    // 2. Устанавливаем категорию по умолчанию, если текущая не найдена
+    if (!categories.includes(currentCategory)) {
+        currentCategory = categories[0] || "Альбомы";
+    }
+
+    // 3. Очищаем старые категории (все, кроме "О нас")
+    while (navAbout.nextElementSibling) {
+        navAbout.nextElementSibling.remove();
+    }
+
+    // 4. Создаем и добавляем новые ссылки
+    categories.forEach(category => {
+        const isActive = category === currentCategory;
+        const a = document.createElement('a');
+        a.href = "#";
+        a.dataset.targetSection = "catalog";
+        a.dataset.category = category;
+        a.className = `text-xs px-3 py-2 rounded-full nav-item ${isActive ? 'is-active' : ''}`;
+        a.textContent = category;
+        a.addEventListener('click', handleNavClick); // Привязываем обработчик
+        navContainer.appendChild(a);
+    });
+}
+
+/**
+ * Создает HTML-строку для индикатора наличия
+ * (Обновлено для более компактного вида)
+ */
+function createStatusCircle(status, label) {
+    const dotClass = status === 'о' ? 'status-dot-green' : 'status-dot-red';
+    return `
+        <div class="flex items-center space-x-1">
+            <div class="status-dot ${dotClass}"></div>
+            <span class="text-[0.65rem] font-medium text-gray-600">${label}</span>
+        </div>
+    `;
+}
+
+/**
+ * Отрисовывает карточки товаров в сетке
+ */
+function renderProductCards(products) {
+    productGrid.innerHTML = ''; // Очищаем сетку
+
+    if (products.length === 0) {
+        productGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Товары не найдены. Попробуйте изменить фильтр.</p>`;
+        return;
+    }
+
+    products.forEach(product => {
+        // Стили цены и наличия
+        // Используем более компактные стили в функции createStatusCircle
+        const spbStatus = createStatusCircle(product.спб, 'СПБ');
+        const mskStatus = createStatusCircle(product.мск, 'МСК');
+        
+        // --- Логика для вставки изображения или плейсхолдера ---
+        const photoUrl = product.фото; // 'фото' - в нижнем регистре
+        const groupInitials = product.группа.substring(0, 3).toUpperCase();
+        const productName = product.имя;
+
+        // Определяем, есть ли фото и добавляем обработчик клика и курсор
+        const hasPhoto = !!photoUrl;
+        // Передаем событие e и URL
+        const clickHandler = hasPhoto ? `onclick="openFullImage(event, '${photoUrl}')"` : '';
+        const cursorClass = hasPhoto ? 'cursor-zoom-in hover:scale-[1.01] transition-transform' : '';
+
+        // Условный рендеринг:
+        // 1. Если photoUrl есть: показываем <img> и fallback (скрытый) на случай 404.
+        // 2. Если photoUrl нет: показываем плейсхолдер <span>.
+        const imageBlockInner = photoUrl
+            ? `<!-- Настоящее изображение -->
+               <img src="${photoUrl}" 
+                    alt="${productName}" 
+                    class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300" 
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+               <!-- Плейсхолдер (запасной вариант при ошибке 404) -->
+               <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-400 font-black font-stars-display" style="display: none;">
+                    ${groupInitials}
+               </div>`
+            : `<!-- Плейсхолдер (если фото нет в таблице) -->
+               <span class="text-gray-400 font-black font-stars-display">
+                    ${groupInitials}
+               </span>`;
+        // --- Конец логики ---
+
+        const cardHTML = `
+        <div class="product-card-container" data-title="${product.имя}" data-group="${product.группа}">
+            <div class="product-card">
+                
+                <!-- Верхняя часть (Фото + Текст) -->
+                <div>
+                    <!-- Фото -->
+                    <div class="card-content w-full flex flex-col items-center">
+                        <div ${clickHandler} class="product-image-mock mb-2 flex items-center justify-center border border-gray-200 overflow-hidden ${cursorClass}">
+                            ${imageBlockInner}
+                        </div>
+                    </div>
+                    <!-- Текст -->
+                    <div class="text-content w-full px-1">
+                        <h3 class="font-semibold text-center mt-2 text-sm leading-tight">${product.имя}</h3>
+                        <p class="text-xs text-gray-500 text-center mb-2">${product.группа}</p>
+                    </div>
+                </div>
+                
+                <!-- Нижняя часть (Цена + Наличие) - Compacted -->
+                <div class="w-full mt-2 flex items-end justify-between px-1">
+                    <!-- Статус (слева) -->
+                    <div class="flex space-x-3 pt-1">
+                        ${spbStatus}
+                        ${mskStatus}
+                    </div>
+                    <!-- Цена (справа) -->
+                    <p class="product-price-gradient text-right text-lg sm:text-xl leading-none">
+                        ${product.цена.toLocaleString('ru-RU')} ₽
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        `;
+        productGrid.insertAdjacentHTML('beforeend', cardHTML);
+    });
+}
+
+/**
+ * Главная функция фильтрации и рендеринга
+ */
+function filterAndRender() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    
+    const filteredData = allProductsData.filter(product => {
+        // 1. Фильтр по категории
+        const categoryMatch = product.категория === currentCategory;
+
+        // 2. Фильтр по поиску (имя ИЛИ группа)
+        const titleMatch = product.имя.toLowerCase().includes(searchTerm);
+        const groupMatch = product.группа.toLowerCase().includes(searchTerm);
+        const searchMatch = !searchTerm || titleMatch || groupMatch; // Если поиска нет, совпадение = true
+
+        return categoryMatch && searchMatch;
+    });
+    
+    // Передаем отфильтрованные данные на отрисовку
+    renderProductCards(filteredData);
+}
+
+// ==========================================================
+// ОБРАБОТЧИКИ СОБЫТИЙ
+// ==========================================================
+
+/**
+ * Открывает модальное окно с полным изображением.
+ * @param {Event} e - Событие клика.
+ * @param {string} url - URL изображения.
+ */
+function openFullImage(e, url) {
+    // Останавливаем всплытие, чтобы клик по карточке не вызывал другие события
+    e.stopPropagation(); 
+    if (!url) return;
+    
+    modalImage.src = url;
+    // Используем класс для плавного появления
+    modal.classList.add('is-visible'); 
+    modal.style.display = 'flex'; // Сбрасываем display: none для начала анимации
+    
+    // Блокируем скролл на странице
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Закрывает модальное окно.
+ * @param {Event} e - Событие клика (опционально).
+ */
+function closeFullImage(e) {
+    // Если клик был по кнопке закрытия (x) или по самому изображению,
+    // предотвращаем закрытие, если клик был по изображению, и предотвращаем
+    // всплытие, если клик был по кнопке закрытия.
+    if (e) {
+        if (e.target.id === 'modalImage') {
+            return; // Не закрываем, если кликнули на саму картинку
+        }
+        if (e.target.id === 'modalCloseBtn') {
+            e.stopPropagation(); // Предотвращаем срабатывание клика на фон
+        }
+    }
+
+    // Используем класс для плавного исчезновения
+    modal.classList.remove('is-visible'); 
+    
+    // Разблокируем скролл на странице
+    document.body.style.overflow = ''; 
+
+    // Дополнительно скрываем через display: none после анимации для чистоты DOM
+    setTimeout(() => {
+        if (!modal.classList.contains('is-visible')) {
+            modal.style.display = 'none';
+        }
+    }, 300); 
+}
+
+
+/**
+ * Обрабатывает клик по навигации (Категории и "О нас")
+ */
+function handleNavClick(e) {
+    e.preventDefault(); 
+    const target = e.currentTarget;
+    const targetSection = target.dataset.targetSection;
+
+    // 1. Переключаем главный раздел (Каталог / О нас)
+    switchMainSection(targetSection);
+    
+    // 2. Обновляем активную кнопку
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('is-active'));
+    target.classList.add('is-active');
+
+    // 3. Если это категория каталога, фильтруем
+    if (targetSection === 'catalog') {
+        const newCategory = target.dataset.category;
+        if (newCategory !== currentCategory) {
+            currentCategory = newCategory;
+            searchInput.value = ''; // Сбрасываем поиск при смене категории
+        }
+        filterAndRender();
+    }
+}
+
+/**
+ * Переключает видимость между секциями "Каталог" и "О нас"
+ */
+function switchMainSection(target) {
+    if (target === 'about') {
+        if (aboutSection.classList.contains('fade-in-section')) return; // Уже на месте
+        
+        catalogSection.classList.remove('fade-in-section');
+        catalogSection.classList.add('fade-out-section');
+        
+        setTimeout(() => {
+            aboutSection.classList.remove('fade-out-section');
+            aboutSection.classList.add('fade-in-section');
+            window.scrollTo(0, 0); 
+        }, 300); 
+
+    } else if (target === 'catalog') {
+        if (catalogSection.classList.contains('fade-in-section')) return; // Уже на месте
+
+        aboutSection.classList.remove('fade-in-section');
+        aboutSection.classList.add('fade-out-section');
+
+         setTimeout(() => {
+            catalogSection.classList.remove('fade-out-section');
+            catalogSection.classList.add('fade-in-section');
+            window.scrollTo(0, 0); 
+        }, 300);
+    }
+}
+
+/**
+ * Настраивает вкладки (СПБ/МСК) в секции "О нас"
+ */
+function setupStoreTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const contentWrapper = document.getElementById('store-content-wrapper');
+
+    function switchStoreTab(targetId) {
+        tabButtons.forEach(button => {
+            button.classList.toggle('active-tab', button.dataset.target === targetId);
+        });
+
+        tabContents.forEach(content => {
+            const contentId = content.id.replace('-content', '');
+            if (contentId === targetId) {
+                content.classList.remove('absolute', 'hidden'); 
+                const activeContentHeight = content.offsetHeight;
+                contentWrapper.style.minHeight = `${activeContentHeight}px`;
+                setTimeout(() => content.classList.add('is-active'), 10); 
+            } else {
+                content.classList.remove('is-active');
+                setTimeout(() => content.classList.add('absolute', 'hidden'), 400); 
+            }
+        });
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchStoreTab(e.currentTarget.dataset.target);
+        });
+    });
+
+    // Инициализация
+    const initialContent = document.getElementById('spb-content');
+    if (initialContent) {
+         setTimeout(() => {
+            initialContent.classList.remove('hidden', 'absolute'); 
+            contentWrapper.style.minHeight = `${initialContent.offsetHeight}px`;
+        }, 50);
+    }
+}
+
+
+// ==========================================================
+// ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ
+// ==========================================================
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    // 1. Настраиваем поиск
+    searchInput.addEventListener('input', filterAndRender);
+
+    // 2. Настраиваем вкладки "О нас"
+    setupStoreTabs();
+    
+    // 3. Привязываем "О нас" к главной навигации
+    navAbout.addEventListener('click', handleNavClick);
+
+    // 4. Загружаем данные из "Google Sheet"
+    allProductsData = await fetchDataFromGoogleSheet();
+    
+    // 5. Рендерим навигацию на основе данных
+    renderNavigation(allProductsData);
+    
+    // 6. Рендерим карточки для категории по умолчанию
+    filterAndRender();
+
+    // 7. Настраиваем закрытие модального окна по Esc
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('is-visible')) {
+            closeFullImage();
+        }
+    });
+});
+
     </script>
 </body>
 </html>
