@@ -53,571 +53,7 @@
             overflow: hidden;
             /* Оставляем GPU ускорение */
             transform: translateZ(0); 
-            /* Удален will-change: transform для повышения стабильности на iOS */
-        }
-        /* --------------------------- */
-
-        /* ========================================================== */
-        /* Навигация: Улучшенное мобильное центрирование */
-        /* ========================================================== */
-        .nav-item {
-            transition: all 0.3s ease-in-out;
-            font-weight: 600;
-            background-color: transparent;
-            color: var(--stars-text-dark);
-            flex-grow: 1; 
-            text-align: center;
-        }
-        
-        .nav-container {
-            max-width: 400px; 
-            width: 100%;
-            padding: 0.25rem; 
-            border-radius: 9999px;
-            box-shadow: 0 2px 10px var(--stars-shadow-light);
-        }
-
-        .nav-item.is-active {
-            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
-            background-size: 200% auto;
-            color: white;
-            box-shadow: 0 4px 15px rgba(160, 210, 255, 0.6);
-            transform: scale(1);
-        }
-
-        /* ========================================================== */
-        /* 3D FLIP Card */
-        /* ========================================================== */
-        .product-card-container {
-            perspective: 1000px; 
-            box-shadow: 0 3px 10px var(--stars-shadow-light); 
-            border-radius: 1rem;
-            overflow: visible; 
-            cursor: pointer; 
-            aspect-ratio: 1 / 1; 
-        }
-        
-        .product-card {
-            width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d; 
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
-            border-radius: 1rem;
-        }
-
-        .product-card.is-flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-face {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backface-visibility: hidden; 
-            border-radius: 1rem;
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center;
-            padding: 0.75rem; 
-            box-sizing: border-box;
-            background-color: white;
-        }
-
-        .photocard-reveal {
-            transform: rotateY(180deg); 
-            background: rgba(255, 255, 255, 0.98); 
-            border: 3px solid var(--stars-accent-gradient-start);
-            color: var(--stars-primary-gradient-start);
-            box-shadow: 0 0 15px rgba(255, 171, 171, 0.6);
-        }
-        
-        /* Мобильная адаптация контента внутри карточки */
-        .card-content .product-image-mock {
-            width: 80%; 
-            padding-bottom: 80%; 
-            height: 0;
-            position: relative;
-            background-color: #f7f7f7;
-            border-radius: 0.5rem;
-        }
-        .card-content .product-image-mock span {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem; 
-        }
-
-        .card-content h3 { font-size: 0.875rem; } 
-        .card-content .price { font-size: 1rem; font-weight: 700; } 
-        
-        /* Медиа-запросы для десктопа/планшета */
-        @media (min-width: 640px) {
-            .card-content .product-image-mock {
-                width: 70%;
-                padding-bottom: 70%; 
-            }
-            .card-content .product-image-mock span {
-                font-size: 2.5rem; 
-            }
-            .card-content h3 { font-size: 1.125rem; } 
-            .card-content .price { font-size: 1.25rem; } 
-        }
-        
-    </style>
-</head>
-<body class="min-h-screen">
-
-    <!-- WOW Effect 1: Жидкий Градиент на Canvas (Фон) -->
-    <canvas id="bgCanvas" class="ethereal-bg"></canvas>
-
-    <!-- Основной контент -->
-    <!-- z-10 тут крайне важен, чтобы контент был над FIXED фоном -->
-    <div class="relative z-10 p-2 sm:p-4 md:p-8">
-        
-        <!-- Заголовок / Логотип -->
-        <header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-widest font-stars-display" style="color: var(--stars-text-dark); text-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);">
-                STARSSTORE
-            </h1>
-            <p class="text-sm sm:text-xl mt-0.5" style="color: var(--stars-text-light-subtle); font-weight: 500;">
-                CONNECTING HEARTS THROUGH K-POP
-            </p>
-        </header>
-
-        <!-- Навигация (Улучшенное центрирование для мобильных) -->
-        <nav class="flex justify-center mb-8 sm:mb-12">
-            <div class="flex space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full max-w-sm mx-auto">
-                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item is-active">Альбомы</a>
-                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Карточки</a>
-                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Группы</a>
-                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Офлайн</a>
-            </div>
-        </nav>
-
-        <!-- Секция Товаров -->
-        <section class="max-w-4xl mx-auto p-0 rounded-2xl">
-            <h2 class="text-xl sm:text-2xl font-bold text-center mb-6 pb-2 font-stars-display" style="color: var(--stars-text-dark); border-bottom: 2px solid var(--stars-accent-gradient-start);">
-                Новые Поступления
-            </h2>
-
-            <!-- Сетка товаров: Принудительно 2 колонки на мобильных (grid-cols-2) -->
-            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
-
-                <!-- Карточка 1: Альбом BTS (Кликабельный) -->
-                <div class="product-card-container relative">
-                    <div class="product-card" id="card-1">
-                        
-                        <!-- ПЕРЕДНЯЯ СТОРОНА (Продукт) -->
-                        <div class="card-face card-front">
-                            <!-- Эфирные слои (для 3D-эффекта) -->
-                            <div class="card-layer layer-1"></div>
-                            <div class="card-layer layer-2"></div>
-                            <div class="card-layer layer-3"></div>
-                            
-                            <!-- Кристальный Глинт -->
-                            <div class="card-glint" id="glint-1"></div>
-                            
-                            <!-- Контент карточки -->
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">BTS</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">Map of the Soul: 7</h3>
-                                <p class="text-xs text-gray-500">Версия 4</p>
-                                <p class="font-bold mt-1 price">2990 ₽</p>
-                            </div>
-                        </div>
-                        
-                        <!-- ЗАДНЯЯ СТОРОНА (Photocard Reveal) -->
-                        <div class="card-face photocard-reveal">
-                            <!-- SVG Звезда (Розовый) -->
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Внутри Редкий Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Карточка 2: Альбом BLACKPINK -->
-                <div class="product-card-container relative">
-                    <div class="product-card" id="card-2">
-                        <div class="card-face card-front">
-                            <div class="card-layer layer-1"></div>
-                            <div class="card-layer layer-2"></div>
-                            <div class="card-layer layer-3"></div>
-                            <div class="card-glint" id="glint-2"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">BP</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">THE ALBUM</h3>
-                                <p class="text-xs text-gray-500">Pink Ver.</p>
-                                <p class="font-bold mt-1 price">2500 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">LISA</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Рандомная Карта!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Карточка 3: Альбом EXO -->
-                <div class="product-card-container relative">
-                    <div class="product-card" id="card-3">
-                        <div class="card-face card-front">
-                            <div class="card-layer layer-1"></div>
-                            <div class="card-layer layer-2"></div>
-                            <div class="card-layer layer-3"></div>
-                            <div class="card-glint" id="glint-3"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">EXO</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">Don't Fight The Feeling</h3>
-                                <p class="text-xs text-gray-500">Logic Ver.</p>
-                                <p class="font-bold mt-1 price">2850 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">KAI</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Официальный Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Карточка 4: Альбом NCT -->
-                <div class="product-card-container relative">
-                    <div class="product-card" id="card-4">
-                        <div class="card-face card-front">
-                            <div class="card-layer layer-1"></div>
-                            <div class="card-layer layer-2"></div>
-                            <div class="card-layer layer-3"></div>
-                            <div class="card-glint" id="glint-4"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2">
-                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
-                                    <span class="text-gray-400 font-black font-stars-display">NCT</span>
-                                </div>
-                                <h3 class="font-semibold text-center mt-2">NCT 2020: Resonance Pt. 1</h3>
-                                <p class="text-xs text-gray-500">Past Ver.</p>
-                                <p class="font-bold mt-1 price">3100 ₽</p>
-                            </div>
-                        </div>
-                        <div class="card-face photocard-reveal">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">MARK</span>
-                            <span class="text-xs mt-0.5 text-gray-600">Фотокен!</span>
-                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Добавляем дополнительные мок-элементы, чтобы страница была длиннее и можно было скроллить -->
-            <div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
-                <p>... еще 16 товаров на этой странице ...</p>
-            </div>
-            
-            <!-- Секция ниже основной сетки, чтобы обеспечить прокрутку -->
-             <div id="extra-scroll-content" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2 mt-4">
-                <!-- Пустые мок-карточки для длины -->
-                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
-                    <span class="text-xs text-gray-300">Плейсхолдер</span>
-                </div>
-                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
-                    <span class="text-xs text-gray-300">Плейсхолдер</span>
-                </div>
-                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
-                    <span class="text-xs text-gray-300">Плейсхолдер</span>
-                </div>
-                <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
-                    <span class="text-xs text-gray-300">Плейсхолдер</span>
-                </div>
-            </div>
-
-            <!-- Призыв к действию -->
-            <div class="text-center mt-12 p-4 sm:p-6 rounded-xl border border-dashed mx-2 sm:mx-0" style="background: rgba(var(--stars-primary-gradient-start-rgb), 0.08); border-color: var(--stars-primary-gradient-end);">
-                <p class="text-lg sm:text-xl font-bold mb-3" style="color: var(--stars-text-dark); font-family: 'Poppins', sans-serif;">
-                    Хотите увидеть, какая карточка достанется вам?
-                </p>
-                <p class="text-sm sm:text-lg mb-4 text-gray-700">
-                    Все сокровища ждут вас в нашем физическом магазине!
-                </p>
-                <a href="#" class="inline-block px-5 py-2.5 text-sm sm:text-md rounded-full cta-button-gradient">
-                    Найти Starsstore на карте
-                </a>
-            </div>
-        </section>
-
-    </div>
-
-    <script>
-        // ==========================================================
-        // WOW EFFECT 1: ЖИДКИЙ ГРАДИЕНТ НА CANVAS (ФОН)
-        // ==========================================================
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        
-        // Глобальные переменные для контроля анимации и скролла
-        let animationFrameId = null;
-        let isScrolling = false;
-        let scrollTimeout = null;
-
-        const root = document.documentElement;
-        const getColor = (varName) => {
-            const rgb = getComputedStyle(root).getPropertyValue(varName).trim();
-            // Снижаем прозрачность для более мягкого фона на мобильных
-            const alpha = window.innerWidth < 768 ? 0.2 : 0.3; 
-            return `rgba(${rgb}, ${alpha})`; 
-        };
-
-        const colorPalette = [
-            getColor('--stars-primary-gradient-start-rgb'),
-            getColor('--stars-primary-gradient-end-rgb'),
-            getColor('--stars-accent-gradient-start-rgb'),
-            getColor('--stars-accent-gradient-end-rgb')
-        ];
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.radius = Math.random() * 200 + 150; 
-                this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                this.speedX = (Math.random() - 0.5) * 0.4; 
-                this.speedY = (Math.random() - 0.5) * 0.4;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                
-                // Перезапуск частиц
-                if (this.x < -this.radius * 2 || this.x > width + this.radius * 2 || this.y < -this.radius * 2 || this.y > height + this.radius * 2) {
-                    this.x = (this.speedX > 0) ? -this.radius : width + this.radius;
-                    this.y = Math.random() * height;
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-                
-                gradient.addColorStop(0, this.color.replace('0.3', '0.5').replace('0.2', '0.4')); 
-                gradient.addColorStop(1, this.color.replace('0.3', '0').replace('0.2', '0'));
-                
-                ctx.fillStyle = gradient;
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-        
-        function initParticles() {
-            particles = [];
-            // Уменьшено количество частиц для лучшей производительности на мобильных
-            for (let i = 0; i < 5; i++) { 
-                particles.push(new Particle());
-            }
-        }
-
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles(); 
-        }
-        window.addEventListener('resize', resizeCanvas);
-        
-        function animateBackground() {
-            // Если активно скроллим, прекращаем отрисовку
-            if (isScrolling) {
-                animationFrameId = null;
-                return;
-            }
-
-            // Мягкое стирание предыдущего кадра, чтобы создать эффект "жидкости"
-            ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
-            ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            animationFrameId = requestAnimationFrame(animateBackground);
-        }
-        
-        // --- НОВЫЙ ОБРАБОТЧИК ДЛЯ ПАУЗЫ ПРИ СКРОЛЛЕ ---
-        function handleScrollPause() {
-            // 1. Устанавливаем флаг активности скролла
-            isScrolling = true;
-            
-            // 2. Очищаем предыдущий таймаут
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout);
-            }
-
-            // 3. Если анимация была остановлена, немедленно начинаем цикл заново, 
-            //    чтобы избежать мерцания в момент старта скролла
-            if (animationFrameId === null) {
-                // Вызываем requestAnimationFrame, но он будет проигнорирован внутри animateBackground 
-                // из-за флага isScrolling. Это просто устанавливает ID.
-                animationFrameId = requestAnimationFrame(animateBackground);
-            }
-
-            // 4. Устанавливаем новый таймаут для возобновления анимации
-            scrollTimeout = setTimeout(() => {
-                isScrolling = false;
-                // Возобновляем анимацию, вызывая ее один раз. Дальше она сама продолжит цикл.
-                animateBackground(); 
-            }, 200); // 200 мс — хорошее время для определения "остановки"
-        }
-
-        window.addEventListener('scroll', handleScrollPause, { passive: true });
-        // --------------------------------------------------------------------
-
-
-        // ==========================================================
-        // WOW EFFECT 2: 3D-НАКЛОН (Hover) + ЧИСТЫЙ FLIP (Click)
-        // ==========================================================
-        const productCardsContainers = document.querySelectorAll('.product-card-container');
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-        // 1. Hover (3D Tilt and Glint) - ТОЛЬКО для десктопов (не touch)
-        if (!isTouchDevice) {
-            productCardsContainers.forEach(container => {
-                // Получаем элементы ОДИН РАЗ
-                const card = container.querySelector('.product-card');
-                const cardFront = container.querySelector('.card-front');
-                const glint = container.querySelector('.card-glint');
-                const layers = container.querySelectorAll('.card-layer');
-
-                // Проверка на случай, если структура карточки неполная
-                if (!card || !cardFront) {
-                    console.warn('Skipping card setup due to missing critical elements (card or cardFront)');
-                    return;
-                }
-
-                container.addEventListener('mousemove', (e) => {
-                    // Используем уже полученную переменную card
-                    if (card.classList.contains('is-flipped')) {
-                        return;
-                    }
-
-                    const rect = container.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-
-                    // 3D Наклон
-                    const rotateX = ((y - centerY) / centerY) * -8;
-                    const rotateY = ((x - centerX) / centerX) * 8; 
-                    cardFront.style.transform = `scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-                    // Смещение слоев
-                    layers.forEach((layer, index) => {
-                        const depth = (index + 1) * 2;
-                        const offsetX = ((x - centerX) / centerX) * depth;
-                        const offsetY = ((y - centerY) / centerY) * depth;
-                        layer.style.transform = `translateZ(${index * 5}px) translateX(${offsetX}px) translateY(${offsetY}px)`;
-                    });
-
-                    // Динамический Глинт
-                    if (glint) {
-                        const glintX = (x / rect.width) * 100;
-                        const glintY = (y / rect.height) * 100;
-                        glint.style.opacity = 1;
-                        glint.style.background = `radial-gradient(circle at ${glintX}% ${glintY}%, rgba(255, 255, 255, 0.7), transparent 70%)`;
-                        glint.style.transform = `translateZ(15px) rotateX(${rotateX * 0.5}deg) rotateY(${rotateY * 0.5}deg)`;
-                    }
-                });
-
-                container.addEventListener('mouseleave', () => {
-                    // Используем уже полученную переменную card
-                    if (card.classList.contains('is-flipped')) {
-                        return;
-                    }
-                    cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
-                    layers.forEach(layer => {
-                        layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
-                    });
-                    if (glint) {
-                         glint.style.opacity = 0; 
-                         glint.style.transform = 'translateZ(15px) rotateX(0deg) rotateY(0deg)';
-                    }
-                });
-            });
-        }
-            
-        // 2. Click (3D Flip) - для всех устройств
-        productCardsContainers.forEach(container => {
-            container.addEventListener('click', (e) => {<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starsstore | Каталог K-Pop (Чистый 3D-Переворот)</title>
-    <!-- Подключаем Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        /* Новые фирменные цвета (полупрозрачные, пастельные градиенты) */
-        :root {
-            --stars-bg-light: #F0F2F5; 
-            --stars-primary-gradient-start: #C3A0FF; /* Мягкий фиолетовый */
-            --stars-primary-gradient-end: #A0D2FF;   /* Мягкий голубой */
-            --stars-accent-gradient-start: #FFD1DC;   /* Пастельный розовый */
-            --stars-accent-gradient-end: #FFABAB;     /* Теплый персиковый */
-            --stars-text-dark: #333333; 
-            --stars-text-light-subtle: #777777; 
-            --stars-shadow-light: rgba(0, 0, 0, 0.1);
-            
-            /* RGB-версии для JS и прозрачности в CSS */
-            --stars-primary-gradient-start-rgb: 195, 160, 255; 
-            --stars-primary-gradient-end-rgb: 160, 210, 255;   
-            --stars-accent-gradient-start-rgb: 255, 209, 220;   
-            --stars-accent-gradient-end-rgb: 255, 171, 171;     
-        }
-
-        /* Загрузка шрифтов */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@700;900&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            background-color: var(--stars-bg-light);
-            color: var(--stars-text-dark);
-            /* Важно: минимальная высота, чтобы скроллинг вообще появился */
-            min-height: 150vh; 
-        }
-        
-        .font-stars-display {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* --- CSS для фиксации на экране --- */
-        .ethereal-bg {
-            position: fixed; 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -10;
-            pointer-events: none;
-            overflow: hidden;
-            /* Оставляем GPU ускорение */
-            transform: translateZ(0); 
-            /* Добавлено will-change для стабилизации элемента position: fixed на мобильных */
+            /* will-change помогает стабилизировать FIXED элементы */
             will-change: transform, opacity;
         }
         /* --------------------------- */
@@ -729,6 +165,7 @@
 <body class="min-h-screen">
 
     <!-- WOW Effect 1: Жидкий Градиент на Canvas (Фон) -->
+    <!-- На телефонах JS отключит анимацию на этом Canvas -->
     <canvas id="bgCanvas" class="ethereal-bg"></canvas>
 
     <!-- Основной контент -->
@@ -934,15 +371,16 @@
         let width, height;
         let particles = [];
         
-        // Глобальные переменные для контроля анимации и скролла
+        // Глобальные переменные для контроля анимации, скролла и типа устройства
         let animationFrameId = null;
         let isScrolling = false;
         let scrollTimeout = null;
+        let isMobileDevice = false; // <-- Флаг для отключения анимации на узких экранах
 
         const root = document.documentElement;
         const getColor = (varName) => {
             const rgb = getComputedStyle(root).getPropertyValue(varName).trim();
-            // Снижаем прозрачность для более мягкого фона на мобильных
+            // Снижаем прозрачность для более мягкого фона
             const alpha = window.innerWidth < 768 ? 0.2 : 0.3; 
             return `rgba(${rgb}, ${alpha})`; 
         };
@@ -999,19 +437,48 @@
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            initParticles(); 
+
+            // Определяем, является ли устройство мобильным (ширина меньше 768px)
+            const newIsMobile = window.innerWidth < 768;
+
+            if (isMobileDevice !== newIsMobile) {
+                isMobileDevice = newIsMobile;
+                // При смене режима (например, поворот планшета) перезапускаем логику
+                if (!isMobileDevice) {
+                    initParticles();
+                    animateBackground();
+                } else {
+                    // Очищаем canvas и останавливаем анимацию при переходе в мобильный режим
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                        animationFrameId = null;
+                    }
+                    ctx.clearRect(0, 0, width, height); 
+                    console.log("Animation disabled: Mobile screen size detected.");
+                }
+            } else if (!isMobileDevice) {
+                 // Если не мобильный, просто обновляем частицы при ресайзе
+                initParticles(); 
+            }
         }
         window.addEventListener('resize', resizeCanvas);
         
         function animateBackground() {
-            // Если активно скроллим, прекращаем отрисовку
+            // ГЛАВНЫЙ ФИКС: Если это мобильный режим, прекращаем анимацию
+            if (isMobileDevice) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+                return;
+            }
+            
+            // Если активно скроллим, прекращаем отрисовку (этот фикс остался для планшетов)
             if (isScrolling) {
-                // Останавливаем цикл rAF, очищая ID
                 animationFrameId = null; 
                 return;
             }
 
-            // Мягкое стирание предыдущего кадра, чтобы создать эффект "жидкости"
             ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
             ctx.fillRect(0, 0, width, height);
 
@@ -1023,30 +490,25 @@
             animationFrameId = requestAnimationFrame(animateBackground);
         }
         
-        // --- НОВЫЙ ОБРАБОТЧИК ДЛЯ ПАУЗЫ ПРИ СКРОЛЛЕ ---
+        // --- ОБРАБОТЧИК ДЛЯ ПАУЗЫ ПРИ СКРОЛЛЕ (работает только на не-мобильных экранах) ---
         function handleScrollPause() {
-            // 1. Устанавливаем флаг активности скролла
+             // Игнорируем скролл на мобильном устройстве
+            if (isMobileDevice) return; 
+
             isScrolling = true;
             
-            // 2. Очищаем предыдущий таймаут
             if (scrollTimeout) {
                 clearTimeout(scrollTimeout);
             }
 
-            // 3. Если анимация была остановлена, немедленно начинаем цикл заново, 
-            //    чтобы избежать мерцания в момент старта скролла
             if (animationFrameId === null) {
-                // Вызываем requestAnimationFrame, но он будет проигнорирован внутри animateBackground 
-                // из-за флага isScrolling. Это просто устанавливает ID.
                 animationFrameId = requestAnimationFrame(animateBackground);
             }
 
-            // 4. Устанавливаем новый таймаут для возобновления анимации
             scrollTimeout = setTimeout(() => {
                 isScrolling = false;
-                // Возобновляем анимацию, вызывая ее один раз. Дальше она сама продолжит цикл.
                 animateBackground(); 
-            }, 200); // 200 мс — хорошее время для определения "остановки"
+            }, 200); 
         }
 
         window.addEventListener('scroll', handleScrollPause, { passive: true });
@@ -1154,7 +616,7 @@
                     layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
                 });
                 if (glint) {
-                   glint.style.opacity = card.classList.contains('is-flipped') ? 0 : 1; 
+                   glint.style.opacity = card.classList.contains('is-flipped') ? 0 : 0; 
                 }
             });
         });
@@ -1180,9 +642,16 @@
 
 
         window.onload = function () {
-            resizeCanvas();
-            animateBackground();
-            console.log("Starsstore Mobile Layout FIX: Ethereal background animation now pauses during scroll to prevent mobile flicker.");
+            resizeCanvas(); // Установит isMobileDevice
+            
+            // Запускаем анимацию только если это не мобильное устройство
+            if (!isMobileDevice) {
+                animateBackground();
+                console.log("Starsstore: Ethereal background animation enabled.");
+            } else {
+                // Для мобильных устройств останется чистый фон из CSS body
+                console.log("Starsstore: Ethereal background animation DISABLED for stable mobile scrolling.");
+            }
         }
     </script>
 </body>
