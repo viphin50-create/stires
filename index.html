@@ -207,7 +207,7 @@
         }
         
         .nav-container {
-            max-width: 95%; 
+            max-width: 100%; /* Ограничено родительским max-w-4xl */
             width: 100%;
             padding: 0.25rem; 
             border-radius: 9999px;
@@ -222,6 +222,28 @@
         /* Скрыть скроллбар */
         .nav-container::-webkit-scrollbar { display: none; }
         .nav-container { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* НОВЫЕ СТИЛИ ДЛЯ ЗОН АВТО-СКРОЛЛА */
+        /* Создаем невидимые зоны по краям, чтобы прокрутка была отзывчивее */
+        .nav-scroll-zone {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 80px; /* Ширина зоны прокрутки, соответствует SCROLL_ZONE_WIDTH в JS */
+            z-index: 50; 
+            /* Для отладки: background: rgba(255, 0, 0, 0.1); */
+            pointer-events: none; /* Гарантируем, что клики проходят через них */
+        }
+        .nav-scroll-zone-left {
+            left: 0;
+            /* Градиент для подсказки, что здесь можно прокрутить (невидимый для пользователей) */
+            /* box-shadow: inset 20px 0 10px -10px rgba(0,0,0,0.1); */
+        }
+        .nav-scroll-zone-right {
+            right: 0;
+            /* box-shadow: inset -20px 0 10px -10px rgba(0,0,0,0.1); */
+        }
+
 
         .nav-item.is-active {
             background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
@@ -523,15 +545,21 @@
 
     
     <!-- НАВИГАЦИЯ КАТЕГОРИЙ (Будет заполнена динамически) -->
-    <nav class="flex justify-center mb-8 sm:mb-12">
+    <!-- ДОБАВЛЕНО: max-w-4xl mx-auto для ограничения ширины на десктопе -->
+    <nav class="flex justify-center mb-8 sm:mb-12 max-w-4xl mx-auto relative"> 
         <!-- ID "nav-container" добавлен для JS -->
-        <div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full mx-auto">
+        <div id="nav-container" class="space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full">
             
             <!-- Секция "О нас" (остается статичной) -->
             <a href="#" data-target-section="about" class="text-xs px-3 py-2 rounded-full nav-item" id="nav-about">О нас</a>
             
-            <!-- Сюда JS добавит динамические категории -->
+            <!-- Сюда JS добавит "Все товары" и динамические категории -->
         </div>
+        
+        <!-- НОВЫЕ ЗОНЫ АВТОПРОКРУТКИ (для десктопов) -->
+        <div class="nav-scroll-zone nav-scroll-zone-left hidden sm:block"></div>
+        <div class="nav-scroll-zone nav-scroll-zone-right hidden sm:block"></div>
+
     </nav>
 
     
@@ -793,8 +821,10 @@
 // ГЛОБАЛЬНЫЕ КОНСТАНТЫ И ПЕРЕМЕННЫЕ
 // ==========================================================
 let allProductsData = [];
-let currentCategory = "Альбомы"; 
+// ИЗМЕНЕНИЕ: Категория по умолчанию - "Все товары"
+let currentCategory = "Все товары"; 
 let currentSearchTerm = ""; 
+const ALL_CATEGORY_NAME = "Все товары";
 
 // DOM Элементы
 const splashScreen = document.getElementById('splash-screen');
@@ -812,6 +842,12 @@ const searchInput = document.getElementById('searchInput');
 const modal = document.getElementById('fullImageModal');
 const modalImage = document.getElementById('modalImage');
 
+// --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ АВТОПРОКРУТКИ ---
+let scrollAnimationFrameId = null;
+let scrollSpeed = 0;
+const SCROLL_ZONE_WIDTH = 80; // Ширина зоны (в пикселях) для активации прокрутки
+const MAX_SCROLL_SPEED = 10; // Максимальная скорость прокрутки (в px)
+// ------------------------------------------
 
 // ==========================================================
 // ЗАГРУЗКА И ПАРСИНГ Google Sheet
@@ -896,28 +932,41 @@ async function fetchDataFromGoogleSheet() {
 // ==========================================================
 
 function renderNavigation(products) {
-    const categories = [...new Set(products.map(p => p.категория))].filter(c => c); // Фильтр для пустых
+    const categories = [...new Set(products.map(p => p.категория))].filter(c => c);
     
-    if (!categories.includes(currentCategory)) {
-        currentCategory = categories[0] || "Альбомы";
-    }
-
+    // Удаляем старые кнопки категорий, оставляя только "О нас"
     while (navAbout.nextElementSibling) {
         navAbout.nextElementSibling.remove();
     }
+    
+    // 1. Добавляем категорию "Все товары"
+    const allCategoryButton = createNavItem(ALL_CATEGORY_NAME, ALL_CATEGORY_NAME);
+    allCategoryButton.classList.add(currentCategory === ALL_CATEGORY_NAME ? 'is-active' : '');
+    navContainer.appendChild(allCategoryButton);
 
+
+    // 2. Добавляем динамические категории
     categories.forEach(category => {
         const isActive = category === currentCategory;
-        const a = document.createElement('a');
-        a.href = "#";
-        a.dataset.targetSection = "catalog";
-        a.dataset.category = category;
-        a.className = `text-xs px-3 py-2 rounded-full nav-item ${isActive ? 'is-active' : ''}`;
-        a.textContent = category;
-        a.addEventListener('click', handleNavClick); 
-        navContainer.appendChild(a);
+        const button = createNavItem(category, category);
+        if (isActive) {
+            button.classList.add('is-active');
+        }
+        navContainer.appendChild(button);
     });
 }
+
+function createNavItem(categoryName, dataCategory) {
+    const a = document.createElement('a');
+    a.href = "#";
+    a.dataset.targetSection = "catalog";
+    a.dataset.category = dataCategory;
+    a.className = `text-xs px-3 py-2 rounded-full nav-item`;
+    a.textContent = categoryName;
+    a.addEventListener('click', handleNavClick); 
+    return a;
+}
+
 
 function createStatusCircle(status, label) {
     const normalizedStatus = status ? status.toLowerCase() : '';
@@ -934,7 +983,7 @@ function renderProductCards(products) {
     productGrid.innerHTML = ''; 
 
     if (products.length === 0) {
-        productGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Товары не найдены. Попробуйте изменить фильтр.</p>`;
+        productGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Товары не найдены. Попробуйте изменить фильтр или поисковый запрос.</p>`;
         return;
     }
 
@@ -1025,6 +1074,93 @@ function renderProductCards(products) {
 }
 
 // ==========================================================
+// ЛОГИКА АВТОПРОКРУТКИ (EDGE SCROLLING)
+// ==========================================================
+
+// Функция для выполнения прокрутки в каждом кадре
+function animateScroll() {
+    if (scrollSpeed !== 0) {
+        navContainer.scrollLeft += scrollSpeed;
+
+        // Дополнительная проверка, чтобы остановить прокрутку, если достигнут край
+        const maxScroll = navContainer.scrollWidth - navContainer.clientWidth;
+        
+        if (navContainer.scrollLeft <= 0 && scrollSpeed < 0) {
+            scrollSpeed = 0;
+            navContainer.scrollLeft = 0;
+            stopAutoScroll();
+            return;
+        }
+        if (navContainer.scrollLeft >= maxScroll && scrollSpeed > 0) {
+            scrollSpeed = 0;
+            navContainer.scrollLeft = maxScroll;
+            stopAutoScroll();
+            return;
+        }
+    }
+    // Запрашиваем следующий кадр анимации
+    scrollAnimationFrameId = requestAnimationFrame(animateScroll);
+}
+
+// Запуск цикла анимации
+function startAutoScroll() {
+    // Проверяем, что анимация еще не запущена
+    if (scrollAnimationFrameId === null) {
+        scrollAnimationFrameId = requestAnimationFrame(animateScroll);
+    }
+}
+
+// Остановка цикла анимации
+function stopAutoScroll() {
+    if (scrollAnimationFrameId !== null) {
+        cancelAnimationFrame(scrollAnimationFrameId);
+        scrollAnimationFrameId = null;
+    }
+    scrollSpeed = 0; // Сбрасываем скорость
+}
+
+
+// Обработчик движения курсора для определения, когда нужно прокручивать
+function handleEdgeScroll(e) {
+    // Эта функция будет работать только на десктопах (больше 640px)
+    if (window.innerWidth < 640) {
+        stopAutoScroll(); 
+        return;
+    }
+
+    const container = navContainer;
+    // Используем родительский элемент NAV для точного определения границ прокручиваемой области
+    const parentNav = container.parentElement; 
+    const rect = parentNav.getBoundingClientRect(); 
+    const mouseX = e.clientX;
+    
+    let newSpeed = 0;
+
+    // Прокрутка влево (левая зона)
+    if (mouseX < rect.left + SCROLL_ZONE_WIDTH) {
+        // Вычисляем скорость: чем ближе к краю, тем быстрее
+        const normalizedDistance = (SCROLL_ZONE_WIDTH - (mouseX - rect.left)) / SCROLL_ZONE_WIDTH;
+        newSpeed = -MAX_SCROLL_SPEED * normalizedDistance;
+    } 
+    // Прокрутка вправо (правая зона)
+    else if (mouseX > rect.right - SCROLL_ZONE_WIDTH) {
+        // Вычисляем скорость: чем ближе к краю, тем быстрее
+        const normalizedDistance = (mouseX - (rect.right - SCROLL_ZONE_WIDTH)) / SCROLL_ZONE_WIDTH;
+        newSpeed = MAX_SCROLL_SPEED * normalizedDistance;
+    } 
+    
+    // Обновляем глобальную скорость
+    scrollSpeed = newSpeed;
+
+    // Логика запуска/остановки
+    if (scrollSpeed !== 0 && scrollAnimationFrameId === null) {
+        startAutoScroll();
+    } else if (scrollSpeed === 0 && scrollAnimationFrameId !== null) {
+        stopAutoScroll();
+    }
+}
+
+// ==========================================================
 // ОБРАБОТЧИКИ СОБЫТИЙ
 // ==========================================================
 
@@ -1066,17 +1202,23 @@ function handleNavClick(e) {
 
     switchMainSection(targetSection);
     
+    // Сначала сбрасываем все активные классы
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('is-active'));
+    // Затем активируем кликнутый элемент
     target.classList.add('is-active');
+
 
     if (targetSection === 'catalog') {
         const newCategory = target.dataset.category;
-        searchInput.value = ''; 
-
+        
+        // Очищаем поиск, только если кликнули на другую категорию
         if (newCategory !== currentCategory) {
-            currentCategory = newCategory;
+             searchInput.value = ''; 
+             currentSearchTerm = '';
         }
-        filterAndRender();
+        
+        currentCategory = newCategory;
+        filterAndRender(); // Перерисовываем с учетом новой категории
     }
 }
 
@@ -1087,6 +1229,10 @@ function switchMainSection(target) {
         catalogSection.classList.remove('fade-in-section');
         catalogSection.classList.add('fade-out-section');
         
+        // Снимаем активный класс со всех кнопок каталога и ставим на "О нас"
+        document.querySelectorAll('[data-target-section="catalog"]').forEach(i => i.classList.remove('is-active'));
+        navAbout.classList.add('is-active');
+
         setTimeout(() => {
             aboutSection.classList.remove('fade-out-section');
             aboutSection.classList.add('fade-in-section');
@@ -1099,6 +1245,18 @@ function switchMainSection(target) {
         aboutSection.classList.remove('fade-in-section');
         aboutSection.classList.add('fade-out-section');
         
+        // Ставим активный класс на текущую категорию каталога (или "Все товары")
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('is-active'));
+        const activeCategoryElement = navContainer.querySelector(`[data-category="${currentCategory}"]`);
+        if (activeCategoryElement) {
+            activeCategoryElement.classList.add('is-active');
+        } else {
+             // Fallback: Если что-то пошло не так, активируем "Все товары"
+             currentCategory = ALL_CATEGORY_NAME;
+             navContainer.querySelector(`[data-category="${ALL_CATEGORY_NAME}"]`).classList.add('is-active');
+        }
+
+
         setTimeout(() => {
             catalogSection.classList.remove('fade-out-section');
             catalogSection.classList.add('fade-in-section');
@@ -1109,19 +1267,30 @@ function switchMainSection(target) {
 
 function handleSearchInput() {
     currentSearchTerm = searchInput.value.toLowerCase().trim();
+    // Управление активным классом навигации при поиске
+    // Теперь активный класс остается на выбранной категории (в т.ч. "Все товары"), 
+    // чтобы пользователь видел, в какой области он ищет.
     filterAndRender();
 }
 
 // ==========================================================
-// ГЛАВНЫЙ ФИЛЬТР
+// ГЛАВНЫЙ ФИЛЬТР (МОДИФИЦИРОВАН: Независимый поиск + Категория)
 // ==========================================================
 
 function filterAndRender() {
     let filteredProducts = allProductsData;
+    const isSearching = currentSearchTerm.length > 0;
+    const isAllCategories = currentCategory === ALL_CATEGORY_NAME;
 
-    filteredProducts = filteredProducts.filter(p => p.категория === currentCategory);
+    // 1. ФИЛЬТР ПО КАТЕГОРИИ (Применяется, только если выбрана КОНКРЕТНАЯ категория)
+    if (!isAllCategories) {
+        filteredProducts = filteredProducts.filter(p => p.категория === currentCategory);
+    }
+    // Если isAllCategories === true, то filteredProducts остается равным allProductsData, 
+    // что позволяет искать по всем товарам.
 
-    if (currentSearchTerm.length > 0) {
+    // 2. ФИЛЬТР ПО ПОИСКУ (Применяется всегда, если есть термин)
+    if (isSearching) {
         filteredProducts = filteredProducts.filter(p => 
             p.имя.toLowerCase().includes(currentSearchTerm) ||
             p.группа.toLowerCase().includes(currentSearchTerm)
@@ -1221,9 +1390,22 @@ async function initializeApp() {
     splashScreen.remove();
 
     // 8. Настраиваем слушатели (после того, как DOM готов и виден)
-    document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', handleNavClick));
+    // Прикрепляем слушатели только к динамически созданным элементам
+    document.querySelectorAll('[data-target-section="catalog"]').forEach(i => i.addEventListener('click', handleNavClick));
+    navAbout.addEventListener('click', handleNavClick); // Снова прикрепляем к "О нас"
+    
     searchInput.addEventListener('input', handleSearchInput);
     setupAboutUsTabs();
+    
+    // --- НОВАЯ ЛОГИКА ДЛЯ АВТОПРОКРУТКИ ---
+    // Навешиваем слушатели на родительский контейнер nav, чтобы можно было захватить
+    // курсор, даже если он находится не прямо над кнопками.
+    const parentNavContainer = document.querySelector('nav.flex');
+    if (parentNavContainer) {
+        parentNavContainer.addEventListener('mousemove', handleEdgeScroll);
+        parentNavContainer.addEventListener('mouseleave', stopAutoScroll); 
+    }
+    // ------------------------------------
 }
 
 // Запуск приложения после загрузки DOM
