@@ -3,178 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор стикеров для Telegram</title>
+    <title>Starsstore | Каталог K-Pop (Чистый 3D-Переворот)</title>
+    <!-- Подключаем Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Новые фирменные цвета (полупрозрачные, пастельные градиенты) */
+        :root {
+            --stars-bg-light: #F0F2F5; 
+            --stars-primary-gradient-start: #C3A0FF; /* Мягкий фиолетовый */
+            --stars-primary-gradient-end: #A0D2FF;   /* Мягкий голубой */
+            --stars-accent-gradient-start: #FFD1DC;   /* Пастельный розовый */
+            --stars-accent-gradient-end: #FFABAB;     /* Теплый персиковый */
+            --stars-text-dark: #333333; 
+            --stars-text-light-subtle: #777777; 
+            --stars-shadow-light: rgba(0, 0, 0, 0.1);
+            
+            /* RGB-версии для JS и прозрачности в CSS */
+            --stars-primary-gradient-start-rgb: 195, 160, 255; 
+            --stars-primary-gradient-end-rgb: 160, 210, 255;   
+            --stars-accent-gradient-start-rgb: 255, 209, 220;   
+            --stars-accent-gradient-end-rgb: 255, 171, 171;     
         }
+
+        /* Загрузка шрифтов */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@700;900&display=swap');
+        
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--stars-bg-light);
+            color: var(--stars-text-dark);
         }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 30px;
+        
+        /* Фирменный шрифт для заголовков (Poppins) */
+        .font-stars-display {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* WOW Effect 1: Жидкий Градиент на Canvas (делаем его адаптивным) */
+        .ethereal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 500px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .upload-area:hover {
-            border-color: white;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .upload-area p {
-            margin: 10px 0;
-            font-size: 0.9em;
-        }
-        input[type="file"] {
-            display: none;
-        }
-        #preview {
-            width: 100%;
-            height: 300px;
-            background: #333;
-            border-radius: 12px;
-            margin: 20px 0;
-            position: relative;
+            height: 100%;
+            z-index: -10;
+            pointer-events: none;
             overflow: hidden;
+        }
+
+        /* ========================================================== */
+        /* WOW Effect 3: Градиентный Пульс Фандома (Кнопки Навигации) */
+        /* ========================================================== */
+        .nav-item {
+            transition: all 0.3s ease-in-out;
+            font-weight: 600;
+            /* Базовое невыбранное состояние */
+            background-color: transparent;
+            color: var(--stars-text-dark);
+        }
+
+        .nav-item:not(.is-active):hover {
+            /* Легкий визуальный эффект для невыбранных кнопок */
+            background-color: rgba(var(--stars-primary-gradient-start-rgb), 0.1); 
+            color: var(--stars-primary-gradient-start);
+            transform: translateY(-1px);
+        }
+
+        /* Активное Состояние (Градиентный Пульс) */
+        .nav-item.is-active {
+            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
+            background-size: 200% auto;
+            color: white;
+            box-shadow: 0 4px 15px rgba(160, 210, 255, 0.6);
+            /* Убеждаемся, что трансформация не мешает при активации */
+            transform: scale(1);
+        }
+
+        .nav-item.is-active:hover {
+            background-position: right center;
+            /* Усиленное свечение (Пульсация) */
+            box-shadow: 0 0 10px rgba(195, 160, 255, 0.8), 0 0 20px rgba(160, 210, 255, 0.8); 
+            transform: scale(1.05); /* Легкий эффект при наведении на активную */
+        }
+        
+        /* === Навигационный класс для CTA-кнопки внизу === */
+        /* Переименован, чтобы не конфликтовать с .nav-item */
+        .cta-button-gradient {
+            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
+            background-size: 200% auto;
+            color: white;
+            transition: background-position 0.5s ease, box-shadow 0.3s, transform 0.3s;
+            box-shadow: 0 4px 15px rgba(160, 210, 255, 0.4);
+            font-weight: 600;
+        }
+        .cta-button-gradient:hover {
+            background-position: right center;
+            /* Усиленное свечение (Пульсация) */
+            box-shadow: 0 0 10px rgba(195, 160, 255, 0.8), 0 0 20px rgba(160, 210, 255, 0.8); 
+            transform: scale(1.05);
+        }
+        
+        /* ========================================================== */
+        /* WOW EFFECT 2: 3D FLIP */
+        /* ========================================================== */
+        .product-card-container {
+            perspective: 1000px; /* Для 3D-глубины */
+            box-shadow: 0 5px 15px var(--stars-shadow-light);
+            border-radius: 1rem;
+            overflow: visible; 
+            cursor: pointer; 
+        }
+        
+        /* Главный контейнер для 3D вращения */
+        .product-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d; 
+            /* Чистый, быстрый переворот */
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
+            border-radius: 1rem;
+        }
+
+        /* Перевернутое состояние */
+        .product-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Общие стили для передней и задней сторон */
+        .card-face {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            backface-visibility: hidden; /* Скрывает обратную сторону */
+            border-radius: 1rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
+            height: 100%;
+            box-sizing: border-box;
+            background-color: white;
         }
-        #preview img {
-            max-width: 100%;
-            max-height: 100%;
+
+        /* Передняя сторона (Продукт) */
+        .card-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+            /* Используем прозрачность, чтобы фон просвечивал */
+            background-color: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(5px);
+            position: relative;
         }
-        .text-input {
-            margin-bottom: 20px;
+        
+        /* Задняя сторона (Photocard Reveal) */
+        .photocard-reveal {
+            transform: rotateY(180deg); 
+            background: rgba(255, 255, 255, 0.98); 
+            border: 3px solid var(--stars-accent-gradient-start);
+            color: var(--stars-primary-gradient-start);
+            box-shadow: 0 0 20px rgba(255, 171, 171, 0.6);
+            z-index: 1; 
+            text-align: center;
         }
-        .text-input label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
+
+        /* Стили для Кристальных Слоев на передней стороне */
+        .card-front .card-layer { 
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 1rem;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .text-input input {
+        .card-front .layer-1 { transform: translateZ(0px); z-index: 10; }
+        .card-front .layer-2 { transform: translateZ(5px); z-index: 20; }
+        .card-front .layer-3 { transform: translateZ(10px); z-index: 30; }
+
+        /* Эффект Глинт */
+        .card-glint {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5), transparent 70%);
+            mix-blend-mode: overlay; 
+            opacity: 0;
+            transform: translateZ(15px); 
+            transition: opacity 0.3s;
+            z-index: 45; 
+            border-radius: 1rem;
+            pointer-events: none; 
+        }
+        .product-card-container:hover .card-glint { opacity: 1; } 
+        
+        /* Контент карточки поверх слоев */
+        .card-content {
+            position: relative;
+            z-index: 50; 
+            background-color: transparent;
+            color: var(--stars-text-dark);
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1em;
-        }
-        .text-input input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        button {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            width: 100%;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #5a6fd8;
-        }
-        #downloadBtn {
-            margin-top: 10px;
-            background: #4CAF50;
-        }
-        #downloadBtn:hover {
-            background: #45a049;
-        }
-        #downloadBtn:disabled {
-            background: #888;
-            cursor: not-allowed;
-        }
-        .error {
-            color: #ff5252;
-            font-size: 0.9em;
-            margin: 10px 0;
             text-align: center;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Генератор стикеров для Telegram</h1>
+<body class="min-h-screen">
 
-        <div class="upload-area" id="uploadArea">
-            <label for="fileInput">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7.5 1a.5.5 0 0 1 .379.817L7 2.5V14h1V2.5l.879-.682A.5.5 0 0 1 9 2.5v11h1V2.5a.5.5 0 0 1 .121-.379L12 1H7.5zm2 13V9h-1v5H4V9h-1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1z"/>
-                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-                </svg>
-                <p>Нажмите, чтобы выбрать изображение</p>
-                <p style="font-size: 0.8em; color: #aaa;">(PNG/JPG, до 5 МБ)</p>
-            </label>
-            <input type="file" id="fileInput" accept="image/png, image/jpeg">
-        </div>
+    <!-- WOW Effect 1: Жидкий Градиент на Canvas (Фон) -->
+    <canvas id="bgCanvas" class="ethereal-bg"></canvas>
 
-        <div id="errorMsg" class="error"></div>
+    <!-- Основной контент --><div class="relative z-10 p-4 sm:p-8 md:p-12">
+        
+        <!-- Заголовок / Логотип --><header class="text-center mb-16 pt-8">
+            <h1 class="text-6xl sm:text-7xl font-extrabold tracking-widest font-stars-display" style="color: var(--stars-text-dark); text-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);">
+                STARSSTORE
+            </h1>
+            <p class="text-xl sm:text-2xl mt-1" style="color: var(--stars-text-light-subtle); font-weight: 500;">
+                CONNECTING HEARTS THROUGH K-POP
+            </p>
+        </header>
 
-        <div id="preview">
-            <p style="color: #aaa; padding: 20px;">Изображение не загружено</p>
-        </div>
+        <!-- Навигация (Обновлено: классы nav-item и is-active) --><nav class="flex justify-center mb-16">
+            <div class="flex space-x-2 sm:space-4 p-2 rounded-full shadow-lg bg-white border border-gray-100">
+                <a href="#" class="text-base sm:text-lg px-4 py-2 rounded-full nav-item is-active">Альбомы</a>
+                <a href="#" class="text-base sm:text-lg px-4 py-2 rounded-full nav-item">Карточки</a>
+                <a href="#" class="text-base sm:text-lg px-4 py-2 rounded-full nav-item">Группы</a>
+                <a href="#" class="text-base sm:text-lg px-4 py-2 rounded-full nav-item">Офлайн</a>
+            </div>
+        </nav>
 
-        <div class="text-input">
-            <label for="textInput">Текст для стикера (опционально):</label>
-            <input type="text" id="textInput" placeholder="Например: «Круто!»">
-        </div>
+        <!-- Секция Товаров - Теперь полностью прозрачная --><section class="max-w-7xl mx-auto p-4 md:p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-center mb-10 pb-2 font-stars-display" style="color: var(--stars-text-dark); border-bottom: 2px solid var(--stars-accent-gradient-start);">
+                Новые Поступления
+            </h2>
 
-        <button id="generateBtn">Сгенерировать стикер</button>
-        <button id="downloadBtn" disabled>Скачать стикер</button>
+            <!-- Сетка товаров --><div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+                <!-- Карточка 1: Альбом BTS (Кликабельный) --><div class="product-card-container relative h-80">
+                    <div class="product-card" id="card-1">
+                        
+                        <!-- ПЕРЕДНЯЯ СТОРОНА (Продукт) --><div class="card-face card-front">
+                            <!-- Эфирные слои (для 3D-эффекта) --><div class="card-layer layer-1"></div>
+                            <div class="card-layer layer-2"></div>
+                            <div class="card-layer layer-3"></div>
+                            
+                            <!-- Кристальный Глинт (WOW Effect 2 Enhancement) --><div class="card-glint" id="glint-1"></div>
+                            
+                            <!-- Контент карточки --><div class="card-content flex flex-col items-center justify-center p-4">
+                                <div class="w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
+                                    <span class="text-gray-400 text-4xl font-black font-stars-display">BTS</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mt-2">Map of the Soul: 7</h3>
+                                <p class="text-sm text-gray-500">Версия 4</p>
+                                <p class="text-lg font-bold mt-1 price">2990 ₽</p>
+                            </div>
+                        </div>
+                        
+                        <!-- ЗАДНЯЯ СТОРОНА (Photocard Reveal) --><div class="card-face photocard-reveal">
+                            <!-- SVG Звезда (Розовый) --><svg class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            <span class="text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
+                            <span class="text-sm mt-1 text-gray-600">Внутри Редкий Фотокен!</span>
+                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Карточка 2: Альбом BLACKPINK --><div class="product-card-container relative h-80">
+                    <div class="product-card" id="card-2">
+                        <div class="card-face card-front">
+                            <div class="card-layer layer-1"></div>
+                            <div class="card-layer layer-2"></div>
+                            <div class="card-layer layer-3"></div>
+                            <div class="card-glint" id="glint-2"></div>
+                            <div class="card-content flex flex-col items-center justify-center p-4">
+                                <div class="w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
+                                    <span class="text-gray-400 text-4xl font-black font-stars-display">BP</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mt-2">THE ALBUM</h3>
+                                <p class="text-sm text-gray-500">Pink Ver.</p>
+                                <p class="text-lg font-bold mt-1 price">2500 ₽</p>
+                            </div>
+                        </div>
+                        <div class="card-face photocard-reveal">
+                            <svg class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            <span class="text-lg font-black tracking-wider font-stars-display">LISA</span>
+                            <span class="text-sm mt-1 text-gray-600">Рандомная Карта!</span>
+                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 3: Альбом EXO --><div class="product-card-container relative h-80">
+                    <div class="product-card" id="card-3">
+                        <div class="card-face card-front">
+                            <div class="card-layer layer-1"></div>
+                            <div class="card-layer layer-2"></div>
+                            <div class="card-layer layer-3"></div>
+                            <div class="card-glint" id="glint-3"></div>
+                            <div class="card-content flex flex-col items-center justify-center p-4">
+                                <div class="w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
+                                    <span class="text-gray-400 text-4xl font-black font-stars-display">EXO</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mt-2">Don't Fight The Feeling</h3>
+                                <p class="text-sm text-gray-500">Logic Ver.</p>
+                                <p class="text-lg font-bold mt-1 price">2850 ₽</p>
+                            </div>
+                        </div>
+                        <div class="card-face photocard-reveal">
+                            <svg class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            <span class="text-lg font-black tracking-wider font-stars-display">KAI</span>
+                            <span class="text-sm mt-1 text-gray-600">Официальный Фотокен!</span>
+                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Карточка 4: Альбом NCT --><div class="product-card-container relative h-80">
+                    <div class="product-card" id="card-4">
+                        <div class="card-face card-front">
+                            <div class="card-layer layer-1"></div>
+                            <div class="card-layer layer-2"></div>
+                            <div class="card-layer layer-3"></div>
+                            <div class="card-glint" id="glint-4"></div>
+                            <div class="card-content flex flex-col items-center justify-center p-4">
+                                <div class="w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
+                                    <span class="text-gray-400 text-4xl font-black font-stars-display">NCT</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mt-2">NCT 2020: Resonance Pt. 1</h3>
+                                <p class="text-sm text-gray-500">Past Ver.</p>
+                                <p class="text-lg font-bold mt-1 price">3100 ₽</p>
+                            </div>
+                        </div>
+                        <div class="card-face photocard-reveal">
+                            <svg class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            <span class="text-lg font-black tracking-wider font-stars-display">MARK</span>
+                            <span class="text-sm mt-1 text-gray-600">Фотокен!</span>
+                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Призыв к действию --><div class="text-center mt-20 p-8 rounded-xl border border-dashed" style="background: rgba(var(--stars-primary-gradient-start-rgb), 0.08); border-color: var(--stars-primary-gradient-end);">
+                <p class="text-2xl font-bold mb-4" style="color: var(--stars-text-dark); font-family: 'Poppins', sans-serif;">
+                    Хотите увидеть, какая карточка достанется вам?
+                </p>
+                <p class="text-xl mb-6 text-gray-700">
+                    Все сокровища ждут вас в нашем физическом магазине!
+                </p>
+                <a href="#" class="inline-block px-8 py-3 text-lg rounded-full cta-button-gradient">
+                    Найти Starsstore на карте
+                </a>
+            </div>
+        </section>
+
     </div>
 
     <script>
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const preview = document.getElementById('preview');
-        const textInput = document.getElementById('textInput');
-        const generateBtn = document.getElementById('generateBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const errorMsg = document.getElementById('errorMsg');
+        // ==========================================================
+        // WOW EFFECT 1: ЖИДКИЙ ГРАДИЕНТ НА CANVAS (ФОН)
+        // ==========================================================
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        const root = document.documentElement;
+        const getColor = (varName) => {
+            const rgb = getComputedStyle(root).getPropertyValue(varName).trim();
+            return `rgba(${rgb}, 0.3)`; 
+        };
 
-        let originalImage = null;
+        const colorPalette = [
+            getColor('--stars-primary-gradient-start-rgb'),
+            getColor('--stars-primary-gradient-end-rgb'),
+            getColor('--stars-accent-gradient-start-rgb'),
+            getColor('--stars-accent-gradient-end-rgb')
+        ];
 
-        // Обработчик выбора файла
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            errorMsg.textContent = '';
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-            if (!file) {
-                preview.innerHTML = '<p style="color: #aaa; padding: 20px;">Изображение не загружено</p>';
-                return;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 200 + 150; 
+                this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                this.speedX = (Math.random() - 0.5) * 0.4; 
+                this.speedY = (Math.random() - 0.5) * 0.4;
             }
 
-            // Проверка размера файла (максимум 5 МБ)
-            if (file.size >
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x < -this.radius * 2 || this.x > width + this.radius * 2 || this.y < -this.radius * 2 || this.y > height + this.radius * 2) {
+                    this.x = (this.speedX > 0) ? -this.radius : width + this.radius;
+                    this.y = Math.random() * height;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                
+                gradient.addColorStop(0, this.color.replace('0.3', '0.5')); 
+                gradient.addColorStop(1, this.color.replace('0.3', '0'));
+                
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 7; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateBackground() {
+            // Очистка с небольшим градиентом для эффекта "свечения"
+            ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animateBackground);
+        }
+
+        // ==========================================================
+        // WOW EFFECT 2: 3D-НАКЛОН (Hover) + ЧИСТЫЙ FLIP (Click)
+        // ==========================================================
+        const productCardsContainers = document.querySelectorAll('.product-card-container');
+
+        // 1. Hover (3D Tilt and Glint) - для настольных ПК
+        productCardsContainers.forEach(container => {
+            const cardFront = container.querySelector('.card-front');
+            const layers = container.querySelectorAll('.card-layer');
+            const glint = container.querySelector('.card-glint');
+
+            container.addEventListener('mousemove', (e) => {
+                // Если карточка перевернута, отключаем 3D-наклон
+                if (container.querySelector('.product-card').classList.contains('is-flipped')) {
+                    return;
+                }
+
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // 3D Наклон
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8; 
+                cardFront.style.transform = `scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+                // Смещение слоев
+                layers.forEach((layer, index) => {
+                    const depth = (index + 1) * 2;
+                    const offsetX = ((x - centerX) / centerX) * depth;
+                    const offsetY = ((y - centerY) / centerY) * depth;
+                    layer.style.transform = `translateZ(${index * 5}px) translateX(${offsetX}px) translateY(${offsetY}px)`;
+                });
+
+                // Динамический Глинт (Reflection/Blick)
+                if (glint) {
+                    const glintX = (x / rect.width) * 100;
+                    const glintY = (y / rect.height) * 100;
+                    glint.style.background = `radial-gradient(circle at ${glintX}% ${glintY}%, rgba(255, 255, 255, 0.7), transparent 70%)`;
+                    glint.style.transform = `translateZ(15px) rotateX(${rotateX * 0.5}deg) rotateY(${rotateY * 0.5}deg)`;
+                }
+            });
+
+            container.addEventListener('mouseleave', () => {
+                // Если карточка перевернута, не сбрасываем трансформацию
+                if (container.querySelector('.product-card').classList.contains('is-flipped')) {
+                    return;
+                }
+                cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+                layers.forEach(layer => {
+                    layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
+                });
+                if (glint) {
+                    glint.style.transform = 'translateZ(15px) rotateX(0deg) rotateY(0deg)';
+                }
+            });
+            
+            // 2. Click (3D Flip) - для всех устройств
+            container.addEventListener('click', (e) => {
+                const card = container.querySelector('.product-card');
+                
+                // Просто переключаем класс is-flipped
+                card.classList.toggle('is-flipped');
+                
+                // Сброс 3D-наклона на передней стороне при перевороте
+                if (card.classList.contains('is-flipped')) {
+                    cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+                }
+            });
+        });
+
+        // ==========================================================
+        // WOW EFFECT 3: Навигационные Кнопки (Click Handler)
+        // ==========================================================
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault(); // Предотвращаем переход по ссылке #
+                
+                // Удаляем активный класс со всех элементов
+                navItems.forEach(i => {
+                    i.classList.remove('is-active');
+                });
+                
+                // Добавляем активный класс на нажатый элемент
+                e.currentTarget.classList.add('is-active');
+                
+                // Оповещение в консоль о переключении
+                console.log(`Navigation changed to: ${e.currentTarget.textContent.trim()}`);
+            });
+        });
+
+
+        window.onload = function () {
+            initParticles();
+            animateBackground();
+            console.log("Starsstore Prototype updated: Navigation interactivity enabled.");
+        }
+    </script>
+</body>
+</html>
