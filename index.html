@@ -33,7 +33,8 @@
             overflow-x: hidden;
             background-color: var(--stars-bg-light);
             color: var(--stars-text-dark);
-            /* Важно: минимальная высота, чтобы скроллинг вообще появился */
+            /* Увеличиваем нижний padding, чтобы контент не перекрывался плеером */
+            padding-bottom: 5rem; 
             min-height: 150vh; 
         }
         
@@ -51,11 +52,36 @@
             z-index: -10;
             pointer-events: none;
             overflow: hidden;
-            /* Оставляем GPU ускорение */
             transform: translateZ(0); 
-            /* will-change помогает стабилизировать FIXED элементы */
             will-change: transform, opacity;
         }
+        
+        /* Плеер */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50; /* Высокий z-index, чтобы быть поверх всего */
+            padding: 0.75rem 1rem;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            /* Градиент для плеера */
+            background: linear-gradient(90deg, rgba(var(--stars-primary-gradient-start-rgb), 0.95), rgba(var(--stars-accent-gradient-start-rgb), 0.95));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .play-button {
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
         /* --------------------------- */
 
         /* ========================================================== */
@@ -165,11 +191,9 @@
 <body class="min-h-screen">
 
     <!-- WOW Effect 1: Жидкий Градиент на Canvas (Фон) -->
-    <!-- На телефонах JS отключит анимацию на этом Canvas -->
     <canvas id="bgCanvas" class="ethereal-bg"></canvas>
 
     <!-- Основной контент -->
-    <!-- z-10 тут крайне важен, чтобы контент был над FIXED фоном -->
     <div class="relative z-10 p-2 sm:p-4 md:p-8">
         
         <!-- Заголовок / Логотип -->
@@ -361,6 +385,38 @@
         </section>
 
     </div>
+
+    <!-- ===== НОВЫЙ АУДИО ПЛЕЕР ===== -->
+    <div id="audio-player" class="audio-player">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <!-- Информация о треке -->
+            <div class="flex items-center space-x-3 text-white">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-sm font-bold text-gray-700 font-stars-display shadow-inner">
+                    <span class="text-xs">K-P</span>
+                </div>
+                <div>
+                    <p id="track-title" class="text-sm font-semibold leading-tight">Dynamite (K-Pop Mix)</p>
+                    <p id="track-artist" class="text-xs opacity-80 leading-tight">BTS</p>
+                </div>
+            </div>
+
+            <!-- Элементы управления -->
+            <div class="flex items-center space-x-4">
+                <button id="play-pause-btn" class="w-10 h-10 rounded-full bg-white text-gray-800 flex items-center justify-center play-button focus:outline-none">
+                    <!-- Иконка Play по умолчанию (Треугольник) -->
+                    <svg id="play-icon" class="w-5 h-5 transition-transform duration-200" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <!-- Иконка Pause (Две линии) -->
+                    <svg id="pause-icon" class="w-5 h-5 transition-transform duration-200 hidden" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ============================= -->
+
 
     <script>
         // ==========================================================
@@ -639,6 +695,41 @@
                 console.log(`Navigation changed to: ${e.currentTarget.textContent.trim()}`);
             });
         });
+
+        // ==========================================================
+        // НОВЫЙ ЭФФЕКТ: АУДИО ПЛЕЕР
+        // ==========================================================
+        let isPlaying = false;
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        
+        // ВАЖНО: В реальном приложении здесь должен быть инициализирован
+        // объект Audio или Tone.js. Здесь мы просто имитируем
+        // иконку и состояние.
+        // const audio = new Audio('ПУТЬ_К_ВАШЕМУ_K-POP_ТРЕКУ.mp3'); 
+
+        function togglePlayback() {
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                // В реальном проекте: audio.play();
+                console.log('Audio: Playing track...');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                // В реальном проекте: audio.pause();
+                console.log('Audio: Paused.');
+            }
+        }
+
+        if (playPauseBtn) {
+            playPauseBtn.addEventListener('click', togglePlayback);
+        } else {
+            console.error("Audio player button not found.");
+        }
 
 
         window.onload = function () {
