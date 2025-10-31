@@ -35,12 +35,10 @@
             color: var(--stars-text-dark);
         }
         
-        /* Фирменный шрифт для заголовков (Poppins) */
         .font-stars-display {
             font-family: 'Poppins', sans-serif;
         }
 
-        /* WOW Effect 1: Жидкий Градиент на Canvas (делаем его адаптивным) */
         .ethereal-bg {
             position: fixed;
             top: 0;
@@ -53,34 +51,26 @@
         }
 
         /* ========================================================== */
-        /* WOW Effect 3: Градиентный Пульс Фандома (Кнопки Навигации) */
+        /* Навигация: Улучшенное мобильное центрирование */
         /* ========================================================== */
         .nav-item {
             transition: all 0.3s ease-in-out;
             font-weight: 600;
-            /* Базовое невыбранное состояние */
             background-color: transparent;
             color: var(--stars-text-dark);
-            flex-grow: 1; /* Обеспечивает равномерное распределение на мобильных */
+            flex-grow: 1; /* Обеспечивает равномерное распределение */
             text-align: center;
         }
         
-        /* Мобильная оптимизация для nav-item */
         .nav-container {
-            width: 95%; /* Шире на мобильных */
-            padding: 0.5rem;
+            /* Убеждаемся, что на мобильных оно не слишком широкое */
+            max-width: 400px; 
+            width: 100%;
+            padding: 0.25rem; /* Уменьшаем отступ для мобильных */
             border-radius: 9999px;
             box-shadow: 0 2px 10px var(--stars-shadow-light);
         }
 
-        .nav-item:not(.is-active):hover {
-            /* Легкий визуальный эффект для невыбранных кнопок */
-            background-color: rgba(var(--stars-primary-gradient-start-rgb), 0.1); 
-            color: var(--stars-primary-gradient-start);
-            transform: translateY(-1px);
-        }
-
-        /* Активное Состояние (Градиентный Пульс) */
         .nav-item.is-active {
             background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
             background-size: 200% auto;
@@ -89,53 +79,20 @@
             transform: scale(1);
         }
 
-        .nav-item.is-active:hover {
-            background-position: right center;
-            /* Усиленное свечение (Пульсация) */
-            box-shadow: 0 0 10px rgba(195, 160, 255, 0.8), 0 0 20px rgba(160, 210, 255, 0.8); 
-            transform: scale(1.05); /* Легкий эффект при наведении на активную */
-        }
-        
-        /* === Навигационный класс для CTA-кнопки внизу === */
-        .cta-button-gradient {
-            background-image: linear-gradient(45deg, var(--stars-primary-gradient-start), var(--stars-primary-gradient-end), var(--stars-accent-gradient-start));
-            background-size: 200% auto;
-            color: white;
-            transition: background-position 0.5s ease, box-shadow 0.3s, transform 0.3s;
-            box-shadow: 0 4px 15px rgba(160, 210, 255, 0.4);
-            font-weight: 600;
-        }
-        .cta-button-gradient:hover {
-            background-position: right center;
-            box-shadow: 0 0 10px rgba(195, 160, 255, 0.8), 0 0 20px rgba(160, 210, 255, 0.8); 
-            transform: scale(1.05);
-        }
-        
         /* ========================================================== */
-        /* WOW EFFECT 2: 3D FLIP */
+        /* 3D FLIP Card */
         /* ========================================================== */
         .product-card-container {
             perspective: 1000px; 
-            box-shadow: 0 5px 15px var(--stars-shadow-light);
+            box-shadow: 0 3px 10px var(--stars-shadow-light); /* Немного уменьшили тень для мобильных */
             border-radius: 1rem;
             overflow: visible; 
             cursor: pointer; 
-            /* Адаптивное управление высотой: на мобильных - квадрат, на десктопе - h-80 */
-            aspect-ratio: 1 / 1; 
-        }
-
-        /* Переопределение для десктопов */
-        @media (min-width: 768px) {
-            .product-card-container {
-                height: 320px; /* h-80 */
-                aspect-ratio: auto; 
-            }
+            aspect-ratio: 1 / 1; /* Жесткий квадратный размер */
         }
         
         .product-card {
-            width: 100%;
-            height: 100%;
-            position: relative;
+            width: 100%; height: 100%; position: relative;
             transform-style: preserve-3d; 
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
             border-radius: 1rem;
@@ -146,85 +103,57 @@
         }
 
         .card-face {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             backface-visibility: hidden; 
             border-radius: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             justify-content: center;
-            padding: 1rem;
-            height: 100%;
+            padding: 0.75rem; /* Уменьшаем padding на карточке для мобильных */
             box-sizing: border-box;
             background-color: white;
         }
 
-        .card-front {
-            z-index: 2;
-            transform: rotateY(0deg);
-            background-color: rgba(255, 255, 255, 0.8); 
-            backdrop-filter: blur(5px);
-            position: relative;
-        }
-        
         .photocard-reveal {
             transform: rotateY(180deg); 
             background: rgba(255, 255, 255, 0.98); 
             border: 3px solid var(--stars-accent-gradient-start);
             color: var(--stars-primary-gradient-start);
-            box-shadow: 0 0 20px rgba(255, 171, 171, 0.6);
-            z-index: 1; 
-            text-align: center;
-        }
-
-        .card-front .card-layer { 
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 1rem;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .card-front .layer-1 { transform: translateZ(0px); z-index: 10; }
-        .card-front .layer-2 { transform: translateZ(5px); z-index: 20; }
-        .card-front .layer-3 { transform: translateZ(10px); z-index: 30; }
-
-        .card-glint {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5), transparent 70%);
-            mix-blend-mode: overlay; 
-            opacity: 0;
-            transform: translateZ(15px); 
-            transition: opacity 0.3s;
-            z-index: 45; 
-            border-radius: 1rem;
-            pointer-events: none; 
-        }
-        /* Убираем hover эффект с глинта, чтобы избежать проблем на тачскринах */
-        /* .product-card-container:hover .card-glint { opacity: 1; } */ 
-        
-        .card-content {
-            position: relative;
-            z-index: 50; 
-            background-color: transparent;
-            color: var(--stars-text-dark);
-            width: 100%;
-            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 171, 171, 0.6);
         }
         
-        /* Мобильная оптимизация для контента карточки */
+        /* Мобильная адаптация контента внутри карточки */
         .card-content .product-image-mock {
-            width: 75%; 
-            height: 75%;
-            /* Адаптивный размер текстовых элементов */
+            /* Делаем его более отзывчивым по ширине */
+            width: 80%; 
+            padding-bottom: 80%; /* Создаем квадрат внутри, чтобы изображение не зависело от h-XX */
+            height: 0;
+            position: relative;
+            background-color: #f7f7f7;
+            border-radius: 0.5rem;
         }
-        .card-content h3 { font-size: 1rem; } /* sm:text-xl */
-        .card-content .price { font-size: 1.1rem; } /* sm:text-lg */
-        @media (min-width: 640px) {
-             .card-content h3 { font-size: 1.25rem; } /* sm:text-xl */
-             .card-content .price { font-size: 1.125rem; } /* sm:text-lg */
+        .card-content .product-image-mock span {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem; /* Уменьшаем шрифт на мобильных */
         }
 
+        .card-content h3 { font-size: 0.875rem; } /* text-sm */
+        .card-content .price { font-size: 1rem; font-weight: 700; } /* text-base */
+        
+        /* Медиа-запросы для десктопа/планшета */
+        @media (min-width: 640px) {
+            .card-content .product-image-mock {
+                width: 70%;
+                padding-bottom: 70%; 
+            }
+            .card-content .product-image-mock span {
+                font-size: 2.5rem; /* Увеличиваем обратно на sm+ */
+            }
+            .card-content h3 { font-size: 1.125rem; } /* text-lg */
+            .card-content .price { font-size: 1.25rem; } /* text-xl */
+        }
+        
     </style>
 </head>
 <body class="min-h-screen">
@@ -232,154 +161,170 @@
     <!-- WOW Effect 1: Жидкий Градиент на Canvas (Фон) -->
     <canvas id="bgCanvas" class="ethereal-bg"></canvas>
 
-    <!-- Основной контент --><div class="relative z-10 p-4 sm:p-8 md:p-12">
+    <!-- Основной контент -->
+    <div class="relative z-10 p-2 sm:p-4 md:p-8">
         
-        <!-- Заголовок / Логотип --><header class="text-center mb-10 sm:mb-16 pt-4 sm:pt-8">
-            <h1 class="text-5xl sm:text-7xl font-extrabold tracking-widest font-stars-display" style="color: var(--stars-text-dark); text-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);">
+        <!-- Заголовок / Логотип -->
+        <header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-widest font-stars-display" style="color: var(--stars-text-dark); text-shadow: 0 4px 5px rgba(0, 0, 0, 0.05);">
                 STARSSTORE
             </h1>
-            <p class="text-lg sm:text-2xl mt-1" style="color: var(--stars-text-light-subtle); font-weight: 500;">
+            <p class="text-sm sm:text-xl mt-0.5" style="color: var(--stars-text-light-subtle); font-weight: 500;">
                 CONNECTING HEARTS THROUGH K-POP
             </p>
         </header>
 
-        <!-- Навигация (Адаптировано для мобильных) --><nav class="flex justify-center mb-10 sm:mb-16">
-            <div class="flex space-x-1 sm:space-x-4 p-1 sm:p-2 rounded-full shadow-lg bg-white border border-gray-100 nav-container">
-                <a href="#" class="text-xs sm:text-lg px-2 sm:px-4 py-2 rounded-full nav-item is-active">Альбомы</a>
-                <a href="#" class="text-xs sm:text-lg px-2 sm:px-4 py-2 rounded-full nav-item">Карточки</a>
-                <a href="#" class="text-xs sm:text-lg px-2 sm:px-4 py-2 rounded-full nav-item">Группы</a>
-                <a href="#" class="text-xs sm:text-lg px-2 sm:px-4 py-2 rounded-full nav-item">Офлайн</a>
+        <!-- Навигация (Улучшенное центрирование для мобильных) -->
+        <nav class="flex justify-center mb-8 sm:mb-12">
+            <div class="flex space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full max-w-sm mx-auto">
+                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item is-active">Альбомы</a>
+                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Карточки</a>
+                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Группы</a>
+                <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Офлайн</a>
             </div>
         </nav>
 
-        <!-- Секция Товаров --><section class="max-w-7xl mx-auto p-0 md:p-8 rounded-2xl">
-            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 pb-2 font-stars-display" style="color: var(--stars-text-dark); border-bottom: 2px solid var(--stars-accent-gradient-start);">
+        <!-- Секция Товаров -->
+        <section class="max-w-4xl mx-auto p-0 rounded-2xl">
+            <h2 class="text-xl sm:text-2xl font-bold text-center mb-6 pb-2 font-stars-display" style="color: var(--stars-text-dark); border-bottom: 2px solid var(--stars-accent-gradient-start);">
                 Новые Поступления
             </h2>
 
-            <!-- Сетка товаров (Адаптирована: 2 колонки на мобильных) --><div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Сетка товаров: Принудительно 2 колонки на мобильных (grid-cols-2) -->
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
 
-                <!-- Карточка 1: Альбом BTS (Кликабельный) --><div class="product-card-container relative">
+                <!-- Карточка 1: Альбом BTS (Кликабельный) -->
+                <div class="product-card-container relative">
                     <div class="product-card" id="card-1">
                         
-                        <!-- ПЕРЕДНЯЯ СТОРОНА (Продукт) --><div class="card-face card-front">
-                            <!-- Эфирные слои (для 3D-эффекта) --><div class="card-layer layer-1"></div>
+                        <!-- ПЕРЕДНЯЯ СТОРОНА (Продукт) -->
+                        <div class="card-face card-front">
+                            <!-- Эфирные слои (для 3D-эффекта) -->
+                            <div class="card-layer layer-1"></div>
                             <div class="card-layer layer-2"></div>
                             <div class="card-layer layer-3"></div>
                             
-                            <!-- Кристальный Глинт --><div class="card-glint" id="glint-1"></div>
+                            <!-- Кристальный Глинт -->
+                            <div class="card-glint" id="glint-1"></div>
                             
-                            <!-- Контент карточки --><div class="card-content flex flex-col items-center justify-center p-2 sm:p-4">
-                                <div class="product-image-mock w-20 h-20 sm:w-40 sm:h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
-                                    <span class="text-gray-400 text-2xl sm:text-4xl font-black font-stars-display">BTS</span>
+                            <!-- Контент карточки -->
+                            <div class="card-content flex flex-col items-center justify-center p-2">
+                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
+                                    <span class="text-gray-400 font-black font-stars-display">BTS</span>
                                 </div>
                                 <h3 class="font-semibold text-center mt-2">Map of the Soul: 7</h3>
-                                <p class="text-xs sm:text-sm text-gray-500">Версия 4</p>
+                                <p class="text-xs text-gray-500">Версия 4</p>
                                 <p class="font-bold mt-1 price">2990 ₽</p>
                             </div>
                         </div>
                         
-                        <!-- ЗАДНЯЯ СТОРОНА (Photocard Reveal) --><div class="card-face photocard-reveal">
-                            <!-- SVG Звезда (Розовый) --><svg class="w-8 h-8 sm:w-10 sm:h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                        <!-- ЗАДНЯЯ СТОРОНА (Photocard Reveal) -->
+                        <div class="card-face photocard-reveal">
+                            <!-- SVG Звезда (Розовый) -->
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span class="text-md sm:text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
-                            <span class="text-xs sm:text-sm mt-1 text-gray-600">Внутри Редкий Фотокен!</span>
-                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
+                            <span class="text-xs mt-0.5 text-gray-600">Внутри Редкий Фотокен!</span>
+                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Карточка 2: Альбом BLACKPINK --><div class="product-card-container relative">
+                <!-- Карточка 2: Альбом BLACKPINK -->
+                <div class="product-card-container relative">
                     <div class="product-card" id="card-2">
                         <div class="card-face card-front">
                             <div class="card-layer layer-1"></div>
                             <div class="card-layer layer-2"></div>
                             <div class="card-layer layer-3"></div>
                             <div class="card-glint" id="glint-2"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2 sm:p-4">
-                                <div class="product-image-mock w-20 h-20 sm:w-40 sm:h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
-                                    <span class="text-gray-400 text-2xl sm:text-4xl font-black font-stars-display">BP</span>
+                            <div class="card-content flex flex-col items-center justify-center p-2">
+                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
+                                    <span class="text-gray-400 font-black font-stars-display">BP</span>
                                 </div>
                                 <h3 class="font-semibold text-center mt-2">THE ALBUM</h3>
-                                <p class="text-xs sm:text-sm text-gray-500">Pink Ver.</p>
+                                <p class="text-xs text-gray-500">Pink Ver.</p>
                                 <p class="font-bold mt-1 price">2500 ₽</p>
                             </div>
                         </div>
                         <div class="card-face photocard-reveal">
-                            <svg class="w-8 h-8 sm:w-10 sm:h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span class="text-md sm:text-lg font-black tracking-wider font-stars-display">LISA</span>
-                            <span class="text-xs sm:text-sm mt-1 text-gray-600">Рандомная Карта!</span>
-                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">LISA</span>
+                            <span class="text-xs mt-0.5 text-gray-600">Рандомная Карта!</span>
+                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Карточка 3: Альбом EXO --><div class="product-card-container relative">
+                <!-- Карточка 3: Альбом EXO -->
+                <div class="product-card-container relative">
                     <div class="product-card" id="card-3">
                         <div class="card-face card-front">
                             <div class="card-layer layer-1"></div>
                             <div class="card-layer layer-2"></div>
                             <div class="card-layer layer-3"></div>
                             <div class="card-glint" id="glint-3"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2 sm:p-4">
-                                <div class="product-image-mock w-20 h-20 sm:w-40 sm:h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
-                                    <span class="text-gray-400 text-2xl sm:text-4xl font-black font-stars-display">EXO</span>
+                            <div class="card-content flex flex-col items-center justify-center p-2">
+                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
+                                    <span class="text-gray-400 font-black font-stars-display">EXO</span>
                                 </div>
                                 <h3 class="font-semibold text-center mt-2">Don't Fight The Feeling</h3>
-                                <p class="text-xs sm:text-sm text-gray-500">Logic Ver.</p>
+                                <p class="text-xs text-gray-500">Logic Ver.</p>
                                 <p class="font-bold mt-1 price">2850 ₽</p>
                             </div>
                         </div>
                         <div class="card-face photocard-reveal">
-                            <svg class="w-8 h-8 sm:w-10 sm:h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span class="text-md sm:text-lg font-black tracking-wider font-stars-display">KAI</span>
-                            <span class="text-xs sm:text-sm mt-1 text-gray-600">Официальный Фотокен!</span>
-                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">KAI</span>
+                            <span class="text-xs mt-0.5 text-gray-600">Официальный Фотокен!</span>
+                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Карточка 4: Альбом NCT --><div class="product-card-container relative">
+                <!-- Карточка 4: Альбом NCT -->
+                <div class="product-card-container relative">
                     <div class="product-card" id="card-4">
                         <div class="card-face card-front">
                             <div class="card-layer layer-1"></div>
                             <div class="card-layer layer-2"></div>
                             <div class="card-layer layer-3"></div>
                             <div class="card-glint" id="glint-4"></div>
-                            <div class="card-content flex flex-col items-center justify-center p-2 sm:p-4">
-                                <div class="product-image-mock w-20 h-20 sm:w-40 sm:h-40 bg-gray-100 rounded-lg flex items-center justify-center mb-3 border border-gray-200">
-                                    <span class="text-gray-400 text-2xl sm:text-4xl font-black font-stars-display">NCT</span>
+                            <div class="card-content flex flex-col items-center justify-center p-2">
+                                <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
+                                    <span class="text-gray-400 font-black font-stars-display">NCT</span>
                                 </div>
                                 <h3 class="font-semibold text-center mt-2">NCT 2020: Resonance Pt. 1</h3>
-                                <p class="text-xs sm:text-sm text-gray-500">Past Ver.</p>
+                                <p class="text-xs text-gray-500">Past Ver.</p>
                                 <p class="font-bold mt-1 price">3100 ₽</p>
                             </div>
                         </div>
                         <div class="card-face photocard-reveal">
-                            <svg class="w-8 h-8 sm:w-10 sm:h-10 mb-2" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span class="text-md sm:text-lg font-black tracking-wider font-stars-display">MARK</span>
-                            <span class="text-xs sm:text-sm mt-1 text-gray-600">Фотокен!</span>
-                            <p class="text-xs mt-4 text-gray-400">(Кликните, чтобы вернуться)</p>
+                            <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">MARK</span>
+                            <span class="text-xs mt-0.5 text-gray-600">Фотокен!</span>
+                            <p class="text-xs mt-3 text-gray-400">(Кликните, чтобы вернуться)</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Призыв к действию --><div class="text-center mt-16 p-6 sm:p-8 rounded-xl border border-dashed mx-4 sm:mx-0" style="background: rgba(var(--stars-primary-gradient-start-rgb), 0.08); border-color: var(--stars-primary-gradient-end);">
-                <p class="text-xl sm:text-2xl font-bold mb-4" style="color: var(--stars-text-dark); font-family: 'Poppins', sans-serif;">
+            <!-- Призыв к действию -->
+            <div class="text-center mt-12 p-4 sm:p-6 rounded-xl border border-dashed mx-2 sm:mx-0" style="background: rgba(var(--stars-primary-gradient-start-rgb), 0.08); border-color: var(--stars-primary-gradient-end);">
+                <p class="text-lg sm:text-xl font-bold mb-3" style="color: var(--stars-text-dark); font-family: 'Poppins', sans-serif;">
                     Хотите увидеть, какая карточка достанется вам?
                 </p>
-                <p class="text-md sm:text-xl mb-6 text-gray-700">
+                <p class="text-sm sm:text-lg mb-4 text-gray-700">
                     Все сокровища ждут вас в нашем физическом магазине!
                 </p>
-                <a href="#" class="inline-block px-6 py-3 text-md sm:text-lg rounded-full cta-button-gradient">
+                <a href="#" class="inline-block px-5 py-2.5 text-sm sm:text-md rounded-full cta-button-gradient">
                     Найти Starsstore на карте
                 </a>
             </div>
@@ -436,7 +381,7 @@
                 ctx.beginPath();
                 const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
                 
-                gradient.addColorStop(0, this.color.replace('0.3', '0.5').replace('0.2', '0.4')); // Увеличенная прозрачность центра
+                gradient.addColorStop(0, this.color.replace('0.3', '0.5').replace('0.2', '0.4')); 
                 gradient.addColorStop(1, this.color.replace('0.3', '0').replace('0.2', '0'));
                 
                 ctx.fillStyle = gradient;
@@ -447,7 +392,8 @@
         
         function initParticles() {
             particles = [];
-            for (let i = 0; i < 7; i++) {
+            // Уменьшено количество частиц для лучшей производительности на мобильных
+            for (let i = 0; i < 5; i++) { 
                 particles.push(new Particle());
             }
         }
@@ -455,13 +401,11 @@
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            // Переинициализируем частицы при изменении размера для правильного позиционирования
             initParticles(); 
         }
         window.addEventListener('resize', resizeCanvas);
         
         function animateBackground() {
-            // Очистка с небольшим градиентом для эффекта "свечения"
             ctx.fillStyle = 'rgba(240, 242, 245, 0.03)';
             ctx.fillRect(0, 0, width, height);
 
@@ -488,7 +432,6 @@
 
                 container.addEventListener('mousemove', (e) => {
                     const card = container.querySelector('.product-card');
-                    // Если карточка перевернута, отключаем 3D-наклон
                     if (card.classList.contains('is-flipped')) {
                         return;
                     }
@@ -532,7 +475,7 @@
                         layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
                     });
                     if (glint) {
-                         glint.style.opacity = 0; // Скрываем глинт при уходе курсора
+                         glint.style.opacity = 0; 
                          glint.style.transform = 'translateZ(15px) rotateX(0deg) rotateY(0deg)';
                     }
                 });
@@ -542,8 +485,8 @@
         // 2. Click (3D Flip) - для всех устройств
         productCardsContainers.forEach(container => {
             container.addEventListener('click', (e) => {
-                // Если элемент, по которому кликнули, не является самой карточкой, игнорируем
-                if (e.target.closest('.product-card-container') !== container) {
+                // Избегаем срабатывания, если клик был на дочернем элементе (например, на ссылке)
+                if (e.target.closest('.product-card-container') !== container || e.target.tagName === 'A') {
                     return; 
                 }
 
@@ -551,16 +494,15 @@
                 const cardFront = container.querySelector('.card-front');
                 const glint = container.querySelector('.card-glint');
 
-                // Переключаем класс is-flipped
                 card.classList.toggle('is-flipped');
                 
-                // Сброс всех 3D-наклонов, чтобы избежать искажений во время переворота или после него
+                // Сброс всех 3D-наклонов 
                 cardFront.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
                 container.querySelectorAll('.card-layer').forEach(layer => {
                     layer.style.transform = 'translateZ(0px) translateX(0) translateY(0)';
                 });
                 if (glint) {
-                   glint.style.opacity = card.classList.contains('is-flipped') ? 0 : 1; // Скрываем глинт, когда карточка перевернута
+                   glint.style.opacity = card.classList.contains('is-flipped') ? 0 : 1; 
                 }
             });
         });
@@ -581,18 +523,14 @@
                 e.currentTarget.classList.add('is-active');
                 
                 console.log(`Navigation changed to: ${e.currentTarget.textContent.trim()}`);
-                
-                // Здесь будет логика для фильтрации товаров (не реализовано в этом прототипе)
-                // updateProductGrid(e.currentTarget.textContent.trim());
             });
         });
 
 
         window.onload = function () {
-            // Инициализируем размер Canvas и частицы здесь, после полной загрузки DOM и скрипта
             resizeCanvas();
             animateBackground();
-            console.log("Starsstore Prototype updated: Fully responsive layout implemented.");
+            console.log("Starsstore Mobile Layout FIX: Grid and navigation adjusted for optimal mobile viewing.");
         }
     </script>
 </body>
