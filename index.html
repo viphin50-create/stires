@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starsstore | Каталог K-Pop</title>
-    <!-- Подключаем Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
+
+<script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         /* Фирменные цвета (Светлая тема) */
@@ -22,13 +24,14 @@
         /* Загрузка шрифтов */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@700;900&display=swap');
         
-        /* 1. Мобильный/Дефолтный Фон (Статичный/Замороженный) */
+        /* ========================================================== */
+        /* 1. Глобальный Фон (Теперь всегда динамический) */
+        /* ========================================================== */
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Статичный (замороженный) светлый фон для мобильных */
-            background-color: var(--stars-bg-default); 
-            background-image: linear-gradient(135deg, var(--stars-bg-default) 0%, #E0E7FF 100%); /* Мягкий синий/белый градиент */
+            /* Устанавливаем фон body в none, чтобы animated-background был виден */
+            background: none; 
             background-attachment: fixed;
             color: var(--stars-text-dark);
             min-height: 100vh; 
@@ -39,33 +42,27 @@
         }
 
         /* ========================================================== */
-        /* 2. Анимированный Фон (Только для Планшетов/Десктопов) */
+        /* 2. Анимированный Фон (Теперь ГЛОБАЛЬНО для Всех Устройств) */
         /* ========================================================== */
-        @media (min-width: 768px) {
-            /* Скрываем статический фон body для планшетов/десктопов, чтобы показать анимацию */
-            body {
-                background: none; 
-            }
-            .animated-background {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1; /* Помещаем под контент */
-                /* Увеличение цветов и изменение градиента для эффекта объемных облаков */
-                background: linear-gradient(-45deg, 
-                    #E0E7FF 0%,          /* Светло-голубой */
-                    var(--stars-accent-gradient-start) 25%, /* Розовый */
-                    var(--stars-bg-default) 50%,        /* Белый */
-                    var(--stars-primary-gradient-end) 75%, /* Голубой */
-                    #F8F9FA 100%         /* Белый снова */
-                ); 
-                background-size: 600% 600%; /* Увеличен размер для большего пространства движения */
-                animation: gradientShift 35s ease infinite alternate; /* Немного замедлили, добавили alternate */
-            }
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Помещаем под контент */
+            /* Увеличение цветов и изменение градиента для эффекта объемных облаков */
+            background: linear-gradient(-45deg, 
+                #E0E7FF 0%,          /* Светло-голубой */
+                var(--stars-accent-gradient-start) 25%, /* Розовый */
+                var(--stars-bg-default) 50%,        /* Белый */
+                var(--stars-primary-gradient-end) 75%, /* Голубой */
+                #F8F9FA 100%         /* Белый снова */
+            ); 
+            background-size: 600% 600%; /* Увеличен размер для большего пространства движения */
+            animation: gradientShift 35s ease infinite alternate; /* Немного замедлили, добавили alternate */
         }
-
+        
         @keyframes gradientShift {
             0% {
                 background-position: 0% 0%; 
@@ -201,12 +198,20 @@
 </head>
 <body class="min-h-screen">
     
-    <!-- Анимированный фон (ВИДЕН ТОЛЬКО на планшетах/десктопах) --><div class="animated-background"></div>
+    
 
-    <!-- Основной контент (z-index: 10, чтобы быть над анимированным фоном) --><div class="relative z-10 p-2 sm:p-4 md:p-8">
+<div class="animated-background"></div>
+
+    
+
+<div class="relative z-10 p-2 sm:p-4 md:p-8">
         
-        <!-- Заголовок / Логотип --><header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
-            <!-- Логотип вместо текстового заголовка --><img src="https://static.insales-cdn.com/files/1/4286/27119806/original/лого_stars_store_dlya_saita.png" 
+        
+
+<header class="text-center mb-6 sm:mb-10 pt-2 sm:pt-4">
+            
+
+<img src="https://static.insales-cdn.com/files/1/4286/27119806/original/лого_stars_store_dlya_saita.png" 
                  alt="Starsstore K-Pop Logo" 
                  class="mx-auto w-48 sm:w-64 h-auto mb-2 filter drop-shadow-md">
             <p class="text-sm sm:text-xl mt-0.5" style="color: var(--stars-text-light-subtle); font-weight: 500;">
@@ -214,7 +219,9 @@
             </p>
         </header>
 
-        <!-- Навигация (Улучшенное центрирование для мобильных) --><nav class="flex justify-center mb-8 sm:mb-12">
+        
+
+<nav class="flex justify-center mb-8 sm:mb-12">
             <div class="flex space-x-1 p-1 rounded-full shadow-lg bg-white border border-gray-100 nav-container w-full max-w-sm mx-auto">
                 <a href="#" class="text-xs px-2 py-2 rounded-full nav-item is-active">Альбомы</a>
                 <a href="#" class="text-xs px-2 py-2 rounded-full nav-item">Карточки</a>
@@ -223,19 +230,29 @@
             </div>
         </nav>
 
-        <!-- Секция Товаров --><section class="max-w-4xl mx-auto p-0 rounded-2xl">
+        
+
+<section class="max-w-4xl mx-auto p-0 rounded-2xl">
             <h2 class="text-xl sm:text-2xl font-bold text-center mb-6 pb-2 font-stars-display" style="color: var(--stars-text-dark); border-bottom: 2px solid var(--stars-accent-gradient-start);">
                 Новые Поступления
             </h2>
 
-            <!-- Сетка товаров: Принудительно 2 колонки на мобильных (grid-cols-2) --><div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
+            
 
-                <!-- Карточка 1: Альбом BTS (Кликабельный) --><div class="product-card-container relative">
+<div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2">
+
+                
+
+<div class="product-card-container relative">
                     <div class="product-card" id="card-1">
                         
-                        <!-- ПЕРЕДНЯЯ СТОРОНА (Продукт) --><div class="card-face card-front">
+                        
+
+<div class="card-face card-front">
                             
-                            <!-- Контент карточки --><div class="card-content flex flex-col items-center justify-center p-2">
+                            
+
+<div class="card-content flex flex-col items-center justify-center p-2">
                                 <div class="product-image-mock mb-2 flex items-center justify-center border border-gray-200">
                                     <span class="text-gray-400 font-black font-stars-display">BTS</span>
                                 </div>
@@ -245,8 +262,12 @@
                             </div>
                         </div>
                         
-                        <!-- ЗАДНЯЯ СТОРОНА (Photocard Reveal) --><div class="card-face photocard-reveal">
-                            <!-- SVG Звезда (Розовый) --><svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
+                        
+
+<div class="card-face photocard-reveal">
+                            
+
+<svg class="w-6 h-6 sm:w-8 sm:h-8 mb-1" viewBox="0 0 24 24" fill="currentColor" style="color: var(--stars-accent-gradient-end);">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
                             <span class="text-sm sm:text-lg font-black tracking-wider font-stars-display">JUNGKOOK</span>
@@ -256,7 +277,9 @@
                     </div>
                 </div>
                 
-                <!-- Карточка 2: Альбом BLACKPINK --><div class="product-card-container relative">
+                
+
+<div class="product-card-container relative">
                     <div class="product-card" id="card-2">
                         <div class="card-face card-front">
                             <div class="card-content flex flex-col items-center justify-center p-2">
@@ -279,7 +302,9 @@
                     </div>
                 </div>
 
-                <!-- Карточка 3: Альбом EXO --><div class="product-card-container relative">
+                
+
+<div class="product-card-container relative">
                     <div class="product-card" id="card-3">
                         <div class="card-face card-front">
                             <div class="card-content flex flex-col items-center justify-center p-2">
@@ -302,7 +327,9 @@
                     </div>
                 </div>
                 
-                <!-- Карточка 4: Альбом NCT --><div class="product-card-container relative">
+                
+
+<div class="product-card-container relative">
                     <div class="product-card" id="card-4">
                         <div class="card-face card-front">
                             <div class="card-content flex flex-col items-center justify-center p-2">
@@ -326,12 +353,18 @@
                 </div>
             </div>
             
-            <!-- Добавляем дополнительные мок-элементы, чтобы страница была длиннее и можно было скроллить --><div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
+            
+
+<div class="mt-8 text-center text-gray-400 p-4 border-t border-gray-200">
                 <p>... еще 16 товаров на этой странице ...</p>
             </div>
             
-            <!-- Секция ниже основной сетки, чтобы обеспечить прокрутку --><div id="extra-scroll-content" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2 mt-4">
-                <!-- Пустые мок-карточки для длины --><div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
+            
+
+<div id="extra-scroll-content" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2 mt-4">
+                
+
+<div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
                     <span class="text-xs text-gray-300">Плейсхолдер</span>
                 </div>
                 <div class="product-card-container aspect-square bg-white border border-gray-100 flex items-center justify-center rounded-xl p-4 shadow-sm opacity-60">
@@ -345,7 +378,9 @@
                 </div>
             </div>
 
-            <!-- Призыв к действию --><div class="text-center mt-12 p-4 sm:p-6 rounded-xl border border-dashed mx-2 sm:mx-0" style="background: rgba(195, 160, 255, 0.08); border-color: var(--stars-primary-gradient-end);">
+            
+
+<div class="text-center mt-12 p-4 sm:p-6 rounded-xl border border-dashed mx-2 sm:mx-0" style="background: rgba(195, 160, 255, 0.08); border-color: var(--stars-primary-gradient-end);">
                 <p class="text-lg sm:text-xl font-bold mb-3" style="color: var(--stars-text-dark); font-family: 'Poppins', sans-serif;">
                     Хотите увидеть, какая карточка достанется вам?
                 </p>
@@ -358,7 +393,9 @@
             </div>
         </section>
         
-        <!-- Пустой футер, чтобы страница не была слишком короткой --><footer class="mt-12 text-center text-gray-500 pb-4">
+        
+
+<footer class="mt-12 text-center text-gray-500 pb-4">
             <p class="text-xs">&copy; 2025 Starsstore K-Pop. Все права защищены.</p>
         </footer>
 
