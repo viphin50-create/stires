@@ -360,7 +360,7 @@
                            style="outline: none;">
                     <!-- Иконка поиска (Звезда) -->
                     <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21l-1.64-7.03z"/>
                     </svg>
                 </div>
             </div>
@@ -456,8 +456,12 @@
                             
 <div class="md:w-3/5 space-y-3 text-gray-700">
                                 
-<p><strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> метро Площадь Восстания/Лиговский проспект.</p>
-                                <p class="pl-4">Лиговский проспект 50 литера З</p>
+                                <!-- ИСПРАВЛЕННЫЙ АДРЕС: Объединен в одну строку -->
+<p>
+    <strong><span style="color: var(--stars-primary-gradient-start);">Адрес:</span></strong> 
+    метро Площадь Восстания/Лиговский проспект. Лиговский проспект 50 литера З
+</p>
+                                
                                 <p><strong><span style="color: var(--stars-primary-gradient-start);">Режим работы магазина:</span></strong> Каждый день с 12:00 до 20:00</p>
                                 <p class="mb-4"><strong><span style="color: var(--stars-primary-gradient-start);">Как найти:</span></strong> Желтое здание, второй вход после кафе</p>
                                 
@@ -614,7 +618,7 @@ function csvToJSON(csvText) {
     // Получаем заголовки из первой строки
     const headers = lines[0].split(',');
 
-    // Убираем BOM (Byte Order Mark), если он есть, из первого заголовка
+    // Убираем BOM (Byte OMark, если он есть, из первого заголовка
     headers[0] = headers[0].replace(/^\uFEFF/, '');
 
     // Преобразуем остальные строки в объекты
@@ -623,7 +627,6 @@ function csvToJSON(csvText) {
         const line = lines[i];
         if (!line) continue; // Пропускаем пустые строки
 
-        const obj = {};
         const currentline = line.split(',');
 
         // Проверяем, что количество полей совпадает с количеством заголовков
@@ -631,6 +634,10 @@ function csvToJSON(csvText) {
             console.warn("Skipping malformed row:", line);
             continue;
         }
+
+        // --- ИСПРАВЛЕНИЕ: Инициализируем 'obj' для каждой строки ---
+        const obj = {};
+        // -----------------------------------------------------------
 
         headers.forEach((header, index) => {
             let value = currentline[index];
